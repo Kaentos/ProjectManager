@@ -47,10 +47,6 @@
                 $GLOBALS["LoginUserErr"] = "Max input is 16 characters.";
                 return false;
             }
-            // $options = [
-            //     'cost' => 12,
-            // ];
-            // $HashedPW = password_hash($password, PASSWORD_BCRYPT, $options);
         }
 
         $query = "SELECT * FROM  user WHERE ( username='$username' OR email = '$username')";
@@ -144,8 +140,8 @@
         $Temp = array();
         $email = test_input($_POST["REmail"]);
         $username = test_input($_POST["RUsername"]);
-        // $password = test_input($_POST["RPassword"]);;
-        // $Cpassword = test_input($_POST["RCPassword"]);
+        $password = test_input($_POST["RPassword"]);;
+        $Cpassword = test_input($_POST["RCPassword"]);
         // $Squestion = test_input($_POST["RQuestion"]);
         // $Sanswer = test_input($_POST["RAnswer"]);
         // $country = $_POST["Rcountry"];
@@ -168,6 +164,7 @@
             $GLOBALS["REmailErr"] = "Incorrect type of email.";
             return;
         }
+        $GLOBALS["REmailErr"] = "";
         $Temp += ["email" => $email];
         
         // Username validation
@@ -188,35 +185,46 @@
             $GLOBALS["RUsernameErr"] = "Username must contain at least 6 characters and max 16 characters (spaces aren't allowed).";
             return;
         }
+        $GLOBALS["RUsernameErr"] = "";
         $Temp += ["username" => $username];
 
-        // // Password validation
-        // if(!empty($pw) && ($pw == $pw2)) {
-        //     if (strlen($pw) <= 6 || strlen($pw) > 16) {
-        //         $GLOBALS["RPasswordErr"] = "Must contain at least 6 and max 16 characters.";
-        //         return;
-        //     }
-        //     elseif(!preg_match("#[0-9]+#", $pw)) {
-        //         $GLOBALS["RPasswordErr"] = "Must contain at least 1 number.";
-        //         return;
-        //     }
-        //     elseif(!preg_match("#[A-Z]+#", $pw)) {
-        //         $GLOBALS["RPasswordErr"] = "Must contain at least 1 capital letter.";
-        //         return;
-        //     }
-        //     elseif(!preg_match("#[a-z]+#", $pw)) {
-        //         $GLOBALS["RPasswordErr"] = "Must contain at least 1 lowercase letter.";
-        //         return;
-        //     }
-        // }
-        // elseif(!empty($_POST["password"])) {
-        //     $GLOBALS["RCPasswordErr"] = "Confirm password invalid.";
-        //     return;
-        // } else {
-        //     $GLOBALS["RPasswordErr"] = "Empty password input.";
-        //     return;
-        // }
-        // $Validated += ["password" => md5($pw)];
+        // Password validation
+        if(!empty($password)) {
+            if (strlen($password) <= 6 || strlen($password) > 16) {
+                $GLOBALS["RPasswordErr"] = "Must contain at least 6 and max 16 characters.";
+                return;
+            }
+            elseif(!preg_match("#[0-9]+#", $password)) {
+                $GLOBALS["RPasswordErr"] = "Must contain at least 1 number.";
+                return;
+            }
+            elseif(!preg_match("#[A-Z]+#", $password)) {
+                $GLOBALS["RPasswordErr"] = "Must contain at least 1 capital letter.";
+                return;
+            }
+            elseif(!preg_match("#[a-z]+#", $password)) {
+                $GLOBALS["RPasswordErr"] = "Must contain at least 1 lowercase letter.";
+                return;
+            }
+            if ($Cpassword != $password){
+                $GLOBALS["RCPasswordErr"] = "Password and confirm password don't match.";
+                return;
+            }
+        }
+        elseif(!empty($Cpassword)) {
+            $GLOBALS["RCPasswordErr"] = "Empty confirm password.";
+            return;
+        } else {
+            $GLOBALS["RPasswordErr"] = "Empty password input.";
+            return;
+        }
+        $options = [
+            'cost' => 12,
+        ];
+        $GLOBALS["RPasswordErr"] = "";
+        $GLOBALS["RCPasswordErr"] = "";
+        $HashedPW = password_hash($password, PASSWORD_BCRYPT, $options);
+        $Temp += ["password" => $HashedPW];
 
         // // Question validation
         // if(strlen($Squestion) <= 6 || strlen($Squestion) > 30) {
