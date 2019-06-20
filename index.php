@@ -142,9 +142,12 @@
         $username = test_input($_POST["RUsername"]);
         $password = test_input($_POST["RPassword"]);;
         $Cpassword = test_input($_POST["RCPassword"]);
-        // $Squestion = test_input($_POST["RQuestion"]);
-        // $Sanswer = test_input($_POST["RAnswer"]);
-        // $country = $_POST["Rcountry"];
+        $Squestion = test_input($_POST["RQuestion"]);
+        $Sanswer = test_input($_POST["RAnswer"]);
+        $country = $_POST["Rcountry"];
+        $options = [
+            'cost' => 12,
+        ];
 
         // Email validation
         if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -182,7 +185,7 @@
                 return;
             }
         } else{
-            $GLOBALS["RUsernameErr"] = "Username must contain at least 6 characters and max 16 characters (spaces aren't allowed).";
+            $GLOBALS["RUsernameErr"] = "Username must contain at least 6 characters and max of 16. Spaces aren't allowed.";
             return;
         }
         $GLOBALS["RUsernameErr"] = "";
@@ -218,41 +221,47 @@
             $GLOBALS["RPasswordErr"] = "Empty password input.";
             return;
         }
-        $options = [
-            'cost' => 12,
-        ];
         $GLOBALS["RPasswordErr"] = "";
         $GLOBALS["RCPasswordErr"] = "";
         $HashedPW = password_hash($password, PASSWORD_BCRYPT, $options);
         $Temp += ["password" => $HashedPW];
 
-        // // Question validation
-        // if(strlen($Squestion) <= 6 || strlen($Squestion) > 30) {
-        //     $GLOBALS["RQuestionErr"] = "Must have at least min of 6 and max 30 letters.";
-        //     echo $Squestion;
-        //     return;
-        // }
-        // $Validated += ["question" => $Squestion];
+        // Question validation
+        if(strlen($Squestion) <= 6 || strlen($Squestion) > 30) {
+            $GLOBALS["RQuestionErr"] = "Question must contain at least 6 characters and max of 30.";
+            return;
+        }
+        $GLOBALS["RQuestionErr"] = "";
+        $Temp += ["question" => $Squestion];
 
-        // // Answer validation
-        // if(!preg_match('/^\w{6,16}$/', $Sanswer)) { // \w equals "[0-9A-Za-z_]"
-        //     $GLOBALS["RAnswerErr"] = "Must have min 6 and max 16 letters/numbers (spaces not included).";
-        //     return;
-        // }
-        // $Validated += ["answer" => md5($Sanswer)];
+        // Answer validation
+        if(!preg_match('/^\w{6,16}$/', $Sanswer)) { // \w equals "[0-9A-Za-z_]"
+            $GLOBALS["RAnswerErr"] = "Answer must contain at least 6 characters and max of 16. Spaces aren't allowed.";
+            return;
+        }
+        $GLOBALS["RAnswerErr"] = "";
+        $HashedAns = password_hash($Sanswer, PASSWORD_BCRYPT, $options);
+        $Temp += ["answer" => $HashedAns];
 
-        // $result = mysqli_query($conn, "SELECT * FROM countries WHERE id = '$country';");
-        // if(mysqli_num_rows($result) > 0) {
-        //     $Validated += ["countryID" => $country];
-        // } else {
-        //     $Validated += ["countryID" => null];
-        // }
-        
-        
-        // // Adds current date and associate member role
-        // $Validated += ["creationDate" => date("Y-m-d")];
-        // $Validated += ["role" => 1];
-        // return $Validated;
+        // Country validation
+        $query = "SELECT * FROM countries WHERE id = '$country';";
+        if ($result = $conn->query($query)) {
+            if ($result->num_rows > 0){
+                $Temp += ["countryID" => $country];
+            } else {
+                $Temp += ["countryID" => null];
+            }
+            $result->close();
+        } else {
+            printf("Error in select register-country query");
+            return;
+        }
+
+        $date = date('Y/m/d h:i:s a', time());
+        $Temp += ["creationDate" => $date];
+        $Temp += ["lastUpdatedDate" => $date];
+        $Temp += ["role" => 0];
+
         return $Temp;
     }
     //End of Register Stuff
