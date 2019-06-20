@@ -59,7 +59,7 @@
                     print_r($Temp);
                 } else {
                     printf("MAJOR ERROR CAN'T CONVERT USER ROW TO ARRAY");
-                    return;
+                    return false;
                 }
             } else {
                 $GLOBALS["LoginUserErr"] = "Invalid username or password!";
@@ -68,7 +68,7 @@
             $result->close();
         } else {
             printf("Error in select user query");
-            return;
+            return false;
         }
         
         $query = "SELECT * FROM usersecurity WHERE idUser='$Temp[id]';";
@@ -84,7 +84,7 @@
                     echo "<br>";
                 } else {
                     printf("MAJOR ERROR CAN'T CONVERT USER ROW TO ARRAY");
-                    return;
+                    return false;
                 }
             } else {
                 $GLOBALS["LoginUserErr"] = "Invalid username or password!";
@@ -93,7 +93,7 @@
             $result->close();
         } else {
             printf("Error in select user query");
-            return;
+            return false;
         }
 
         $LoginData = $Temp;
@@ -107,32 +107,39 @@
     }
 
     function AddUser($conn){
-        $teste = validateInput($conn);
-        print_r($teste);
-        // $NewUser = validateInput($conn);
-        // if (!isset($NewUser["role"])){
-        //     return;
-        // }
-        // $query = "INSERT INTO user (username, email, creationDate, idCountry, idRole) VALUES ('$NewUser[username]', '$NewUser[email]', '$NewUser[creationDate]', '$NewUser[countryID]', '$NewUser[role]');";
-        // $result = mysqli_query($conn,$query);
-        // if(!$result) {
-        //     die("ADD in user Error:". mysqli_error($conn));
-        // }
-        // $user_id = mysqli_insert_id($conn);
+        $NewUser = validateInput($conn);
+        print_r($NewUser);
+        if (!isset($NewUser["role"])){
+            return;
+        }
 
-        // $query = "INSERT INTO usersecurity (idUser, password, question, answer) VALUES ('$user_id', '$NewUser[password]', '$NewUser[question]', '$NewUser[answer]');";
-        // $result = mysqli_query($conn,$query);
-        // if(!$result) {
-        //     die("ADD in security Error:". mysqli_error($conn));
-        // }
+        $query = "INSERT INTO user (email, username, creationDate, lastUpdateDate, idCountry, role) VALUES ('$NewUser[email]', '$NewUser[username]', '$NewUser[creationDate]', '$NewUser[lastUpdatedDate]', '$NewUser[countryID]', '$NewUser[role]');";
+        if ($result = $conn->query($query)) {
+            $user_id = $conn->insert_id;
+        } else {
+            printf("Error in insert register query");
+            echo $conn->error;
+            return;
+        }
 
-        // $Session_data = array();
-        // $Session_data += ["id" => $user_id];
-        // $Session_data += ["username" => $NewUser["username"]];
-        // $Session_data += ["role" => 1];
-        // $_SESSION['USER'] = $Session_data;
-        // unset($NewUser);
-        // header("location: index.php");
+        $query = "INSERT INTO usersecurity (idUser, password, question, answer) VALUES ('$user_id', '$NewUser[password]', '$NewUser[question]', '$NewUser[answer]');";
+        if (!($result = $conn->query($query))) {
+            $query = "DELETE FROM user where id=$user_id;";
+            if (!($result = $conn->query($query))) {
+                printf("Error deleting");
+                return;
+            }
+            printf("Error in insert register query");
+            return;
+        }
+
+        $Session_data = array();
+        $Session_data += ["id" => $user_id];
+        $Session_data += ["username" => $NewUser["username"]];
+        $Session_data += ["role" => 1];
+        $_SESSION['USER'] = $Session_data;
+        unset($NewUser);
+        header("location: index.php");
     }
 
     function validateInput($conn){
