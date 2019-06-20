@@ -1,7 +1,9 @@
 <?php
     session_start();
     if ( isset( $_SESSION['user'] ) ) {
-        header("location: logged.php");
+        // header("location: logged.php");
+        print_r($_SESSION["user"]);
+        session_destroy();
     }
 
     //include "serverConRegister.php";
@@ -29,9 +31,9 @@
     if(isset($_POST['LoginBtn'])) {
         $LoginData = Login($conn);
         if ($LoginData != false){
-            //$_SESSION['user'] = $LoginData;
-            //header("Refresh:0");
-            print_r($LoginData);
+            $LoginData += ["lastActivity" => time()];
+            $_SESSION['user'] = $LoginData;
+            header("Refresh:0");
         }
     }
 
@@ -56,7 +58,6 @@
                     $Temp += ["id" => $row["id"]];
                     $Temp += ["username" => $row["username"]];
                     $Temp += ["role" => $row["role"]];
-                    print_r($Temp);
                 } else {
                     printf("MAJOR ERROR CAN'T CONVERT USER ROW TO ARRAY");
                     return false;
@@ -79,9 +80,6 @@
                         $GLOBALS["LoginUserErr"] = "Invalid username or password!";
                         return false;
                     }
-                    echo "<br>";
-                    print_r($row);
-                    echo "<br>";
                 } else {
                     printf("MAJOR ERROR CAN'T CONVERT USER ROW TO ARRAY");
                     return false;
@@ -108,7 +106,6 @@
 
     function AddUser($conn){
         $NewUser = validateInput($conn);
-        print_r($NewUser);
         if (!isset($NewUser["role"])){
             return;
         }
@@ -136,10 +133,11 @@
         $Session_data = array();
         $Session_data += ["id" => $user_id];
         $Session_data += ["username" => $NewUser["username"]];
-        $Session_data += ["role" => 1];
-        $_SESSION['USER'] = $Session_data;
+        $Session_data += ["role" => $NewUser["role"]];
+        $Session_data += ["lastActivity" => time()];
+        $_SESSION['user'] = $Session_data;
         unset($NewUser);
-        header("location: index.php");
+        header("Refresh: 0");
     }
 
     function validateInput($conn){
