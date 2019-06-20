@@ -143,7 +143,7 @@
         // Var declarations
         $Temp = array();
         $email = test_input($_POST["REmail"]);
-        // $username = test_input($_POST["RUsername"]);
+        $username = test_input($_POST["RUsername"]);
         // $password = test_input($_POST["RPassword"]);;
         // $Cpassword = test_input($_POST["RCPassword"]);
         // $Squestion = test_input($_POST["RQuestion"]);
@@ -151,12 +151,12 @@
         // $country = $_POST["Rcountry"];
 
         // Email validation
-        if (filter_var($email, FILTER_VALIDATE_EMAIL) && strlen($email) < 10) {
+        if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
             // Check if email is already taken
-            $query = "SELECT * FROM user WHERE email = '$email';";
+            $query = "SELECT id FROM user WHERE email = '$email';";
             if ($result = $conn->query($query)) {
                 if ($result->num_rows > 0){
-                    $GLOBALS["EmailErr"] = "$email already taken.";
+                    $GLOBALS["REmailErr"] = "$email already taken.";
                     return;
                 }
                 $result->close();
@@ -169,24 +169,26 @@
             return;
         }
         $Temp += ["email" => $email];
-        return $Temp;
-
-        $Validated = array();
-
         
-        // // Username validation
-        // if(preg_match('/^\w{6,16}$/', $username)) { // \w equals "[0-9A-Za-z_]"
-        //     // Check if username is already taken
-        //     $result = mysqli_query($conn, "SELECT * FROM user WHERE username = '$username';");
-        //     if(mysqli_num_rows($result) > 0) {
-        //         $GLOBALS["RUsernameErr"] = "$username already taken.";
-        //         return;
-        //     }
-        // } else{
-        //     $GLOBALS["RUsernameErr"] = "Must have min 6 letters and max 16 letters/numbers (spaces not included).";
-        //     return;
-        // }
-        // $Validated += ["username" => $username];
+        // Username validation
+        if(preg_match('/^\w{6,16}$/', $username)) { // \w equals "[0-9A-Za-z_]"
+            // Check if username is already taken
+            $query = "SELECT id FROM user WHERE username = '$username';";
+            if ($result = $conn->query($query)) {
+                if ($result->num_rows > 0){
+                    $GLOBALS["RUsernameErr"] = "$username already taken.";
+                    return;
+                }
+                $result->close();
+            } else {
+                printf("Error in select register-username query");
+                return;
+            }
+        } else{
+            $GLOBALS["RUsernameErr"] = "Username must contain at least 6 characters and max 16 characters (spaces aren't allowed).";
+            return;
+        }
+        $Temp += ["username" => $username];
 
         // // Password validation
         // if(!empty($pw) && ($pw == $pw2)) {
@@ -243,6 +245,7 @@
         // $Validated += ["creationDate" => date("Y-m-d")];
         // $Validated += ["role" => 1];
         // return $Validated;
+        return $Temp;
     }
     //End of Register Stuff
 
