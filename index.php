@@ -43,7 +43,7 @@
         } else {
             $username = test_input($_POST["LUserEmail"]);
             $password = test_input($_POST["LPassword"]);
-            if ($username > 16 && $password > 16){
+            if (strlen($username) > 16 || strlen($password) > 16){
                 $GLOBALS["LoginUserErr"] = "Max input is 16 characters.";
                 return false;
             }
@@ -104,6 +104,147 @@
         return $LoginData;
     }
     //End of Login Stuff
+
+    //Register Stuff
+    if(isset($_POST['RegisterBtn'])) { 
+        AddUser($conn);
+    }
+
+    function AddUser($conn){
+        $teste = validateInput($conn);
+        print_r($teste);
+        // $NewUser = validateInput($conn);
+        // if (!isset($NewUser["role"])){
+        //     return;
+        // }
+        // $query = "INSERT INTO user (username, email, creationDate, idCountry, idRole) VALUES ('$NewUser[username]', '$NewUser[email]', '$NewUser[creationDate]', '$NewUser[countryID]', '$NewUser[role]');";
+        // $result = mysqli_query($conn,$query);
+        // if(!$result) {
+        //     die("ADD in user Error:". mysqli_error($conn));
+        // }
+        // $user_id = mysqli_insert_id($conn);
+
+        // $query = "INSERT INTO usersecurity (idUser, password, question, answer) VALUES ('$user_id', '$NewUser[password]', '$NewUser[question]', '$NewUser[answer]');";
+        // $result = mysqli_query($conn,$query);
+        // if(!$result) {
+        //     die("ADD in security Error:". mysqli_error($conn));
+        // }
+
+        // $Session_data = array();
+        // $Session_data += ["id" => $user_id];
+        // $Session_data += ["username" => $NewUser["username"]];
+        // $Session_data += ["role" => 1];
+        // $_SESSION['USER'] = $Session_data;
+        // unset($NewUser);
+        // header("location: index.php");
+    }
+
+    function validateInput($conn){
+        // Var declarations
+        $Temp = array();
+        $email = test_input($_POST["REmail"]);
+        // $username = test_input($_POST["RUsername"]);
+        // $password = test_input($_POST["RPassword"]);;
+        // $Cpassword = test_input($_POST["RCPassword"]);
+        // $Squestion = test_input($_POST["RQuestion"]);
+        // $Sanswer = test_input($_POST["RAnswer"]);
+        // $country = $_POST["Rcountry"];
+
+        // Email validation
+        if (filter_var($email, FILTER_VALIDATE_EMAIL) && strlen($email) < 10) {
+            // Check if email is already taken
+            $query = "SELECT * FROM user WHERE email = '$email';";
+            if ($result = $conn->query($query)) {
+                if ($result->num_rows > 0){
+                    $GLOBALS["EmailErr"] = "$email already taken.";
+                    return;
+                }
+                $result->close();
+            } else {
+                printf("Error in select register-email query");
+                return;
+            }
+        } else {
+            $GLOBALS["REmailErr"] = "Incorrect type of email.";
+            return;
+        }
+        $Temp += ["email" => $email];
+        return $Temp;
+
+        $Validated = array();
+
+        
+        // // Username validation
+        // if(preg_match('/^\w{6,16}$/', $username)) { // \w equals "[0-9A-Za-z_]"
+        //     // Check if username is already taken
+        //     $result = mysqli_query($conn, "SELECT * FROM user WHERE username = '$username';");
+        //     if(mysqli_num_rows($result) > 0) {
+        //         $GLOBALS["RUsernameErr"] = "$username already taken.";
+        //         return;
+        //     }
+        // } else{
+        //     $GLOBALS["RUsernameErr"] = "Must have min 6 letters and max 16 letters/numbers (spaces not included).";
+        //     return;
+        // }
+        // $Validated += ["username" => $username];
+
+        // // Password validation
+        // if(!empty($pw) && ($pw == $pw2)) {
+        //     if (strlen($pw) <= 6 || strlen($pw) > 16) {
+        //         $GLOBALS["RPasswordErr"] = "Must contain at least 6 and max 16 characters.";
+        //         return;
+        //     }
+        //     elseif(!preg_match("#[0-9]+#", $pw)) {
+        //         $GLOBALS["RPasswordErr"] = "Must contain at least 1 number.";
+        //         return;
+        //     }
+        //     elseif(!preg_match("#[A-Z]+#", $pw)) {
+        //         $GLOBALS["RPasswordErr"] = "Must contain at least 1 capital letter.";
+        //         return;
+        //     }
+        //     elseif(!preg_match("#[a-z]+#", $pw)) {
+        //         $GLOBALS["RPasswordErr"] = "Must contain at least 1 lowercase letter.";
+        //         return;
+        //     }
+        // }
+        // elseif(!empty($_POST["password"])) {
+        //     $GLOBALS["RCPasswordErr"] = "Confirm password invalid.";
+        //     return;
+        // } else {
+        //     $GLOBALS["RPasswordErr"] = "Empty password input.";
+        //     return;
+        // }
+        // $Validated += ["password" => md5($pw)];
+
+        // // Question validation
+        // if(strlen($Squestion) <= 6 || strlen($Squestion) > 30) {
+        //     $GLOBALS["RQuestionErr"] = "Must have at least min of 6 and max 30 letters.";
+        //     echo $Squestion;
+        //     return;
+        // }
+        // $Validated += ["question" => $Squestion];
+
+        // // Answer validation
+        // if(!preg_match('/^\w{6,16}$/', $Sanswer)) { // \w equals "[0-9A-Za-z_]"
+        //     $GLOBALS["RAnswerErr"] = "Must have min 6 and max 16 letters/numbers (spaces not included).";
+        //     return;
+        // }
+        // $Validated += ["answer" => md5($Sanswer)];
+
+        // $result = mysqli_query($conn, "SELECT * FROM countries WHERE id = '$country';");
+        // if(mysqli_num_rows($result) > 0) {
+        //     $Validated += ["countryID" => $country];
+        // } else {
+        //     $Validated += ["countryID" => null];
+        // }
+        
+        
+        // // Adds current date and associate member role
+        // $Validated += ["creationDate" => date("Y-m-d")];
+        // $Validated += ["role" => 1];
+        // return $Validated;
+    }
+    //End of Register Stuff
 
 ?>
 
