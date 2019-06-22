@@ -32,7 +32,7 @@
         if ($LoginData != false){
             $LoginData += ["lastActivity" => time()];
             $_SESSION['user'] = $LoginData;
-            header("Refresh:0");
+            header("Location: dashboard/");
         }
     }
 
@@ -136,7 +136,7 @@
         $Session_data += ["lastActivity" => time()];
         $_SESSION['user'] = $Session_data;
         unset($NewUser);
-        header("Refresh: 0");
+        header("Location: dashboard/");
     }
 
     function validateInput($conn){
@@ -252,7 +252,7 @@
 
         // Answer validation
         if(!preg_match('/^\w{6,16}$/', $Sanswer)) { // \w equals "[0-9A-Za-z_]"
-            $GLOBALS["RAnswerErr"] = "Answer must contain at least 6 characters and max of 16. Spaces aren't allowed.";
+            $GLOBALS["RAnswerErr"] = "Answer must contain at least 6 characters and max of 16. Only letters and numbers, spaces and special characters aren't allowed.";
             $GLOBALS["RError"] = true;
             return;
         }

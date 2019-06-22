@@ -32,7 +32,7 @@
         }
     }
 
-    
+
 ?>
 
 <html lang="en">
@@ -85,6 +85,8 @@
                             <?php
                                 if ($UserData["role"] == 20){
                                     echo "<span class='user-role'>Administrator</span>";
+                                } else {
+                                    echo "<span class='user-role'>Member</span>";
                                 }
                             ?>
                         </div>
@@ -226,6 +228,34 @@
                                 </a>
                             </li>
                             <!-- Example -->
+                            <?php 
+                                if($UserData["role"] == 20){
+                                    echo "
+                                    <li class='header-menu'>
+                                        <span>Admin Tools</span>
+                                    </li>
+                                    <li class='sidebar-dropdown'>
+                                        <a href='#'>
+                                            <i class='fa fa-tachometer-alt'></i>
+                                            <span>Dashboard</span>
+                                        </a>
+                                        <div class='sidebar-submenu'>
+                                            <ul>
+                                                <li>
+                                                    <a href='#'>Dashboard 1</a>
+                                                </li>
+                                                <li>
+                                                    <a href='#'>Dashboard 2</a>
+                                                </li>
+                                                <li>
+                                                    <a href='#'>Dashboard 3</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </li>
+                                    ";
+                                }
+                            ?>
 
                         </ul>
                     </div>
