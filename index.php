@@ -19,6 +19,7 @@
     }
 
     $LoginUserErr = $REmailErr = $RUsernameErr = $RPasswordErr = $RCPasswordErr = $RQuestionErr = $RAnswerErr = "";
+    $RError = false;
 
     function test_input($data) {
         $data = trim($data);
@@ -161,6 +162,7 @@
             if ($result = $conn->query($query)) {
                 if ($result->num_rows > 0){
                     $GLOBALS["REmailErr"] = "$email already taken.";
+                    $GLOBALS["RError"] = true;
                     return;
                 }
                 $result->close();
@@ -170,6 +172,7 @@
             }
         } else {
             $GLOBALS["REmailErr"] = "Incorrect type of email.";
+            $GLOBALS["RError"] = true;
             return;
         }
         $GLOBALS["REmailErr"] = "";
@@ -182,6 +185,7 @@
             if ($result = $conn->query($query)) {
                 if ($result->num_rows > 0){
                     $GLOBALS["RUsernameErr"] = "$username already taken.";
+                    $GLOBALS["RError"] = true;
                     return;
                 }
                 $result->close();
@@ -191,6 +195,7 @@
             }
         } else{
             $GLOBALS["RUsernameErr"] = "Username must contain at least 6 characters and max of 16. Spaces aren't allowed.";
+            $GLOBALS["RError"] = true;
             return;
         }
         $GLOBALS["RUsernameErr"] = "";
@@ -200,30 +205,37 @@
         if(!empty($password)) {
             if (strlen($password) <= 6 || strlen($password) > 16) {
                 $GLOBALS["RPasswordErr"] = "Must contain at least 6 and max 16 characters.";
+                $GLOBALS["RError"] = true;
                 return;
             }
             elseif(!preg_match("#[0-9]+#", $password)) {
                 $GLOBALS["RPasswordErr"] = "Must contain at least 1 number.";
+                $GLOBALS["RError"] = true;
                 return;
             }
             elseif(!preg_match("#[A-Z]+#", $password)) {
                 $GLOBALS["RPasswordErr"] = "Must contain at least 1 capital letter.";
+                $GLOBALS["RError"] = true;
                 return;
             }
             elseif(!preg_match("#[a-z]+#", $password)) {
                 $GLOBALS["RPasswordErr"] = "Must contain at least 1 lowercase letter.";
+                $GLOBALS["RError"] = true;
                 return;
             }
             if ($Cpassword != $password){
                 $GLOBALS["RCPasswordErr"] = "Password and confirm password don't match.";
+                $GLOBALS["RError"] = true;
                 return;
             }
         }
         elseif(!empty($Cpassword)) {
             $GLOBALS["RCPasswordErr"] = "Empty confirm password.";
+            $GLOBALS["RError"] = true;
             return;
         } else {
             $GLOBALS["RPasswordErr"] = "Empty password input.";
+            $GLOBALS["RError"] = true;
             return;
         }
         $GLOBALS["RPasswordErr"] = "";
@@ -234,6 +246,7 @@
         // Question validation
         if(strlen($Squestion) <= 6 || strlen($Squestion) > 30) {
             $GLOBALS["RQuestionErr"] = "Question must contain at least 6 characters and max of 30.";
+            $GLOBALS["RError"] = true;
             return;
         }
         $GLOBALS["RQuestionErr"] = "";
@@ -242,6 +255,7 @@
         // Answer validation
         if(!preg_match('/^\w{6,16}$/', $Sanswer)) { // \w equals "[0-9A-Za-z_]"
             $GLOBALS["RAnswerErr"] = "Answer must contain at least 6 characters and max of 16. Spaces aren't allowed.";
+            $GLOBALS["RError"] = true;
             return;
         }
         $GLOBALS["RAnswerErr"] = "";
@@ -266,7 +280,7 @@
         $Temp += ["creationDate" => $date];
         $Temp += ["lastUpdatedDate" => $date];
         $Temp += ["role" => 0];
-
+        $RError = false;
         return $Temp;
     }
     //End of Register Stuff
@@ -334,16 +348,16 @@
                     <div class="col-md-9 register-right">
                         <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Login</a>
+                                <a class="nav-link <?php if (!$RError){ echo "active"; } ?>" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Login</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Register</a>
+                                <a class="nav-link <?php if ($RError){ echo "active"; } ?>" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Register</a>
                             </li>
                         </ul>
                         <div class="tab-content" id="myTabContent">
                             
                             <!-- Login Form -->
-                            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                            <div class="tab-pane fade show <?php if (!$RError){ echo "active"; } ?>" id="home" role="tabpanel" aria-labelledby="home-tab">
                                 <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
                                     <h3 class="register-heading">Login</h3>
                                     <div class="row register-form">
@@ -366,7 +380,7 @@
                             </div>
 
                             <!-- Register Form -->
-                            <div class="tab-pane fade show" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                            <div class="tab-pane fade show <?php if ($RError){ echo "active"; } ?>" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                                 <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
                                     <h3  class="register-heading">Register</h3>
                                     <div class="row register-form">
