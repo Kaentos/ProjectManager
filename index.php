@@ -1,9 +1,7 @@
 <?php
     session_start();
     if ( isset( $_SESSION['user'] ) ) {
-        // header("location: logged.php");
-        print_r($_SESSION["user"]);
-        session_destroy();
+        header("location: dashboard/");
     }
 
     //include "serverConRegister.php";
@@ -95,8 +93,8 @@
             return false;
         }
 
-        $LoginData = $Temp;
-        return $LoginData;
+        $Temp;
+        return $Temp;
     }
     //End of Login Stuff
 

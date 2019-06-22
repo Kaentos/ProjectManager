@@ -1,5 +1,38 @@
 <?php
+    session_start();
+    if (!isset($_SESSION["user"])){
+        header("Location: /projectmanager/");
+    } else {
+        $dbHost = "localhost";
+        $dbUser = "root";
+        $dbPassword = "";
+        $dbName = "pmanager";
+        $conn = new mysqli($dbHost, $dbUser, $dbPassword, $dbName);
 
+        $UserData = array();
+        $query = "SELECT * FROM  user WHERE id=".$_SESSION["user"]["id"];
+        if ($result = $conn->query($query)) {
+            if ($result->num_rows == 1){
+                if ($row = $result->fetch_array(MYSQLI_ASSOC)){
+                    $UserData += ["id" => $row["id"]];
+                    $UserData += ["username" => $row["username"]];
+                    $UserData += ["role" => $row["role"]];
+                    $_SESSION["user"]["role"] = $row["role"];
+                } else {
+                    printf("MAJOR ERROR CAN'T CONVERT USER ROW TO ARRAY");
+                    die();
+                }
+            } else {
+                die();
+            }
+            $result->close();
+        } else {
+            printf("Error in select user query");
+            die();
+        }
+    }
+
+    
 ?>
 
 <html lang="en">
@@ -44,10 +77,16 @@
                                 alt="User picture">
                         </div>
                         <div class="user-info">
-                            <span class="user-name">Jhon
-                                <strong>Smith</strong>
+                            <span class="user-name">
+                                <?php
+                                    echo "<strong>".$UserData["username"]."</strong>";
+                                ?>
                             </span>
-                            <span class="user-role">Administrator</span>
+                            <?php
+                                if ($UserData["role"] == 20){
+                                    echo "<span class='user-role'>Administrator</span>";
+                                }
+                            ?>
                         </div>
                     </div>
 
@@ -194,19 +233,10 @@
                 </div>
                 
                 <div class="sidebar-footer">
-                    <a href="#">
-                        <i class="fa fa-bell"></i>
-                        <span class="badge badge-pill badge-warning notification">3</span>
-                    </a>
-                    <a href="#">
-                        <i class="fa fa-envelope"></i>
-                        <span class="badge badge-pill badge-success notification">7</span>
-                    </a>
-                    <a href="#">
+                    <a href="#" style="padding-top:5px">
                         <i class="fa fa-cog"></i>
-                        <span class="badge-sonar"></span>
                     </a>
-                    <a href="#">
+                    <a href="/projectmanager/logout.php" style="padding-top:5px">
                         <i class="fa fa-power-off"></i>
                     </a>
                 </div>
@@ -215,19 +245,13 @@
 
             <main class="page-content">
                 <div class="container-fluid">
-                    <h2>Pro Sidebar</h2>
+                    <h2>Content</h2>
                     <hr>
                         <div class="row">
                             <div class="form-group col-md-12">
                             <p>This is a responsive sidebar template with dropdown menu based on bootstrap 4 framework.</p>
                             <p> You can find the complete code on <a href="https://github.com/azouaoui-med/pro-sidebar-template" target="_blank">
                                 Github</a>, it contains more themes and background image option</p>
-                            </div>
-                            <div class="form-group col-md-12">
-                            <iframe src="https://ghbtns.com/github-btn.html?user=azouaoui-med&repo=pro-sidebar-template&type=star&count=true&size=large"
-                                frameborder="0" scrolling="0" width="140px" height="30px"></iframe>
-                            <iframe src="https://ghbtns.com/github-btn.html?user=azouaoui-med&repo=pro-sidebar-template&type=fork&count=true&size=large"
-                                frameborder="0" scrolling="0" width="140px" height="30px"></iframe>
                             </div>
                         </div>
                         <h5>More templates</h5>
