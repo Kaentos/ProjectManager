@@ -140,6 +140,8 @@
         }
         if(!$stmt->execute()) {
             die("Execute failed: (" . $stmt->errno . ") " . $stmt->error);
+        } else {
+            $user_id = $conn->insert_id;
         }
 
         if(!($stmt = $conn->prepare("INSERT INTO usersecurity (idUser, password, question, answer) VALUES (?, ?, ?, ?);"))) {
