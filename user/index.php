@@ -193,6 +193,7 @@
         } else {
             goto endC;
         }
+
         if(!($stmt = $conn->prepare("SELECT * FROM countries WHERE id = ?;"))) {
             die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
         }
@@ -217,7 +218,7 @@
                 }
             } else {
                 if($result->num_rows > 1) {
-                    die("If you didn't edit values with F12, report error with the following code: C2 and the country you are trying to change.");
+                    die("Report error with the following code: C2 and the country you are trying to change.");
                 }
             }
             $stmt->close();
@@ -235,24 +236,34 @@
     function updateQA($conn, $id){
         $question = test_input($_POST["nQuestion"]);
         $answer = test_input($_POST["nAnswer"]);
+        $options = [
+            'cost' => 12,
+        ];
+        $HashedA = password_hash($answer, PASSWORD_BCRYPT, $options);
         $oldA = test_input($_POST["oAnswer"]);
 
         if(empty($oldA)){
-            $GLOBALS["NQuestionErr"] = "Invalid current answer.";
+            $GLOBALS["NQuestionErr"] = "Empty current answer.";
         } else {
-            $oldA = md5($oldA);
-            $query = "SELECT idUser FROM usersecurity WHERE idUser=$id AND answer = '$oldA';";
+            $query = "SELECT * FROM usersecurity WHERE idUser=$id;";
             $result = mysqli_query($conn,$query);
             if(!$result) {
                 die("Error:". mysqli_error($conn));
-            }
-            if(mysqli_num_rows($result) > 0) {
-                goto Can;
             } else {
-                goto Cannot;
+                if(!$row = mysqli_fetch_assoc($result)){
+                    die();
+                } else {
+                    if (!password_verify($oldA, $row["answer"])){
+                        $GLOBALS["NQuestionErr"] = "Wrong current answer.";
+                        return;
+                    } elseif (password_verify($answer, $row["answer"])){
+                        $GLOBALS["NQuestionErr"] = "New Answer and current are the same.";
+                        return;
+                    }
+                }
             }
         }
-        Can:
+        
         if(strlen($question) <= 6 || strlen($question) > 30) {
             $GLOBALS["NQuestionErr"] = "Question must have at least min of 6 and max 30 letters.";
             echo $question;
@@ -263,20 +274,17 @@
             return;
         }
 
-        $answer = md5($answer);
-        if ($answer == $oldA){
-            $GLOBALS["NQuestionErr"] = "New Answer and current are the same.";
-            goto Cannot;
+        if(!($stmt = $conn->prepare("UPDATE usersecurity SET question=?, answer=? WHERE idUser=?"))) {
+            die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
         }
-
-        $sql = "UPDATE usersecurity SET question='$question', answer='$answer' WHERE idUser=$id";
-        if (mysqli_query($conn, $sql)) {
-            header("Refresh:0");
+        if(!$stmt->bind_param("ssi", $question, $HashedA, $id)) {
+            die("Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error);
+        }
+        if(!$stmt->execute()) {
+            die("Execute failed: (" . $stmt->errno . ") " . $stmt->error);
         } else {
-            die("Error: " . mysqli_error($conn));
+            header("Refresh:0");
         }
-
-        Cannot:;
     }
 
     // Update password
@@ -286,7 +294,7 @@
     function updatePass($conn, $id){
         $pw = test_input($_POST["nPassword"]);
         $pw2 = test_input($_POST["CnPassword"]);
-        $oldPass = md5($_POST["OPassword"]);
+        $oldPass = $_POST["OPassword"];
         if (ConfirmPassword($oldPass, $id, $conn)){
             if(!empty($pw) && ($pw == $pw2)) {
                 if (strlen($pw) <= 6 || strlen($pw) > 16) {
@@ -314,8 +322,7 @@
                 return;
             }
 
-            $pw = md5($pw);
-            if ($pw == $oldPass){
+            if (ConfirmPassword($pw, $id, $conn)){
                 $GLOBALS["NPasswordErr"] = "You are trying to update your password with current password.";
                 return;
             }
@@ -349,7 +356,7 @@
 
     // Deletes account
     if (isset($_POST["DELETEACC"])){
-        if (ConfirmPassword(md5($_POST["DELPassword"]), $id, $conn) ){
+        if (ConfirmPassword($_POST["DELPassword"], $id, $conn) ){
             $sql = "DELETE FROM usersecurity WHERE idUser = $id";
             if (mysqli_query($conn, $sql)) {
                 $sql = "DELETE FROM user WHERE id=$id";
