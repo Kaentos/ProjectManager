@@ -132,24 +132,33 @@
             return;
         }
 
-        $query = "INSERT INTO user (email, username, creationDate, lastUpdateDate, idCountry, role) VALUES ('$NewUser[email]', '$NewUser[username]', '$NewUser[creationDate]', '$NewUser[lastUpdatedDate]', '$NewUser[countryID]', '$NewUser[role]');";
-        if ($result = $conn->query($query)) {
-            $user_id = $conn->insert_id;
-        } else {
-            printf("Error in insert register query");
-            echo $conn->error;
-            return;
+        if(!($stmt = $conn->prepare("INSERT INTO user (email, username, creationDate, lastUpdateDate, idCountry, role) VALUES (?, ?, ?, ?, ?, ?);"))) {
+            die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
+        }
+        if(!$stmt->bind_param("ssssis", $NewUser["email"], $NewUser["username"], $NewUser["creationDate"], $NewUser["lastUpdatedDate"], $NewUser["countryID"], $NewUser["role"])) {
+            die("Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error);
+        }
+        if(!$stmt->execute()) {
+            die("Execute failed: (" . $stmt->errno . ") " . $stmt->error);
         }
 
-        $query = "INSERT INTO usersecurity (idUser, password, question, answer) VALUES ('$user_id', '$NewUser[password]', '$NewUser[question]', '$NewUser[answer]');";
-        if (!($result = $conn->query($query))) {
-            $query = "DELETE FROM user where id=$user_id;";
-            if (!($result = $conn->query($query))) {
-                printf("Error deleting");
-                return;
+        if(!($stmt = $conn->prepare("INSERT INTO usersecurity (idUser, password, question, answer) VALUES (?, ?, ?, ?);"))) {
+            die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
+        }
+        if(!$stmt->bind_param("isss", $user_id, $NewUser["password"], $NewUser["question"], $NewUser["answer"])) {
+            die("Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error);
+        }
+        if(!$stmt->execute()) {
+            if(!($stmt = $conn->prepare("DELETE FROM user where id=?;"))) {
+                die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
             }
-            printf("Error in insert register query");
-            return;
+            if(!$stmt->bind_param("i", $user_id)) {
+                die("Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error);
+            }
+            if(!$stmt->execute()){
+                die("Execute failed: (" . $stmt->errno . ") " . $stmt->error);
+            }
+            die("Execute failed: (" . $stmt->errno . ") " . $stmt->error);
         }
 
         $Session_data = array();
