@@ -50,29 +50,49 @@
             }
         }
 
-        $query = "SELECT * FROM  user WHERE ( username='$username' OR email = '$username')";
-        if ($result = $conn->query($query)) {
+        if(!($stmt = $conn->prepare("SELECT * FROM  user WHERE ( username= ? OR email = ?)"))) {
+            die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
+        }
+        if(!$stmt->bind_param("ss", $username, $username)) {
+            die("Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error);
+        }
+        if(!$stmt->execute()) {
+            die("Execute failed: (" . $stmt->errno . ") " . $stmt->error);
+        }
+        if ($result = $stmt->get_result()) {
             if ($result->num_rows == 1){
                 if ($row = $result->fetch_array(MYSQLI_ASSOC)){
                     $Temp += ["id" => $row["id"]];
                     $Temp += ["username" => $row["username"]];
                     $Temp += ["role" => $row["role"]];
                 } else {
-                    printf("MAJOR ERROR CAN'T CONVERT USER ROW TO ARRAY");
-                    return false;
+                    die("Unexpected error");
                 }
+                $stmt->close();
             } else {
-                $GLOBALS["LoginUserErr"] = "Invalid username or password!";
-                return false;
+                if($result->num_rows == 0){
+                    $GLOBALS["LoginUserErr"]="Invalid username or password";
+                    return false;
+                } else {
+                    die("Unexpected error. Report error with code: U2.");
+                }
             }
-            $result->close();
         } else {
             printf("Error in select user query");
             return false;
         }
-        
-        $query = "SELECT * FROM usersecurity WHERE idUser='$Temp[id]';";
-        if ($result = $conn->query($query)) {
+
+        // Verify password
+        if(!($stmt = $conn->prepare("SELECT * FROM  usersecurity WHERE idUser= ?"))) {
+            die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
+        }
+        if(!$stmt->bind_param("i", $Temp["id"])) {
+            die("Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error);
+        }
+        if(!$stmt->execute()) {
+            die("Execute failed: (" . $stmt->errno . ") " . $stmt->error);
+        }
+        if ($result = $stmt->get_result()) {
             if ($result->num_rows == 1){
                 if ($row = $result->fetch_array(MYSQLI_ASSOC)){
                     if (!password_verify($password, $row["password"])){
@@ -80,14 +100,17 @@
                         return false;
                     }
                 } else {
-                    printf("MAJOR ERROR CAN'T CONVERT USER ROW TO ARRAY");
-                    return false;
+                    die("Unexpected error");
                 }
+                $stmt->close();
             } else {
-                $GLOBALS["LoginUserErr"] = "Invalid username or password!";
-                return false;
+                if($result->num_rows == 0){
+                    $GLOBALS["LoginUserErr"]="Invalid username or password";
+                    return false;
+                } else {
+                    die("Unexpected error. Report error with code: U2.");
+                }
             }
-            $result->close();
         } else {
             printf("Error in select user query");
             return false;
