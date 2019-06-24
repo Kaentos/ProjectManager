@@ -85,16 +85,27 @@
         $username = test_input($_POST["nUsername"]);
         if(preg_match('/^\w{6,16}$/', $username)) { // \w equals "[0-9A-Za-z_]"
             // Check if username is already taken
-            $query = "SELECT * FROM user WHERE username = '$username';";
-            if ($result = $conn->query($query)) {
-                if ($result->num_rows > 0){
+            if(!($stmt = $conn->prepare("SELECT id FROM user WHERE username = ?;"))) {
+                die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
+            }
+            if(!$stmt->bind_param("s", $username)) {
+                die("Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error);
+            }
+            if(!$stmt->execute()) {
+                die("Execute failed: (" . $stmt->errno . ") " . $stmt->error);
+            }
+            if ($result = $stmt->get_result()) {
+                if ($result->num_rows == 1){
                     $GLOBALS["NUsernameErr"] = "$username already taken.";
-                    return;
+                } else {
+                    if($result->num_rows > 1) {
+                        die("Report error with the following code: U2 and the username you are trying to input.");
+                    }
                 }
-                $result->close();
+                $stmt->close();
             } else {
                 printf("Error in select user query");
-                die();
+                return false;
             }
         } else{
             $GLOBALS["NUsernameErr"] = "Insert a valid username (6-16 letters & numbers).";
