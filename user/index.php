@@ -97,6 +97,7 @@
             if ($result = $stmt->get_result()) {
                 if ($result->num_rows == 1){
                     $GLOBALS["NUsernameErr"] = "$username already taken.";
+                    return;
                 } else {
                     if($result->num_rows > 1) {
                         die("Report error with the following code: U2 and the username you are trying to input.");
@@ -105,7 +106,7 @@
                 $stmt->close();
             } else {
                 printf("Error in select user query");
-                return false;
+                return;
             }
         } else{
             $GLOBALS["NUsernameErr"] = "Insert a valid username (6-16 letters & numbers).";
@@ -113,14 +114,18 @@
         }
         
         // Update username in DB
-        $query = "UPDATE user SET username='$username' WHERE id=$id";
-        if ($result = $conn->query($query)) {
+        if(!($stmt = $conn->prepare("UPDATE user SET username='$username' WHERE id=?"))) {
+            die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
+        }
+        if(!$stmt->bind_param("i", $id)) {
+            die("Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error);
+        }
+        if(!$stmt->execute()) {
+            die("Execute failed: (" . $stmt->errno . ") " . $stmt->error);
+        } else {
             $_SESSION["user"]["username"] = $username;
             header("Refresh:0");
             $result->close();
-        } else {
-            printf("Error in select user query");
-            die();
         }
     }
 

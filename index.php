@@ -203,6 +203,7 @@
                 if ($result->num_rows == 1){
                     $GLOBALS["REmailErr"] = "$email already taken.";
                     $GLOBALS["RError"] = true;
+                    return;
                 } else {
                     if($result->num_rows > 1) {
                         die("Report error with the following code: UE2");
@@ -236,7 +237,8 @@
             if ($result = $stmt->get_result()) {
                 if ($result->num_rows == 1){
                     $GLOBALS["RUsernameErr"] = "$username already taken.";
-                        $GLOBALS["RError"] = true;
+                    $GLOBALS["RError"] = true;
+                    return;
                 } else {
                     if($result->num_rows > 1) {
                         die("Report error with the following code: U2");
