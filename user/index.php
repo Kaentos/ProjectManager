@@ -293,6 +293,10 @@
     }
     function updatePass($conn, $id){
         $pw = test_input($_POST["nPassword"]);
+        $options = [
+            'cost' => 12,
+        ];
+        $HashedPass = password_hash($pw, PASSWORD_BCRYPT, $options);
         $pw2 = test_input($_POST["CnPassword"]);
         $oldPass = $_POST["OPassword"];
         if (ConfirmPassword($oldPass, $id, $conn)){
@@ -326,11 +330,17 @@
                 $GLOBALS["NPasswordErr"] = "You are trying to update your password with current password.";
                 return;
             }
-            $sql = "UPDATE usersecurity SET password='$pw' WHERE idUser=$id";
-            if (mysqli_query($conn, $sql)) {
-                header("Refresh:0");
+
+            if(!($stmt = $conn->prepare("UPDATE usersecurity SET password=? WHERE idUser=?"))) {
+                die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
+            }
+            if(!$stmt->bind_param("si", $HashedPass, $id)) {
+                die("Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error);
+            }
+            if(!$stmt->execute()) {
+                die("Execute failed: (" . $stmt->errno . ") " . $stmt->error);
             } else {
-                die("Error: " . mysqli_error($conn));
+                header("Refresh:0");
             }
         } else {
             $GLOBALS["NPasswordErr"] = "Wrong current password.";
