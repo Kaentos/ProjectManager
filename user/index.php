@@ -135,12 +135,30 @@
     }
     function updateEmail($conn, $id){
         $email = test_input($_POST["nEmail"]);
-        $pass = md5($_POST["EMCPassword"]);
+        $pass = $_POST["EMCPassword"];
         if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
             // Check if email is already taken
-            $result = mysqli_query($conn, "SELECT * FROM user WHERE email = '$email';");
-            if(mysqli_num_rows($result) > 0) {
-                $GLOBALS["NEmailErr"] = "$email already taken.";
+            if(!($stmt = $conn->prepare("SELECT id FROM user WHERE email = ?;"))) {
+                die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
+            }
+            if(!$stmt->bind_param("s", $email)) {
+                die("Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error);
+            }
+            if(!$stmt->execute()) {
+                die("Execute failed: (" . $stmt->errno . ") " . $stmt->error);
+            }
+            if ($result = $stmt->get_result()) {
+                if ($result->num_rows == 1){
+                    $GLOBALS["REmailErr"] = "$email already taken.";
+                    return;
+                } else {
+                    if($result->num_rows > 1) {
+                        die("Report error with the following code: UE2");
+                    }
+                }
+                $stmt->close();
+            } else {
+                printf("Error in select user query");
                 return;
             }
         } else {
@@ -150,11 +168,17 @@
 
         if (ConfirmPassword($pass, $id, $conn)){
             // Updates in db
-            $sql = "UPDATE user SET email='$email' WHERE id=$id";
-            if (mysqli_query($conn, $sql)) {
-                header("Refresh:0");
+            if(!($stmt = $conn->prepare("UPDATE user SET email=? WHERE id=?;"))) {
+                die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
+            }
+            if(!$stmt->bind_param("si", $email, $id)) {
+                die("Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error);
+            }
+            if(!$stmt->execute()) {
+                die("Execute failed: (" . $stmt->errno . ") " . $stmt->error);
             } else {
-                die("Error: " . mysqli_error($conn));
+                header("Refresh:0");
+                $stmt->close();
             }
         } else {
             $GLOBALS["NEmailErr"] = "Wrong password.";
@@ -292,15 +316,18 @@
 
     // Function to confirm if current password is correct
     function ConfirmPassword($pass, $id, $conn){
-        $query = "SELECT idUser FROM usersecurity WHERE idUser=$id AND password = '$pass';";
+        $query = "SELECT * FROM usersecurity WHERE idUser=$id;";
         $result = mysqli_query($conn,$query);
         if(!$result) {
             die("Error:". mysqli_error($conn));
-        }
-        if(mysqli_num_rows($result) > 0) {
-            return true;
         } else {
-            return false;
+            $row = mysqli_fetch_assoc($result);
+            if (password_verify($pass, $row["password"])){
+                return true;
+            } else {
+                return false;
+            }
+                
         }
     }
 
