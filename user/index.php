@@ -193,21 +193,37 @@
         } else {
             goto endC;
         }
-        $result = mysqli_query($conn, "SELECT * FROM countries WHERE id = '$country';");
-        if(mysqli_num_rows($result) > 0) {
-            $sql = "UPDATE user SET idCountry='$country' WHERE id=$id";
-            if (mysqli_query($conn, $sql)) {
-                header("Refresh:0");
+        if(!($stmt = $conn->prepare("SELECT * FROM countries WHERE id = ?;"))) {
+            die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
+        }
+        if(!$stmt->bind_param("i", $country)) {
+            die("Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error);
+        }
+        if(!$stmt->execute()) {
+            die("Execute failed: (" . $stmt->errno . ") " . $stmt->error);
+        }
+        if ($result = $stmt->get_result()) {
+            if ($result->num_rows == 1){
+                if(!($stmt = $conn->prepare("UPDATE user SET idCountry=? WHERE id=?"))) {
+                    die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
+                }
+                if(!$stmt->bind_param("ii", $country, $id)) {
+                    die("Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error);
+                }
+                if(!$stmt->execute()) {
+                    die("Execute failed: (" . $stmt->errno . ") " . $stmt->error);
+                } else {
+                    header("Refresh: 0");
+                }
             } else {
-                die("Error: " . mysqli_error($conn));
+                if($result->num_rows > 1) {
+                    die("If you didn't edit values with F12, report error with the following code: C2 and the country you are trying to change.");
+                }
             }
+            $stmt->close();
         } else {
-            $sql = "UPDATE user SET idCountry='null' WHERE id=$id";
-            if (mysqli_query($conn, $sql)) {
-                header("Refresh:0");
-            } else {
-                die("Error: " . mysqli_error($conn));
-            }
+            printf("Error in select user query");
+            return;
         }
         endC:;
     }
