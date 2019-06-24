@@ -179,17 +179,28 @@
         // Email validation
         if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
             // Check if email is already taken
-            $query = "SELECT id FROM user WHERE email = '$email';";
-            if ($result = $conn->query($query)) {
-                if ($result->num_rows > 0){
+            if(!($stmt = $conn->prepare("SELECT id FROM user WHERE email = ?;"))) {
+                die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
+            }
+            if(!$stmt->bind_param("s", $email)) {
+                die("Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error);
+            }
+            if(!$stmt->execute()) {
+                die("Execute failed: (" . $stmt->errno . ") " . $stmt->error);
+            }
+            if ($result = $stmt->get_result()) {
+                if ($result->num_rows == 1){
                     $GLOBALS["REmailErr"] = "$email already taken.";
                     $GLOBALS["RError"] = true;
-                    return;
+                } else {
+                    if($result->num_rows > 1) {
+                        die("Report error with the following code: UE2");
+                    }
                 }
-                $result->close();
+                $stmt->close();
             } else {
-                printf("Error in select register-email query");
-                return;
+                printf("Error in select user query");
+                return false;
             }
         } else {
             $GLOBALS["REmailErr"] = "Incorrect type of email.";
@@ -284,17 +295,29 @@
         $Temp += ["answer" => $HashedAns];
 
         // Country validation
-        $query = "SELECT * FROM countries WHERE id = '$country';";
-        if ($result = $conn->query($query)) {
-            if ($result->num_rows > 0){
+        if(!($stmt = $conn->prepare("SELECT * FROM countries WHERE id = ?;"))) {
+            die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
+        }
+        if(!$stmt->bind_param("i", $country)) {
+            die("Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error);
+        }
+        if(!$stmt->execute()) {
+            die("Execute failed: (" . $stmt->errno . ") " . $stmt->error);
+        }
+        if ($result = $stmt->get_result()) {
+            if ($result->num_rows == 1){
                 $Temp += ["countryID" => $country];
             } else {
-                $Temp += ["countryID" => null];
+                if($result->num_rows > 1) {
+                    die("Report error with the following code: C2");
+                } else {
+                    $Temp += ["countryID" => null];
+                }
             }
-            $result->close();
+            $stmt->close();
         } else {
-            printf("Error in select register-country query");
-            return;
+            printf("Error in select user query");
+            return false;
         }
 
         $date = date('Y/m/d h:i:s a', time());

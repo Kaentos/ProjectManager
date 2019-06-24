@@ -3,7 +3,7 @@
     if (!isset($_SESSION["user"])){
         header("Location: /projectmanager/");
     } else {
-        $dbHost = "localhost:3307";
+        $dbHost = "localhost";
         $dbUser = "root";
         $dbPassword = "";
         $dbName = "pmanager";
@@ -411,7 +411,7 @@
                             <div class="form-group">
                                 <input type="text" class="form-control" name="oAnswer" autocomplete="off" />
                             </div>
-                            <input type="submit" class="btn btn-success" name="updateQA" value="Update"/>
+                            <input type="submit" class="btn btn-success" style="float:right;" name="updateQA" value="Update"/>
                             <br><br>
 
                             <!-- Update password -->
@@ -428,7 +428,7 @@
                             <div class="form-group">
                                 <input type="password" class="form-control" name="OPassword" autocomplete="off" />
                             </div>
-                            <input type="submit" class="btn btn-success" name="updatePass" value="Update"/>
+                            <input type="submit" class="btn btn-success" style="float:right;" name="updatePass" value="Update"/>
                         </div>
 
 
