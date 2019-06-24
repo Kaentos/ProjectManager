@@ -213,17 +213,28 @@
         // Username validation
         if(preg_match('/^\w{6,16}$/', $username)) { // \w equals "[0-9A-Za-z_]"
             // Check if username is already taken
-            $query = "SELECT id FROM user WHERE username = '$username';";
-            if ($result = $conn->query($query)) {
-                if ($result->num_rows > 0){
+            if(!($stmt = $conn->prepare("SELECT id FROM user WHERE username = ?;"))) {
+                die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
+            }
+            if(!$stmt->bind_param("s", $username)) {
+                die("Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error);
+            }
+            if(!$stmt->execute()) {
+                die("Execute failed: (" . $stmt->errno . ") " . $stmt->error);
+            }
+            if ($result = $stmt->get_result()) {
+                if ($result->num_rows == 1){
                     $GLOBALS["RUsernameErr"] = "$username already taken.";
-                    $GLOBALS["RError"] = true;
-                    return;
+                        $GLOBALS["RError"] = true;
+                } else {
+                    if($result->num_rows > 1) {
+                        die("Report error with the following code: U2");
+                    }
                 }
-                $result->close();
+                $stmt->close();
             } else {
-                printf("Error in select register-username query");
-                return;
+                printf("Error in select user query");
+                return false;
             }
         } else{
             $GLOBALS["RUsernameErr"] = "Username must contain at least 6 characters and max of 16. Spaces aren't allowed.";
