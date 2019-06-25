@@ -43,7 +43,7 @@
         <title>Home</title>
         <meta name="description" content="Project Manager">
         <meta name="author" content="Miguel Magueijo">
-        <link rel="icon" href="img/icon.png">
+        <link rel="icon" href="/projectmanager/img/icon.png">
             
         <!-- Can't remove / Icons -->
         <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet"> 

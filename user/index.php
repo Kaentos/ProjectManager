@@ -414,112 +414,121 @@
             <main class="page-content">
                 <div class="container-fluid">
                 <div class="row bg_white" style="border-radius: 5px;">
-                    <form class="row col-md-12" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+                    <div class="row col-md-12">
                         <div class="col-md-12" style="text-align:center; padding-top: 15px">  
                             <h1>User settings</h1>
                             <hr>
                         </div>
                         <div class="col-md-6">
                             <p><h3>Geral</h3></p>
-
-                            <!-- Update username -->
-                            Current username:
-                            <div class='alert alert-secondary' role='alert'><?php echo $UserData["username"]; ?></div>
-                            <?php if ($NUsernameErr!="") echo "<div class='alert alert-danger' role='alert'> $NUsernameErr </div>" ?>
-                            New username:
-                            <div class="form-group">
-                                <input type="text" class="form-control" name="nUsername" value="" autocomplete="off" />
-                            </div>
-                            <input type="submit" class="btn btn-success" name="updateUN" value="Update"/>
-                            <br><br>
+                            <form method="post" action="">
+                                <!-- Update username -->
+                                Current username:
+                                <div class='alert alert-secondary' role='alert'><?php echo $UserData["username"]; ?></div>
+                                <?php if ($NUsernameErr!="") echo "<div class='alert alert-danger' role='alert'> $NUsernameErr </div>" ?>
+                                New username:
+                                <div class="form-group">
+                                    <input type="text" class="form-control" name="nUsername" value="" autocomplete="off" />
+                                </div>
+                                <input type="submit" class="btn btn-success" name="updateUN" value="Update"/>
+                            </form>
                             
-                            <!-- Update email -->
-                            Current email:
-                            <div class='alert alert-secondary' role='alert'> <?php echo $UserData["email"]; ?> </div>
-                            <?php if ($NEmailErr!="") echo "<div class='alert alert-danger' role='alert'> $NEmailErr </div>" ?>
-                            New email:
-                            <div class="form-group">
-                                <input type="email" class="form-control" name="nEmail" placeholder="example@mail.com" autocomplete="off" />
-                            </div>
-                            Password:
-                            <div class="form-group">
-                                <input type="password" class="form-control" name="EMCPassword" autocomplete="off" />
-                            </div>
-                            <input type="submit" class="btn btn-success" name="updateEM" value="Update"/>
-                            <br><br>
+                            <form method="post" action="">
+                                <!-- Update email -->
+                                Current email:
+                                <div class='alert alert-secondary' role='alert'> <?php echo $UserData["email"]; ?> </div>
+                                <?php if ($NEmailErr!="") echo "<div class='alert alert-danger' role='alert'> $NEmailErr </div>" ?>
+                                New email:
+                                <div class="form-group">
+                                    <input type="email" class="form-control" name="nEmail" placeholder="example@mail.com" autocomplete="off" />
+                                </div>
+                                Password:
+                                <div class="form-group">
+                                    <input type="password" class="form-control" name="EMCPassword" autocomplete="off" />
+                                </div>
+                                <input type="submit" class="btn btn-success" name="updateEM" value="Update"/>
+                            </form>
 
-                            <!-- Update country -->
-                            Current Country:
-                            <div class='alert alert-secondary' role='alert'> <?php echo $UserData["idCountry"]; ?> </div>
-                            New Country:
-                            <div class="form-group">
-                                <select class="form-control" name="Ncountry">
-                                    <option class="hidden" value="null" selected disabled>Please select your new country</option>
-                                    <?php
-                                        $sql = mysqli_query($conn, "SELECT id, name FROM countries");
-                                        while ($row = $sql->fetch_assoc()){
-                                            if ($row['name'] != $UserData["idCountry"]){
-                                                echo "<option value='". $row['id'] ."'>" . $row['name'] . "</option>";
+                            <form method="post" action="">
+                                <!-- Update country -->
+                                Current Country:
+                                <div class='alert alert-secondary' role='alert'> <?php echo $UserData["idCountry"]; ?> </div>
+                                New Country:
+                                <div class="form-group">
+                                    <select class="form-control" name="Ncountry">
+                                        <option class="hidden" value="null" selected disabled>Please select your new country</option>
+                                        <?php
+                                            $sql = mysqli_query($conn, "SELECT id, name FROM countries");
+                                            while ($row = $sql->fetch_assoc()){
+                                                if ($row['name'] != $UserData["idCountry"]){
+                                                    echo "<option value='". $row['id'] ."'>" . $row['name'] . "</option>";
+                                                }
                                             }
-                                        }
-                                    ?>
-                                </select>
-                            </div>
-                            <input type="submit" class="btn btn-success" name="updateC" value="Update"/>
+                                        ?>
+                                    </select>
+                                </div>
+                                <input type="submit" class="btn btn-success" name="updateC" value="Update"/>
+                            </form>
                         </div>
 
                         <div class="col-md-6">
                             <p><h3>Security</h3></p>
 
-                            <!-- Update question & answer -->
-                            Current question:
-                            <div class='alert alert-secondary' role='alert'> <?php echo $UserData["CurrentQ"]; ?> </div>
-                            <?php if ($NQuestionErr!="") echo "<div class='alert alert-danger' role='alert'> $NQuestionErr </div>" ?>
-                            New question:
-                            <div class="form-group">
-                                <input type="text" class="form-control" name="nQuestion" autocomplete="off" />
-                            </div>
-                            New answer:
-                            <div class="form-group">
-                                <input type="text" class="form-control" name="nAnswer" autocomplete="off" />
-                            </div>
-                            Current answer:
-                            <div class="form-group">
-                                <input type="text" class="form-control" name="oAnswer" autocomplete="off" />
-                            </div>
-                            <input type="submit" class="btn btn-success" style="float:right;" name="updateQA" value="Update"/>
+                            <form method="post" action="">
+                                <!-- Update question & answer -->
+                                Current question:
+                                <div class='alert alert-secondary' role='alert'> <?php echo $UserData["CurrentQ"]; ?> </div>
+                                <?php if ($NQuestionErr!="") echo "<div class='alert alert-danger' role='alert'> $NQuestionErr </div>" ?>
+                                New question:
+                                <div class="form-group">
+                                    <input type="text" class="form-control" name="nQuestion" autocomplete="off" />
+                                </div>
+                                New answer:
+                                <div class="form-group">
+                                    <input type="text" class="form-control" name="nAnswer" autocomplete="off" />
+                                </div>
+                                Current answer:
+                                <div class="form-group">
+                                    <input type="text" class="form-control" name="oAnswer" autocomplete="off" />
+                                </div>
+                                <input type="submit" class="btn btn-success" style="float:right;" name="updateQA" value="Update"/>
+                            </form>
                             <br><br>
 
                             <!-- Update password -->
-                            <?php if ($NPasswordErr!="") echo "<div class='alert alert-danger' role='alert'> $NPasswordErr </div>" ?>
-                            New Password:
-                            <div class="form-group">
-                                <input type="password" class="form-control" name="nPassword" autocomplete="off" />
-                            </div>
-                            Confirm new Password:
-                            <div class="form-group">
-                                <input type="password" class="form-control" name="CnPassword" autocomplete="off" />
-                            </div>
-                            Current Password:
-                            <div class="form-group">
-                                <input type="password" class="form-control" name="OPassword" autocomplete="off" />
-                            </div>
-                            <input type="submit" class="btn btn-success" style="float:right;" name="updatePass" value="Update"/>
+                            <form method="post" action="">
+                                <?php if ($NPasswordErr!="") echo "<div class='alert alert-danger' role='alert'> $NPasswordErr </div>" ?>
+                                New Password:
+                                <div class="form-group">
+                                    <input type="password" class="form-control" name="nPassword" autocomplete="off" />
+                                </div>
+                                Confirm new Password:
+                                <div class="form-group">
+                                    <input type="password" class="form-control" name="CnPassword" autocomplete="off" />
+                                </div>
+                                Current Password:
+                                <div class="form-group">
+                                    <input type="password" class="form-control" name="OPassword" autocomplete="off" />
+                                </div> 
+                                <input type="submit" class="btn btn-success" style="float:right;" name="updatePass" value="Update"/>
+                            </form>
                         </div>
 
 
                         <!-- Delete account -->
                         <div class="col-md-12" style="padding-top:5%">
-                            <h3 style="color:red">Delete Account</h3>
-                            <h5 style="color:red">We cannot recover your account if you delete it. Be careful.</h5>
-                            <?php if ($DELETEERR!="") echo "<div class='alert alert-danger' role='alert'> $DELETEERR </div>" ?>
-                            Password:
-                            <div class="form-group">
-                                <input type="password" class="form-control" name="DELPassword" autocomplete="off" />
-                            </div>  
-                            <input type="submit" class="btn btn-danger" name="DELETEACC" value="Delete"/>
+                            <form method="post" action="">
+                                <h3 style="color:red">Delete Account</h3>
+                                <h5 style="color:red">We cannot recover your account if you delete it. Be careful.</h5>
+                                <?php if ($DELETEERR!="") echo "<div class='alert alert-danger' role='alert'> $DELETEERR </div>" ?>
+                                Password:
+                                <div class="form-group">
+                                    <input type="password" class="form-control" name="DELPassword" autocomplete="off" />
+                                </div>  
+                                <input type="submit" class="btn btn-danger" name="DELETEACC" value="Delete"/>
+                            </form>
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
             </main>

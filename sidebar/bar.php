@@ -33,17 +33,33 @@
                 ?>
             </div>
         </div>
-
+        
+        <?php
+            if(isset($_POST["project"])){
+                echo "<script>console.log('bananas')</script>";
+            }
+        ?>
         <!-- Sidebar Project / now search -->
         <div class="sidebar-search">
             <div>
                 <div class="input-group">
-                    <input type="text" class="form-control search-menu" placeholder="Search...">
-                    <div class="input-group-append">
-                        <span class="input-group-text">
-                            <i class="fa fa-search" aria-hidden="true"></i>
-                        </span>
-                    </div>
+                    <form method="POST">
+                        <select name="project" class="form-control" style="background: #3a3f48; color:white; border: none" onchange="this.form.submit()">
+                        <option value="null" disabled selected>Select project</option>
+                        <?php
+                            $query = "SELECT p.* FROM user AS u JOIN projectmembers as pm ON u.id = pm.idUser JOIN projects as p ON pm.idProject = p.id WHERE u.id=".$_SESSION['user']['id'].";";
+                            if ($result = $conn->query($query)) {
+                                while ($row = $result->fetch_array(MYSQLI_ASSOC)){
+                                    echo "<option value='$row[id]'>$row[name]</option>";
+                                }
+                                $result->close();
+                            } else {
+                                printf("Error in select user query");
+                                die();
+                            }
+                        ?>
+                        </select>
+                    </form>
                 </div>
             </div>
         </div>
