@@ -72,80 +72,35 @@
                                 <span>General</span>
                             </li>
 
-                            <!-- Menu Dashboard -->
-                            <li class="sidebar-dropdown">
-                                <a href="#">
-                                    <i class="fa fa-tachometer-alt"></i>
-                                    <span>Dashboard</span>
+                            <!-- Menu Projects -->
+                            <li>
+                                <a href="/projectmanager/dashboard/projects.php">
+                                    <i class="fa fa-folder"></i>
+                                    <span>Projects</span>
                                 </a>
-                                <div class="sidebar-submenu">
-                                    <ul>
-                                        <li>
-                                            <a href="#">Dashboard 1</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Dashboard 2</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Dashboard 3</a>
-                                        </li>
-                                    </ul>
-                                </div>
                             </li>
-                            <!-- End Menu Dashboard -->
+                            <!-- End Menu Projects -->
 
-                            <!-- Menu E-Commerce -->
-                            <li class="sidebar-dropdown">
-                                <a href="#">
-                                    <i class="fa fa-shopping-cart"></i>
-                                    <span>E-commerce</span>
+                            <!-- Menu Tasks -->
+                            <li>
+                                <a href="/projectmanager/dashboard/tasks.php">
+                                    <i class="fa fa-folder"></i>
+                                    <span>Tasks</span>
                                 </a>
-                                <div class="sidebar-submenu">
-                                    <ul>
-                                        <li>
-                                            <a href="#">Products</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Orders</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Credit cart</a>
-                                        </li>
-                                    </ul>
-                                </div>
                             </li>
-                            <!-- End Menu E-Commerce -->
+                            <!-- End Menu Projects -->
 
-                            <!-- Menu Components -->
-                            <li class="sidebar-dropdown">
-                                <a href="#">
-                                    <i class="far fa-gem"></i>
-                                    <span>Components</span>
+                            <!-- Menu Calendar -->
+                            <li>
+                                <a href="/projectmanager/dashboard/calendar.php">
+                                    <i class="fa fa-calendar"></i>
+                                    <span>Calendar</span>
                                 </a>
-                                <div class="sidebar-submenu">
-                                    <ul>
-                                        <li>
-                                        <a href="#">General</a>
-                                        </li>
-                                        <li>
-                                        <a href="#">Panels</a>
-                                        </li>
-                                        <li>
-                                        <a href="#">Tables</a>
-                                        </li>
-                                        <li>
-                                        <a href="#">Icons</a>
-                                        </li>
-                                        <li>
-                                        <a href="#">Forms</a>
-                                        </li>
-                                    </ul>
-                                </div>
                             </li>
-                            <!-- End Menu Components -->
+                            <!-- End Menu Calendar -->
 
                             <!-- Menu Example -->
-                            <li class="sidebar-dropdown">
+                            <!-- <li class="sidebar-dropdown">
                                 <a href="#">
                                     <i class="fa fa-globe"></i>
                                     <span>Example</span>
@@ -160,7 +115,7 @@
                                         </li>
                                     </ul>
                                 </div>
-                            </li>
+                            </li> -->
                             <!-- End Menu Example -->
 
                             <li class="header-menu">
