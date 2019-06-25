@@ -75,7 +75,8 @@
                             <!-- Menu Projects -->
                             <li>
                                 <a href="/projectmanager/dashboard/projects.php">
-                                    <i class="fa fa-folder"></i>
+                                    <!-- <i class="fas fa-folder"></i> -->
+                                    <i class="fas fa-project-diagram"></i>
                                     <span>Projects</span>
                                 </a>
                             </li>
@@ -84,7 +85,7 @@
                             <!-- Menu Tasks -->
                             <li>
                                 <a href="/projectmanager/dashboard/tasks.php">
-                                    <i class="fa fa-folder"></i>
+                                    <i class="fa fa-tasks"></i>
                                     <span>Tasks</span>
                                 </a>
                             </li>
@@ -180,7 +181,7 @@
             <i class="fa fa-cog"></i>
         </a>
         <a href="/projectmanager/logout.php" style="padding-top:5px">
-            <i class="fa fa-power-off"></i>
+            <i class="fas fa-sign-out-alt"></i>
         </a>
     </div>
 </nav>
