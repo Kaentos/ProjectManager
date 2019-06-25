@@ -43,7 +43,7 @@
         <div class="sidebar-search">
             <div>
                 <div class="input-group">
-                    <form method="POST">
+                    <form method="POST" class="col-md-12" style="margin-bottom:0px">
                         <select name="project" class="form-control" style="background: #3a3f48; color:white; border: none" onchange="this.form.submit()">
                         <option value="null" disabled selected>Select project</option>
                         <?php
