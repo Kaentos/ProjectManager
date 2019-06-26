@@ -100,6 +100,15 @@
                             </li>
                             <!-- End Menu Calendar -->
 
+                            <!-- Menu Calendar -->
+                            <li>
+                                <a href="/projectmanager/dashboard/calendar.php">
+                                    <i class="fas fa-bug"></i>
+                                    <span>Issues</span>
+                                </a>
+                            </li>
+                            <!-- End Menu Calendar -->
+
                             <!-- Menu Example -->
                             <!-- <li class="sidebar-dropdown">
                                 <a href="#">
@@ -124,8 +133,8 @@
                             </li>
                             <li>
                                 <a href="#">
-                                    <i class="fa fa-book"></i>
-                                    <span>Documentation</span>
+                                    <i class="fas fa-stopwatch"></i>
+                                    <span>Timer</span>
                                 </a>
                             </li>
                             <li>
@@ -149,7 +158,7 @@
                                         <span>Admin Tools</span>
                                     </li>
                                     <li class='sidebar-dropdown'>
-                                        <a href='#'>
+                                        <a class='pointer-mouse'>
                                             <i class='fa fa-tachometer-alt'></i>
                                             <span>Dashboard</span>
                                         </a>
@@ -178,7 +187,7 @@
                 
     <div class="sidebar-footer">
         <a href="/projectmanager/user/" style="padding-top:5px">
-            <i class="fa fa-cog"></i>
+            <i class="fas fa-user-cog"></i>
         </a>
         <a href="/projectmanager/logout.php" style="padding-top:5px">
             <i class="fas fa-sign-out-alt"></i>
