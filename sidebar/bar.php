@@ -15,8 +15,9 @@
         <!-- Sidebar User -->
         <div class="sidebar-header">
             <div class="user-pic">
-                <img class="img-responsive img-rounded" style="height: auto !important;" src="/projectmanager/img/UIMG/<?php echo $UserData["id"] ?>.png"
-                 alt="User picture">
+                <!-- <img class="img-responsive img-rounded" style="height: auto !important;" src="/projectmanager/img/UIMG/<?php echo $UserData["id"] ?>.png"
+                 alt="User picture"> -->
+                 <img class="img-responsive img-rounded" style="height: auto !important;" src="/projectmanager/img/UIMG/8.png" alt="User picture">
             </div>
             <div class="user-info">
                 <span class="user-name">

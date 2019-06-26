@@ -99,8 +99,8 @@
                                                     $Project[des]
                                                 </h5>
                                                 <p class='card-text'>
-                                                    Status: $Project[Sname]
-                                                    Date: $Project[creationDate]
+                                                    Status: $Project[Sname] <br>
+                                                    Creation Date: $Project[creationDate]
                                                 </p>
                                             </div>
                                             <div class='card-footer'>
@@ -124,44 +124,9 @@
                                     ";
                                 }
                             } else {
-                                echo "No projects found";
-                            }
-                            
+                                echo "No projects found, what about creating a new one?";
+                            }  
                         ?>
-                        <!-- Start project card -->
-                        <!-- <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
-                            <div class="card-header">
-                                {PROJECT NAME}
-                                <a href="#" class="btn btn-light float-right">
-                                    <i class="fas fa-cog"></i>
-                                </a>
-                            </div>
-                            <div class="card-body">
-                                <h5 class="card-title">{DES}</h5>
-                                <p class="card-text">
-                                    Status: 
-                                    Date: 
-                                </p>
-                            </div>
-                            <div class="card-footer">
-                                <a href="#" class="btn btn-light">
-                                    <i class="fas fa-tasks"></i>
-                                </a>
-                                <a href="#" class="btn btn-light">
-                                    <i class="fas fa-bug"></i>
-                                </a>
-                                <a href="#" class="btn btn-light">
-                                    <i class="fas fa-calendar"></i>
-                                </a>
-                                <a href="#" class="btn btn-light">
-                                    <i class="fas fa-comments"></i>
-                                </a>
-                                <a href="#" class="btn btn-light">
-                                    <i class="fas fa-flag"></i>
-                                </a>
-                            </div>
-                        </div> -->
-                        <!-- End project card -->
                     </div>
                 </div>
             </main>
