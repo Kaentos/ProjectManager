@@ -33,17 +33,17 @@
     }
 
     $ProjectData = array();
+    $hasProjects = false;
     // Get all projects user is assigned
-    $query = "SELECT p.*, s.name, u.username FROM projects AS p INNER JOIN pstatus AS s ON p.idStatus=s.id INNER JOIN projectmembers AS pm ON p.id = pm.idProject INNER JOIN user AS u ON p.idCreator = u.id WHERE pm.idUser =".$UserData["id"];
+    $query = "SELECT p.*, s.name as Sname, u.username FROM projects AS p INNER JOIN pstatus AS s ON p.idStatus=s.id INNER JOIN projectmembers AS pm ON p.id = pm.idProject INNER JOIN user AS u ON p.idCreator = u.id WHERE pm.idUser =".$UserData["id"];
     if ($result = $conn->query($query)) {
         if ($result->num_rows >= 1){
-            if(!$ProjectData = mysqli_fetch_assoc($result)){
-                die();
-            } else {
-                print_r($ProjectData);
+            $hasProjects = true;
+            while($row = $result->fetch_array(MYSQLI_ASSOC)){
+                array_push($ProjectData, $row);
             }
         } else {
-            echo "no projects";
+            $hasProjects = false;
         }
         $result->close();
     } else {
@@ -81,7 +81,55 @@
                     <h2>All projects</h2>
                     <hr>
                     <div class="card-deck">
-                        <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
+                        <?php
+                            if($hasProjects){
+                                foreach($ProjectData as $Project){
+                                    $dateTimeStamp = strtotime($Project["creationDate"]);
+                                    $Project["creationDate"] = date('d-m-Y', $dateTimeStamp);
+                                    echo "
+                                        <div class='card text-white bg-primary mb-3' style='max-width: 18rem;'>
+                                            <div class='card-header'>
+                                                $Project[name]
+                                                <a href='#' class='btn btn-light float-right'>
+                                                    <i class='fas fa-cog'></i>
+                                                </a>
+                                            </div>
+                                            <div class='card-body'>
+                                                <h5 class='card-title'>
+                                                    $Project[des]
+                                                </h5>
+                                                <p class='card-text'>
+                                                    Status: $Project[Sname]
+                                                    Date: $Project[creationDate]
+                                                </p>
+                                            </div>
+                                            <div class='card-footer'>
+                                                <a href='#' class='btn btn-light'>
+                                                    <i class='fas fa-tasks'></i>
+                                                </a>
+                                                <a href='#' class='btn btn-light'>
+                                                    <i class='fas fa-bug'></i>
+                                                </a>
+                                                <a href='#' class='btn btn-light'>
+                                                    <i class='fas fa-calendar'></i>
+                                                </a>
+                                                <a href='#' class='btn btn-light'>
+                                                    <i class='fas fa-comments'></i>
+                                                </a>
+                                                <a href='#' class='btn btn-light'>
+                                                    <i class='fas fa-flag'></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    ";
+                                }
+                            } else {
+                                echo "No projects found";
+                            }
+                            
+                        ?>
+                        <!-- Start project card -->
+                        <!-- <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
                             <div class="card-header">
                                 {PROJECT NAME}
                                 <a href="#" class="btn btn-light float-right">
@@ -112,7 +160,8 @@
                                     <i class="fas fa-flag"></i>
                                 </a>
                             </div>
-                        </div>
+                        </div> -->
+                        <!-- End project card -->
                     </div>
                 </div>
             </main>
