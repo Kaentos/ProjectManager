@@ -78,7 +78,10 @@
 
             <main class="page-content">
                 <div class="container-fluid">
-                    <h2>All projects</h2>
+                    <div>
+                        <span style="font-size:2rem; font-weight: 500;">All projects</span>
+                        <input type="submit" value="New Project" class="btn btn-success float-right" style="margin-top:8px">
+                    </div>
                     <hr>
                     <div class="card-deck">
                         <?php
