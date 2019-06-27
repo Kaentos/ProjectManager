@@ -32,7 +32,21 @@
         }
     }
 
-    $InviteCode = substr(str_shuffle(str_repeat("0123456789abcdefghijklmnopqrstuvwxyz", 5)), 0, 12);
+    $Invalid = true;
+    do{
+        $InviteCode = substr(str_shuffle(str_repeat("0123456789abcdefghijklmnopqrstuvwxyz", 5)), 0, 12);
+        $query = "SELECT code FROM projects WHERE code='$InviteCode'";
+        if ($result = $conn->query($query)) {
+            if ($result->num_rows == 0){
+                $Invalid = false;
+            } elseif($result->num_rows > 1) {
+                die("Report with error I2");
+            }
+            $result->close();
+        } else {
+            die();
+        }
+    } while($Invalid);
 ?>
 
 <html lang="en">
