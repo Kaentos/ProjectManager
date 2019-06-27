@@ -80,7 +80,7 @@
                 <div class="container-fluid">
                     <div>
                         <span style="font-size:2rem; font-weight: 500;">All projects</span>
-                        <input type="submit" value="New Project" class="btn btn-success float-right" style="margin-top:8px">
+                        <a href="newproject.php" class="btn btn-success float-right" style="margin-top:8px; color:white;">New Project</a>
                     </div>
                     <hr>
                     <div class="card-deck">
