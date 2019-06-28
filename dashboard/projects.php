@@ -3,6 +3,7 @@
     if (!isset($_SESSION["user"])){
         header("Location: /projectmanager/");
     } else {
+        include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/sessionCheckTime.php";
         $dbHost = "localhost";
         $dbUser = "root";
         $dbPassword = "";
