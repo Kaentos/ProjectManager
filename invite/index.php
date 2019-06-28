@@ -63,7 +63,7 @@
             addUserToProject($conn, $ProjectData, $UserData);
         }
     }
-    // END check
+    // END check current code
 
     function checkCode($conn, $UserData, $code){
         if(!($stmt = $conn->prepare("SELECT * FROM projects WHERE code=?"))) {
@@ -120,6 +120,7 @@
         return;
     }
 
+    // Check input code
     if(isset($_POST["validateCode"])){
         if(isset($_POST["code"])){
             $InputCode = $_POST["code"];
@@ -132,6 +133,7 @@
         }
 
     }
+    // END check input code
 ?>
 
 <html lang="en">
