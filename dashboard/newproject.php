@@ -187,7 +187,7 @@
                         <div class="col-md-12">
                             Link to invite users to project:
                             <div class="form-group">
-                                <span class="form-control is-valid" readonly>http://localhost/projectmanager/invite/<?php echo $InviteCode ?></span>
+                                <span class="form-control is-valid" readonly>http://localhost/projectmanager/invite/?code=<?php echo $InviteCode ?></span>
                                 <div class='valid-feedback'>
                                     Link is valid after project creation!
                                 </div>
