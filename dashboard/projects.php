@@ -35,7 +35,7 @@
     $ProjectData = array();
     $hasProjects = false;
     // Get all projects user is assigned
-    $query = "SELECT p.*, s.name as Sname, u.username FROM projects AS p INNER JOIN pstatus AS s ON p.idStatus=s.id INNER JOIN projectmembers AS pm ON p.id = pm.idProject INNER JOIN user AS u ON p.idCreator = u.id WHERE pm.idUser =".$UserData["id"];
+    $query = "SELECT p.*, s.name as Sname, u.username FROM projects AS p INNER JOIN pstatus AS s ON p.idStatus=s.id INNER JOIN projectmembers AS pm ON p.id = pm.idProject INNER JOIN user AS u ON p.idCreator = u.id WHERE pm.idUser =".$UserData["id"]." ORDER BY p.id";
     if ($result = $conn->query($query)) {
         if ($result->num_rows >= 1){
             $hasProjects = true;
@@ -92,10 +92,15 @@
                                     echo "
                                         <div class='card text-white bg-primary mb-3' style='max-width: 18rem;'>
                                             <div class='card-header'>
-                                                $Project[name]
+                                                $Project[name]";
+                                    if ($Project["idCreator"] == $UserData["id"]){
+                                        echo "
                                                 <a href='#' class='btn btn-light float-right'>
                                                     <i class='fas fa-cog'></i>
                                                 </a>
+                                        ";
+                                    }
+                                    echo "
                                             </div>
                                             <div class='card-body'>
                                                 <h5 class='card-title'>
