@@ -68,6 +68,42 @@
             $nameERR = 1;
             $desERR = 0;
         }
+        addProject($conn, $pname, $pdes, $UserData, $InviteCode);
+    }
+
+    function addProject($conn, $pname, $pdes, $UserData, $InviteCode){
+        $currentDate = date("Y-m-d h:i:s");
+        $status = 2;
+        $role = 1;
+        if(!($stmt = $conn->prepare("INSERT INTO projects (name, des, code, idStatus, idCreator, creationDate, lastupdatedDate) VALUES (?,?,?,?,?,?,?)"))) {
+            die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
+        }
+        if(!$stmt->bind_param("sssiiss", $pname, $pdes, $InviteCode, $status, $UserData["id"], $currentDate, $currentDate)) {
+            die("Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error);
+        }
+        if(!$stmt->execute()) {
+            die("Execute failed: (" . $stmt->errno . ") " . $stmt->error);
+        } else{
+            $last_id = mysqli_insert_id($conn);
+            $stmt->close();
+        }
+
+        if(!($stmt = $conn->prepare("INSERT INTO projectmembers (idProject, idUser, idRole) VALUES (?,?,?)"))) {
+            die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
+        }
+        if(!$stmt->bind_param("iii", $last_id, $UserData["id"], $role)) {
+            die("Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error);
+        }
+        if(!$stmt->execute()) {
+            $query = "DELETE FROM projects WHERE id=$last_id";
+            if($result = $conn->query($query)){
+                die("Report with error NPD");
+            }
+            die("Execute failed: (" . $stmt->errno . ") " . $stmt->error);
+        } else {
+            header("location: projects.php");
+        }
+        return;
     }
 ?>
 
