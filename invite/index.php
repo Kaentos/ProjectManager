@@ -122,11 +122,12 @@
 
     if(isset($_POST["validateCode"])){
         if(isset($_POST["code"])){
-            $code = $_POST["code"];
+            $InputCode = $_POST["code"];
         }
-        if(checkCode($conn, $ProjectData, $UserData)){
-            if(checkInProject($conn, $ProjectData, $UserData)){
-                addUserToProject($conn, $ProjectData, $UserData);
+        $PData = checkCode($conn, $UserData, $InputCode);
+        if(isset($PData)){
+            if(!checkInProject($conn, $PData, $UserData)){
+                addUserToProject($conn, $PData, $UserData);
             }
         }
 
@@ -183,7 +184,7 @@
                             </div>
                         </div>
                         <div class="col-md-12">
-                            <input type="submit" class="btn btn-success" name="validateCode" value="Validate"/>
+                            <input type="submit" class="btn btn-success" name="validateCode" value="Join project"/>
                         </div>
                     </form>
                 </div>

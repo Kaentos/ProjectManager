@@ -80,7 +80,9 @@
                 <div class="container-fluid">
                     <div>
                         <span style="font-size:2rem; font-weight: 500;">All projects</span>
+                        <a href="/projectmanager/invite/" class="btn btn-success float-right" style="margin-top:8px; color:white; margin-left:10px">Join Project</a>
                         <a href="newproject.php" class="btn btn-success float-right" style="margin-top:8px; color:white;">New Project</a>
+                        
                     </div>
                     <hr>
                     <div class="card-deck">
@@ -132,7 +134,7 @@
                                     ";
                                 }
                             } else {
-                                echo "No projects found, what about creating a new one?";
+                                echo "<div class='col-md-12'><h4>No projects found, what about creating or joining a new one?</h4></div>";
                             }  
                         ?>
                     </div>
