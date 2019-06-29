@@ -37,7 +37,13 @@
         
         <?php
             if(isset($_POST["Sproject"])){
-                header("Location: /projectmanager/project/?id=$_POST[Sproject]");
+                if ($_POST["Sproject"] == "new"){
+                    header("Location: /projectmanager/dashboard/newproject.php");
+                } elseif ($_POST["Sproject"] == "join") {
+                    header("Location: /projectmanager/invite");
+                } elseif (is_numeric($_POST["Sproject"])) {
+                    header("Location: /projectmanager/project/?id=$_POST[Sproject]");
+                }
             }
             if(isset($_GET["id"])){
                 $barProjectID = $_GET["id"];
@@ -55,11 +61,16 @@
                             }
                             $query = "SELECT p.* FROM user AS u JOIN projectmembers as pm ON u.id = pm.idUser JOIN projects as p ON pm.idProject = p.id WHERE u.id=".$_SESSION['user']['id'].";";
                             if ($result = $conn->query($query)) {
-                                while ($row = $result->fetch_array(MYSQLI_ASSOC)){
-                                    if(isset($barProjectID) && $row["id"] == $barProjectID){
-                                        echo "<option value='null' disabled selected> $row[name] </option>";
-                                    } else {
-                                        echo "<option value='$row[id]'>$row[name]</option>";
+                                if ($result->num_rows == 0) {
+                                    echo "<option value='new'> Create new project </option>";
+                                    echo "<option value='join'> Join project </option>";
+                                } else {
+                                    while ($row = $result->fetch_array(MYSQLI_ASSOC)){
+                                        if(isset($barProjectID) && $row["id"] == $barProjectID){
+                                            echo "<option value='null' disabled selected> $row[name] </option>";
+                                        } else {
+                                            echo "<option value='$row[id]'>$row[name]</option>";
+                                        }
                                     }
                                 }
                                 $result->close();

@@ -164,7 +164,7 @@
             <main class="page-content">
                 <div class="container-fluid">
                     <div>
-                        <span style="font-size:2rem; font-weight: 500;">Invalid invite code! project</span>
+                        <span style="font-size:2rem; font-weight: 500;">Invalid invite code!</span>
                     </div>
                     <hr>
                     <form method="post" class="row" action="">
