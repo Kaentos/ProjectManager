@@ -36,8 +36,11 @@
         </div>
         
         <?php
-            if(isset($_POST["project"])){
-                echo "<script>console.log('bananas')</script>";
+            if(isset($_POST["Sproject"])){
+                header("Location: /projectmanager/project/?id=$_POST[Sproject]");
+            }
+            if(isset($_GET["id"])){
+                $barProjectID = $_GET["id"];
             }
         ?>
         <!-- Sidebar Project / now search -->
@@ -45,13 +48,19 @@
             <div>
                 <div class="input-group">
                     <form method="POST" class="col-md-12" style="margin-bottom:0px">
-                        <select name="project" class="form-control" style="background: #3a3f48; color:white; border: none" onchange="this.form.submit()">
-                        <option value="null" disabled selected>Select project</option>
+                        <select name="Sproject" class="form-control" style="background: #3a3f48; color:white; border: none" onchange="this.form.submit()">
                         <?php
+                            if (!isset($barProjectID)){
+                                echo "<option value='null' disabled selected> Select project </option>";
+                            }
                             $query = "SELECT p.* FROM user AS u JOIN projectmembers as pm ON u.id = pm.idUser JOIN projects as p ON pm.idProject = p.id WHERE u.id=".$_SESSION['user']['id'].";";
                             if ($result = $conn->query($query)) {
                                 while ($row = $result->fetch_array(MYSQLI_ASSOC)){
-                                    echo "<option value='$row[id]'>$row[name]</option>";
+                                    if(isset($barProjectID) && $row["id"] == $barProjectID){
+                                        echo "<option value='null' disabled selected> $row[name] </option>";
+                                    } else {
+                                        echo "<option value='$row[id]'>$row[name]</option>";
+                                    }
                                 }
                                 $result->close();
                             } else {
