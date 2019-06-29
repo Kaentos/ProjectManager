@@ -172,10 +172,12 @@
                             Invite code:
                             <div class="form-group">
                                 <?php
-                                    if(isset($InviteCode)){
-                                        $string = "values='$InviteCode'";
+                                    if(isset($InputCode)){
+                                        $string = "value='$InputCode'";
+                                    } elseif (isset($InviteCode)) {
+                                        $string = "value='$InviteCode'";
                                     } else {
-                                        $string = '';
+                                        $string = "";
                                     }
                                     echo "
                                         <input type='text' class='form-control is-invalid' name='code' autocomplete='off' $string/>
