@@ -90,6 +90,9 @@
                         <?php
                             if($hasProjects){
                                 foreach($ProjectData as $Project){
+                                    if ($Project["idCreator"] == $UserData["id"]){
+                                        $code = $Project["code"];
+                                    }
                                     $dateTimeStamp = strtotime($Project["creationDate"]);
                                     $Project["creationDate"] = date('d-m-Y', $dateTimeStamp);
                                     echo "
@@ -111,7 +114,12 @@
                                                 </h5>
                                                 <p class='card-text'>
                                                     Status: $Project[Sname] <br>
-                                                    Creation Date: $Project[creationDate]
+                                                    Creation Date: $Project[creationDate] <br>";
+                                    if (isset($code)){
+                                        echo "Invite code: $code";
+                                        unset($code);
+                                    }
+                                    echo "        
                                                 </p>
                                             </div>
                                             <div class='card-footer'>
