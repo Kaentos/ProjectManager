@@ -179,12 +179,19 @@
                                     } else {
                                         $string = "";
                                     }
-                                    echo "
-                                        <input type='text' class='form-control is-invalid' name='code' autocomplete='off' $string/>
-                                        <div class='invalid-feedback'>
-                                            Enter a valid invite code!
-                                        </div>
-                                    ";
+                                    if (empty($string)){
+                                        echo "
+                                            <input type='text' class='form-control' name='code' autocomplete='off' $string/>
+                                        ";
+                                    } else {
+                                        echo "
+                                            <input type='text' class='form-control is-invalid' name='code' autocomplete='off' $string/>
+                                            <div class='invalid-feedback'>
+                                                Enter a valid invite code!
+                                            </div>
+                                        ";
+                                    }
+                                    
                                 ?>
                             </div>
                         </div>
