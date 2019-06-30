@@ -73,7 +73,7 @@
     // Tasks Data
     function getTasks($conn, $projectID){
         $tasksData = array();
-        $query = "SELECT t.*, s.name AS status FROM tasks AS t INNER JOIN projects AS p ON t.idProject=p.id INNER JOIN tstatus AS s ON t.idStatus=s.id WHERE p.id=$projectID";
+        $query = "SELECT t.*, s.name AS status, s.badge FROM tasks AS t INNER JOIN projects AS p ON t.idProject=p.id INNER JOIN tstatus AS s ON t.idStatus=s.id WHERE p.id=$projectID";
         if ($result = $conn->query($query)) {
             if ($result->num_rows >= 1){
                 while($row = $result->fetch_array(MYSQLI_ASSOC)){
@@ -141,14 +141,10 @@
                                 <?php
                                 if(isset($tasksData)){
                                     foreach($tasksData as $task){
-                                        print_r($task);
-                                        echo "
-                                            <p>$task[name]</p>
-                                        ";
                                         echo "
                                         <span style='font-size:1.3rem; font-weight: bold;'>
                                             $task[name]
-                                            <span class='badge badge-primary'>$task[status]</span>    
+                                            <span class='badge badge-$task[badge]'>$task[status]</span>    
                                         </span>
                                         <p style='font-size:1.1rem'>
                                             $task[Des]
