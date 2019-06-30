@@ -5,11 +5,9 @@
     } else {
         include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/sessionCheckTime.php";
         include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/getFunctions.php";
-        $dbHost = "localhost";
-        $dbUser = "root";
-        $dbPassword = "";
-        $dbName = "pmanager";
-        $conn = new mysqli($dbHost, $dbUser, $dbPassword, $dbName);
+        include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/databaseConnections.php";
+
+        $conn = ConnectRoot();
 
         $UserData = getSessionUserData($conn, $_SESSION["user"]);
     }
@@ -43,13 +41,7 @@
         <meta name="author" content="Miguel Magueijo">
         <link rel="icon" href="/projectmanager/img/icon.png">
 
-        <!-- CSS -->
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.9.0/css/all.css" integrity="sha384-i1LQnF23gykqWXg6jxC2ZbCbUMxyw5gLZY6UiUS98LYV5unm8GWmfkIS6jqJfb4E" crossorigin="anonymous">
-        <!-- Remove comment to get local fontawesome, comment link above -->
-        <!-- <link rel="stylesheet" href="/projectmanager/fontawesome/css/all.css"> -->
-        <link rel="stylesheet" href="/projectmanager/css/db.css">
-        <link rel="stylesheet" href="/projectmanager/css/Custom.css">
-        <link rel="stylesheet" href="/projectmanager/css/bootstrap.min.css">
+        <?php include "$_SERVER[DOCUMENT_ROOT]/projectmanager/html/CSSimport.html"; ?>
     </head>
 
     <body>
