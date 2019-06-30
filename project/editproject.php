@@ -193,7 +193,14 @@
                                     Status:
                                     <div class="form-group">
                                         <select class="form-control" name="status">
-                                            
+                                            <?php
+                                                foreach($AllProjectStatus as $status){
+                                                    if ($status["id"] != $projectData["idStatus"]){
+                                                        echo "<option value='$status[id]'>$status[name]</option>";
+                                                    }
+
+                                                }
+                                            ?>
                                         </select>
                                     </div>
 

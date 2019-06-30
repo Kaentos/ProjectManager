@@ -21,7 +21,7 @@
     // Project status
     function getProjectStatus($conn){
         $data = array();
-        $query = "SELECT * FROM pstatus;";
+        $query = "SELECT * FROM pstatus ORDER BY name;";
         if ($result = $conn->query($query)) {
             if ($result->num_rows > 0){
                 while($row = $result->fetch_array(MYSQLI_ASSOC)){
