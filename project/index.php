@@ -51,6 +51,7 @@
         }
     }
 
+    // Project Data
     function getData($conn, $projectID, $userID){
         // Get project data
         $query = "SELECT p.*, s.name as Sname, u.username FROM projects AS p INNER JOIN pstatus AS s ON p.idStatus=s.id INNER JOIN projectmembers AS pm ON p.id = pm.idProject INNER JOIN user AS u ON p.idCreator = u.id WHERE p.id=$projectID AND pm.idUser=$userID;";
@@ -69,9 +70,10 @@
         }
     }
 
+    // Tasks Data
     function getTasks($conn, $projectID){
         $tasksData = array();
-        $query = "SELECT t.* FROM tasks AS t INNER JOIN projects AS p ON t.idProject=p.id WHERE p.id=$projectID";
+        $query = "SELECT t.*, s.name AS status FROM tasks AS t INNER JOIN projects AS p ON t.idProject=p.id INNER JOIN tstatus AS s ON t.idStatus=s.id WHERE p.id=$projectID";
         if ($result = $conn->query($query)) {
             if ($result->num_rows >= 1){
                 while($row = $result->fetch_array(MYSQLI_ASSOC)){
@@ -143,16 +145,18 @@
                                         echo "
                                             <p>$task[name]</p>
                                         ";
+                                        echo "
+                                        <span style='font-size:1.3rem; font-weight: bold;'>
+                                            $task[name]
+                                            <span class='badge badge-primary'>$task[status]</span>    
+                                        </span>
+                                        <p style='font-size:1.1rem'>
+                                            $task[Des]
+                                        </p>
+                                        ";
                                     }
                                 }
                                 ?>
-                                <span style="font-size:1.3rem; font-weight: bold;">
-                                    {TITLE}
-                                    <span class="badge badge-primary">{STATUS}</span>    
-                                </span>
-                                <p style="font-size:1.1rem">
-                                    {Descrição}
-                                </p>
                             </div>
                         </div>
                         <!-- End Tasks -->
