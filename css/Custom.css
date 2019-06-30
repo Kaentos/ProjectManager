@@ -56,6 +56,14 @@
         float:none;
     }
 }
+.edit-pen{
+    text-decoration: none;
+    color: #818896;
+}
+.edit-pen:hover{
+    text-decoration: none;
+    color: #2e2e2e;
+}
 /* END PROJECT PAGE */
 
 

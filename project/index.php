@@ -33,6 +33,8 @@
         }
     }
 
+    include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/getFunctions.php";
+
     if (isset($_GET["id"]) && is_numeric($_GET["id"])){
         $projectID = $_GET["id"];
     } else {
@@ -93,6 +95,8 @@
     function getIssues(){
         
     }
+
+    $UserRole = getUserProjectRole($conn, $projectID, $UserData["id"]);
 ?>
 
 <html lang="en">
@@ -153,6 +157,15 @@
                                         echo "
                                         <span style='font-size:1.3rem; font-weight: bold;'>
                                             $task[name]
+                                        ";
+                                        if ($UserRole < 3){
+                                            echo "
+                                                <a href='#' class='edit-pen'>
+                                                    <i class='fas fa-pen'></i>
+                                                </a>
+                                            ";
+                                        }
+                                        echo "
                                             <span class='badge badge-$task[badge]'>$task[status]</span>    
                                         </span>
                                         <p style='font-size:1.1rem'>
