@@ -38,7 +38,7 @@
     if (isset($_GET["id"]) && is_numeric($_GET["id"])){
         $projectID = $_GET["id"];
     } else {
-        // header("location: /projectmanager/dashboard/projects.php");
+        header("location: /projectmanager/dashboard/projects.php");
     }
 
     if (isset($projectID)){
@@ -49,7 +49,7 @@
                 // getIssues();
             }
         } else {
-            // header("location: /projectmanager/dashboard/projects.php");
+            header("location: /projectmanager/dashboard/projects.php");
         }
     }
 
