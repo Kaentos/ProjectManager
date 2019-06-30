@@ -44,7 +44,7 @@
         if (isset($projectData)){
             $tasksData = getTasks($conn, $projectID);
             if(isset($tasksData)){
-                getIssues();
+                // getIssues();
             }
         } else {
             // header("location: /projectmanager/dashboard/projects.php");
@@ -73,7 +73,7 @@
     // Tasks Data
     function getTasks($conn, $projectID){
         $tasksData = array();
-        $query = "SELECT t.*, s.name AS status, s.badge FROM tasks AS t INNER JOIN projects AS p ON t.idProject=p.id INNER JOIN tstatus AS s ON t.idStatus=s.id WHERE p.id=$projectID";
+        $query = "SELECT t.*, s.name AS status, s.badge FROM tasks AS t INNER JOIN projects AS p ON t.idProject=p.id INNER JOIN tstatus AS s ON t.idStatus=s.id WHERE p.id=$projectID ORDER BY t.lastupdatedDate DESC LIMIT 5";
         if ($result = $conn->query($query)) {
             if ($result->num_rows >= 1){
                 while($row = $result->fetch_array(MYSQLI_ASSOC)){
@@ -91,7 +91,7 @@
     }
 
     function getIssues(){
-
+        
     }
 ?>
 
@@ -133,8 +133,8 @@
                         <!-- Tasks -->
                         <div class="col-md-5" style="background-color: rgba(0,0,0,.1); margin-bottom: 10px; border: 5px solid green">
                             <div style="margin-top:15px">
-                                <span style="font-size:1.6rem; font-weight: 500;"> Tasks (last 10) </span>
-                                <span class="float-right" style="font-size:1.6rem; font-weight: 500;"> All tasks </span>
+                                <span style="font-size:1.6rem; font-weight: 500;"> Tasks (last 5) </span>
+                                <a href="#" class="float-right btn btn-success" style="font-weight: 500;">All tasks</a>
                             </div>
                             <hr style="border-color: green">
                             <div style="word-break: break-word;">
