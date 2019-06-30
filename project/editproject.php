@@ -5,6 +5,7 @@
     } else {
         include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/sessionCheckTime.php";
         include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/getFunctions.php";
+        include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/checkFunctions.php";
         include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/databaseConnections.php";
 
         $conn = ConnectRoot();
@@ -31,13 +32,24 @@
 
     $nameERR = $desERR = $statusERR = -1;
     if(isset($_POST["updateP"])){
-        if(!isset($_POST["name"]) || strlen($_POST["name"]) <= 20){
+        if(!isset($_POST["name"]) || strlen($_POST["name"]) > 20){
+            $ERR = $_POST["name"];
             $nameERR = 0;
-        } elseif (!isset($_POST["des"]) || strlen($_POST["des"]) <= 60) {
+            $desERR = -1;
+            $statusERR = -1;
+        } elseif (!isset($_POST["des"]) || strlen($_POST["des"]) > 60) {
+            $ERR = $_POST["des"];
             $desERR = 0;
-        } elseif (!isset($_POST["status"]) || is_numeric($_POST["status"]) || !checkStatusID($conn, $_POST["status"])) {
+            $nameERR = -1;
+            $statusERR = -1;
+        } elseif (!isset($_POST["status"]) || !is_numeric($_POST["status"]) || !checkStatusID($conn, $_POST["status"])) {
             $statusERR = 0;
+            $nameERR = -1;
+            $desERR = -1;
         } else {
+            $statusERR = -1;
+            $nameERR = -1;
+            $desERR = -1;
             $Data = [
                 "name" => $_POST["name"],
                 "des" => $_POST["des"],
@@ -95,17 +107,13 @@
                             <hr class="hr-edit">
                             <div style="word-break: break-word;">
                                 <span class="edit-DIV-InputTitle">Name:</span>
-                                <div class="form-group">
-                                    <div class='alert alert-secondary edit-DIV-Input' role='alert'>
-                                        <?php echo $projectData["name"] ?>
-                                    </div>
+                                <div class='alert alert-secondary edit-DIV-Input' role='alert'>
+                                    <?php echo $projectData["name"] ?>
                                 </div>
 
                                 <span class="edit-DIV-InputTitle">Description:</span>
-                                <div class="form-group">
-                                    <div class='alert alert-secondary edit-DIV-Input' role='alert'>
-                                        <?php echo $projectData["des"] ?>
-                                    </div>
+                                <div class='alert alert-secondary edit-DIV-Input' role='alert'>
+                                    <?php echo $projectData["des"] ?>
                                 </div>
                                 
                                 <div style="margin-bottom:1rem">
@@ -116,32 +124,26 @@
                                 </div>
 
                                 <span class="edit-DIV-InputTitle">Code:</span>
-                                <div class="form-group">
-                                    <div class='alert alert-secondary edit-DIV-Input' role='alert'>
-                                        <?php echo $projectData["code"]; ?>
-                                    </div>
+                                <div class='alert alert-secondary edit-DIV-Input' role='alert'>
+                                    <?php echo $projectData["code"]; ?>
                                 </div>
 
                                 <span class="edit-DIV-InputTitle">Last update:</span>
-                                <div class="form-group">
-                                    <div class='alert alert-secondary edit-DIV-Input' role='alert'>
-                                        <?php
-                                            echo "
-                                                $projectData[creationDate] by $projectData[idCreator]  
-                                            ";  
-                                        ?>
-                                    </div>
+                                <div class='alert alert-secondary edit-DIV-Input' role='alert'>
+                                    <?php
+                                        echo "
+                                            $projectData[creationDate] by $projectData[idCreator]  
+                                        ";  
+                                    ?>
                                 </div>
                                 
                                 <span class="edit-DIV-InputTitle">Creation:</span>
-                                <div class="form-group">
-                                    <div class='alert alert-secondary edit-DIV-Input' role='alert'>
-                                        <?php
-                                            echo "
-                                                $projectData[lastupdatedDate] by $projectData[idUpdateUser]  
-                                            ";  
-                                        ?>
-                                    </div>
+                                <div class='alert alert-secondary edit-DIV-Input' role='alert'>
+                                    <?php
+                                        echo "
+                                            $projectData[lastupdatedDate] by $projectData[idUpdateUser]  
+                                        ";  
+                                    ?>
                                 </div>
 
                             </div>
@@ -160,18 +162,44 @@
                             <hr class="hr-task">
                             <div style="word-break: break-word;">
                                 <form method="post" action="">
-                                    <span class="edit-DIV-InputTitle">Name:</span>
-                                    <div class="form-group">
-                                        <input type="text" class="form-control edit-DIV-Input" name="name" autocomplete="off" value=<?php echo "'$projectData[name]'" ?> />
+                                    <div style="margin-bottom:1rem">
+                                        <span class="edit-DIV-InputTitle">Name:</span>
+                                        <?php
+                                            if ($nameERR == 0){
+                                                echo "
+                                                    <input type='text' class='form-control edit-DIV-Input is-invalid' name='name' autocomplete='off' value='$ERR'/>
+                                                    <div class='invalid-feedback'>
+                                                        Must be have 1 to 20 characters.
+                                                    </div>
+                                                ";
+                                            } else {
+                                                echo "
+                                                    <input type='text' class='form-control edit-DIV-Input is-valid' name='name' autocomplete='off' value='$projectData[name]'/>
+                                                ";
+                                            }
+                                        ?>
                                     </div>
 
-                                    <span class="edit-DIV-InputTitle">Description:</span>
-                                    <div class="form-group">
-                                        <textarea class="form-control edit-DIV-Input" rows="2" name="des" autocomplete="off"><?php echo $projectData["des"] ?></textarea>
+                                    <div style="margin-bottom:1rem">
+                                        <span class="edit-DIV-InputTitle">Description:</span>
+                                        <?php
+                                            if ($desERR == 0){
+                                                echo "
+                                                    <textarea class='form-control edit-DIV-Input is-invalid' rows='2' name='des' autocomplete='off'>$ERR</textarea>
+                                                    <div class='invalid-feedback'>
+                                                        Must be have 1 to 60 characters.
+                                                    </div>
+                                                ";
+                                            } else {
+                                                echo "
+                                                    <textarea class='form-control edit-DIV-Input is-valid' rows='2' name='des' autocomplete='off'>$projectData[des]</textarea>
+                                                ";
+                                            }
+                                        ?>
                                     </div>
 
-                                    <span class="edit-DIV-InputTitle">Status:</span>
-                                    <div class="form-group">
+                                    <div style="margin-bottom:1rem">
+                                        <span class="edit-DIV-InputTitle">Status:</span>
                                         <select class="form-control edit-DIV-Input" name="status">
                                             <?php
                                                 foreach($AllProjectStatus as $status){
