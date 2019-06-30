@@ -31,11 +31,11 @@
 
     $nameERR = $desERR = $statusERR = -1;
     if(isset($_POST["updateP"])){
-        if(!isset($_POST["name"]) && strlen($_POST["name"]) <= 20){
+        if(!isset($_POST["name"]) || strlen($_POST["name"]) <= 20){
             $nameERR = 0;
-        } elseif (!isset($_POST["des"]) && strlen($_POST["des"]) <= 60) {
+        } elseif (!isset($_POST["des"]) || strlen($_POST["des"]) <= 60) {
             $desERR = 0;
-        } elseif (!isset($_POST["status"]) && is_numeric($_POST["status"]) && !checkStatusID($conn, $_POST["status"])) {
+        } elseif (!isset($_POST["status"]) || is_numeric($_POST["status"]) || !checkStatusID($conn, $_POST["status"])) {
             $statusERR = 0;
         } else {
             $Data = [
