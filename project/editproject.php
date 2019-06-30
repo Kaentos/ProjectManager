@@ -160,19 +160,19 @@
                             <hr class="hr-task">
                             <div style="word-break: break-word;">
                                 <form method="post" action="">
-                                    Name:
+                                    <span class="edit-DIV-InputTitle">Name:</span>
                                     <div class="form-group">
-                                        <input type="text" class="form-control" name="name" autocomplete="off" value=<?php echo "'$projectData[name]'" ?> />
+                                        <input type="text" class="form-control edit-DIV-Input" name="name" autocomplete="off" value=<?php echo "'$projectData[name]'" ?> />
                                     </div>
 
-                                    Description:
+                                    <span class="edit-DIV-InputTitle">Description:</span>
                                     <div class="form-group">
-                                        <textarea class="form-control" rows="2" name="des" autocomplete="off"><?php echo $projectData["des"] ?></textarea>
+                                        <textarea class="form-control edit-DIV-Input" rows="2" name="des" autocomplete="off"><?php echo $projectData["des"] ?></textarea>
                                     </div>
 
-                                    Status:
+                                    <span class="edit-DIV-InputTitle">Status:</span>
                                     <div class="form-group">
-                                        <select class="form-control" name="status">
+                                        <select class="form-control edit-DIV-Input" name="status">
                                             <?php
                                                 foreach($AllProjectStatus as $status){
                                                     if ($status["id"] != $projectData["idStatus"]){
