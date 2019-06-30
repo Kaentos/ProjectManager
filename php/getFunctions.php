@@ -1,5 +1,14 @@
 <?php
 
+    // Others
+
+    function getCurrentDate(){
+        return date("Y-m-d H-i-s");
+    }
+
+    // END OTHERS
+
+
     // PROJECT FUNCTIONS
 
     // Project Data

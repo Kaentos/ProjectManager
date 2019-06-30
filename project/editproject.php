@@ -28,6 +28,38 @@
 
     $AllProjectStatus = getProjectStatus($conn);
     $UserRole = getUserProjectRole($conn, $projectID, $UserData["id"]);
+
+    $nameERR = $desERR = $statusERR = -1;
+    if(isset($_POST["updateP"])){
+        if(!isset($_POST["name"]) && strlen($_POST["name"]) <= 20){
+            $nameERR = 0;
+        } elseif (!isset($_POST["des"]) && strlen($_POST["des"]) <= 60) {
+            $desERR = 0;
+        } elseif (!isset($_POST["status"]) && is_numeric($_POST["status"]) && !checkStatusID($conn, $id)) {
+            $statusERR = 0;
+        } else {
+            $pname = $_POST["name"];
+            $pdes = $_POST["des"];
+            $pstatus = $_POST["status"];
+        }
+
+        if (!($projectData["name"] == $pname && $projectData["des"] == $pdes && $projectData["idStatus"] == $pstatus)){
+            $currentDate = getCurrentDate();
+
+            if(!($stmt = $conn->prepare("UPDATE projects SET name=?, des=?, code=?, idStatus=?, idUpdateUser=?, lastupdatedDate=? WHERE id=?"))) {
+                die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
+            }
+            if(!$stmt->bind_param("sssiisi", $pname, $pdes, $projectData["code"], $pstatus, $UserData["id"], $currentDate, $projectData["id"])) {
+                die("Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error);
+            }
+            if(!$stmt->execute()) {
+                die("Execute failed: (" . $stmt->errno . ") " . $stmt->error);
+            } else {
+                header("Refresh:0");
+            }
+        }
+
+    }
 ?>
 
 <html lang="en">
@@ -108,7 +140,7 @@
 
                             </div>
                         </div>
-                        <!-- End Tasks -->
+                        <!-- End current details -->
 
                         <div class="col-lg-0 col-xl-1"></div>
 
@@ -139,14 +171,15 @@
                                                 foreach($AllProjectStatus as $status){
                                                     if ($status["id"] != $projectData["idStatus"]){
                                                         echo "<option value='$status[id]'>$status[name]</option>";
+                                                    } else {
+                                                        echo "<option value='$status[id]' selected>$status[name]</option>";
                                                     }
-
                                                 }
                                             ?>
                                         </select>
                                     </div>
 
-                                    <input type="submit" class="btn btn-success" name="updateEM" value="Update"/>
+                                    <input type="submit" class="btn btn-success" name="updateP" value="Update"/>
                                 </form>
                             </div>
                         </div>
