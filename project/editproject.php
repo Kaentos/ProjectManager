@@ -8,7 +8,6 @@
         include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/databaseConnections.php";
 
         $conn = ConnectRoot();
-
         $UserData = getSessionUserData($conn, $_SESSION["user"]);
     }
 
@@ -33,15 +32,11 @@
 
 <html lang="en">
     <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=320, height=device-height, target-densitydpi=medium-dpi" />
         <title><?php echo $projectData["name"] ?></title>
-        <meta name="description" content="Project Manager">
-        <meta name="author" content="Miguel Magueijo">
-        <link rel="icon" href="/projectmanager/img/icon.png">
-
-        <?php include "$_SERVER[DOCUMENT_ROOT]/projectmanager/html/CSSimport.html"; ?>
+        <?php
+            include "$_SERVER[DOCUMENT_ROOT]/projectmanager/html/Headcontent.html";
+            include "$_SERVER[DOCUMENT_ROOT]/projectmanager/html/CSSimport.html";
+        ?>
     </head>
 
     <body>
