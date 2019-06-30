@@ -159,10 +159,10 @@
                                 </div>
                                 <div class="col-md-12 col-lg-6">
                                     <div class="btn-group mr-2 DIV-btn-float" style="margin-top:5px">
-                                        <a href="#" class="btn btn-success task-DIV-btn">All tasks</a>
+                                        <a href=<?php echo "'/projectmanager/project/tasks.php?id=$projectData[id]'"; ?> class="btn btn-success task-DIV-btn">All tasks</a>
                                     </div>
                                     <div class="btn-group mr-2 DIV-btn-float" style="margin-top:5px">
-                                        <a href="#" class="btn btn-success task-DIV-btn">New task</a>
+                                        <a href=<?php echo "'/projectmanager/project/newtask.php?id=$projectData[id]'"; ?> class="btn btn-success task-DIV-btn">New task</a>
                                     </div>
                                 </div>
                             </div>
