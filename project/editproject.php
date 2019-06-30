@@ -35,21 +35,26 @@
             $nameERR = 0;
         } elseif (!isset($_POST["des"]) && strlen($_POST["des"]) <= 60) {
             $desERR = 0;
-        } elseif (!isset($_POST["status"]) && is_numeric($_POST["status"]) && !checkStatusID($conn, $id)) {
+        } elseif (!isset($_POST["status"]) && is_numeric($_POST["status"]) && !checkStatusID($conn, $_POST["status"])) {
             $statusERR = 0;
         } else {
-            $pname = $_POST["name"];
-            $pdes = $_POST["des"];
-            $pstatus = $_POST["status"];
+            $Data = [
+                "name" => $_POST["name"],
+                "des" => $_POST["des"],
+                "status" => $_POST["status"]
+            ];
+            editProject($conn, $Data, $projectData, $UserData);
         }
+    }
 
-        if (!($projectData["name"] == $pname && $projectData["des"] == $pdes && $projectData["idStatus"] == $pstatus)){
+    function editProject($conn, $Data, $projectData, $UserData){
+        if (!($projectData["name"] == $Data["name"] && $projectData["des"] == $Data["des"] && $projectData["idStatus"] == $Data["status"])){
             $currentDate = getCurrentDate();
 
             if(!($stmt = $conn->prepare("UPDATE projects SET name=?, des=?, code=?, idStatus=?, idUpdateUser=?, lastupdatedDate=? WHERE id=?"))) {
                 die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
             }
-            if(!$stmt->bind_param("sssiisi", $pname, $pdes, $projectData["code"], $pstatus, $UserData["id"], $currentDate, $projectData["id"])) {
+            if(!$stmt->bind_param("sssiisi", $Data["name"], $Data["des"], $projectData["code"], $Data["status"], $UserData["id"], $currentDate, $projectData["id"])) {
                 die("Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error);
             }
             if(!$stmt->execute()) {
@@ -59,6 +64,7 @@
             }
         }
 
+        return;
     }
 ?>
 
