@@ -131,10 +131,19 @@
                     <div class="row d-flex justify-content-center">
 
                         <!-- Tasks -->
-                        <div class="col-md-5" style="background-color: rgba(0,0,0,.1); margin-bottom: 10px; border: 5px solid green">
-                            <div style="margin-top:15px">
-                                <span style="font-size:1.6rem; font-weight: 500;"> Tasks (last 5) </span>
-                                <a href="#" class="float-right btn btn-success" style="font-weight: 500;">All tasks</a>
+                        <div class="col-lg-12 col-xl-5 task-DIV">
+                            <div class="btn-toolbar row" style="margin-top:15px">
+                                <div class="col-lg-12 col-xl-6" style="margin-top:5px;">
+                                    <span class="task-DIV-title">Last updated tasks</span>
+                                </div>
+                                <div class="col-md-12 col-lg-6">
+                                    <div class="btn-group mr-2 task-DIV-btn-float" style="margin-top:5px">
+                                        <a href="#" class="btn btn-success task-DIV-btn">All tasks</a>
+                                    </div>
+                                    <div class="btn-group mr-2 task-DIV-btn-float" style="margin-top:5px">
+                                        <a href="#" class="btn btn-success task-DIV-btn">New task</a>
+                                    </div>
+                                </div>
                             </div>
                             <hr style="border-color: green">
                             <div style="word-break: break-word;">
