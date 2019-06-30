@@ -137,15 +137,15 @@
                                     <span class="task-DIV-title">Last updated tasks</span>
                                 </div>
                                 <div class="col-md-12 col-lg-6">
-                                    <div class="btn-group mr-2 task-DIV-btn-float" style="margin-top:5px">
+                                    <div class="btn-group mr-2 DIV-btn-float" style="margin-top:5px">
                                         <a href="#" class="btn btn-success task-DIV-btn">All tasks</a>
                                     </div>
-                                    <div class="btn-group mr-2 task-DIV-btn-float" style="margin-top:5px">
+                                    <div class="btn-group mr-2 DIV-btn-float" style="margin-top:5px">
                                         <a href="#" class="btn btn-success task-DIV-btn">New task</a>
                                     </div>
                                 </div>
                             </div>
-                            <hr style="border-color: green">
+                            <hr class="hr-task">
                             <div style="word-break: break-word;">
                                 <?php
                                 if(isset($tasksData)){
@@ -171,16 +171,42 @@
                         </div>
                         
                         <!-- Issues -->
-                        <div class="col-md-5" style="background-color: rgba(0,0,0,.1); margin-bottom: 10px; border: 5px solid red;">
-                            <div style="margin-top:15px">
-                                <span style="font-size:1.6rem; font-weight: 500;"> Issues (last 10) </span>
-                                <span class="float-right" style="font-size:1.6rem; font-weight: 500;"> All Issues </span>
+                        <div class="col-lg-12 col-xl-5 issue-DIV">
+                            <div class="btn-toolbar row" style="margin-top:15px">
+                                <div class="col-lg-12 col-xl-6" style="margin-top:5px;">
+                                    <span class="issue-DIV-title">Last created issues</span>
+                                </div>
+                                <div class="col-md-12 col-lg-6">
+                                    <div class="btn-group mr-2 DIV-btn-float" style="margin-top:5px">
+                                        <a href="#" class="btn btn-danger issue-DIV-btn">All Issues</a>
+                                    </div>
+                                    <div class="btn-group mr-2 DIV-btn-float" style="margin-top:5px">
+                                        <a href="#" class="btn btn-danger issue-DIV-btn">New issue</a>
+                                    </div>
+                                </div>
                             </div>
-                            <hr style="border-color: red">
-                            <div>
-                            
+                            <hr class="hr-issue">
+                            <div style="word-break: break-word;">
+                                <?php
+                                if(isset($tasksData)){
+                                    foreach($tasksData as $task){
+                                        echo "
+                                        <span style='font-size:1.3rem; font-weight: bold;'>
+                                            $task[name]
+                                            <span class='badge badge-$task[badge]'>$task[status]</span>    
+                                        </span>
+                                        <p style='font-size:1.1rem'>
+                                            $task[Des]
+                                        </p>
+                                        ";
+                                    }
+                                }
+                                ?>
                             </div>
                         </div>
+                        <!-- END Issues -->
+
+
                         <div class="col-md-6" style="background-color: rgba(0,0,0,.1);">
                             <span style="font-size:1.6rem; font-weight: 500;"> Members </span>
                             <span style="font-size:1.6rem; font-weight: 500;" class="float-right">All members</span>

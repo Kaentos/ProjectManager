@@ -10,6 +10,9 @@
 .pointer-mouse{cursor: pointer;}
 
 /* PROJECT PAGE */
+/* Task */
+/* Color: #007328 rgb(0, 115, 40) */
+.hr-task{border-color: #007328;}
 .task-DIV{
     background-color: rgba(0,115,40,.05);
     margin-bottom: 10px;
@@ -24,15 +27,35 @@
     font-size: 1.2rem !important;
     font-weight: 500 !important;
 }
-.task-DIV-btn-float{
+/* END Task */
+
+/* Issue */
+/* Color: #a32e00 rgb(163, 46, 0) */
+.hr-issue{border-color: #a32e00}
+.issue-DIV{
+    background-color: rgba(163,46,0,.05);
+    margin-bottom: 10px;
+    border: 2px solid #a32e00;
+    border-radius: 5px;
+}
+.issue-DIV-title{
+    font-size: 1.6rem;
+    font-weight: bold;
+}
+.issue-DIV-btn{
+    font-size: 1.2rem !important;
+    font-weight: 500 !important;
+}
+/* END Issue */
+
+.DIV-btn-float{
     float:right;
 }
 @media screen and (max-width: 1200px) {
-    .task-DIV-btn-float{
+    .DIV-btn-float{
         float:none;
     }
 }
-
 /* END PROJECT PAGE */
 
 
