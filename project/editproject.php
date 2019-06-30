@@ -32,7 +32,7 @@
 
 <html lang="en">
     <head>
-        <title><?php echo $projectData["name"] ?></title>
+        <title><?php echo "Editing - $projectData[name]" ?></title>
         <?php
             include "$_SERVER[DOCUMENT_ROOT]/projectmanager/html/Headcontent.html";
             include "$_SERVER[DOCUMENT_ROOT]/projectmanager/html/CSSimport.html";
@@ -43,51 +43,50 @@
         <div class="page-wrapper chiller-theme toggled">
             <?php include "$_SERVER[DOCUMENT_ROOT]/projectmanager/sidebar/bar.php"; ?>
 
-
             <main class="page-content">
                 <div class="container-fluid">
                     <div class="row d-flex justify-content-center">
 
                         <!-- Current project -->
-                        <div class="col-lg-12 col-xl-5 task-DIV">
+                        <div class="col-lg-12 col-xl-5 edit-DIV">
                             <div class="btn-toolbar row" style="margin-top:15px">
                                 <div class="col-lg-12" style="margin-top:5px;">
-                                    <span class="task-DIV-title">Current project details</span>
+                                    <span class="edit-DIV-title">Current project details</span>
                                 </div>
                             </div>
-                            <hr class="hr-task">
+                            <hr class="hr-edit">
                             <div style="word-break: break-word;">
-                                <span>Name:</span>
+                                <span class="edit-DIV-InputTitle">Name:</span>
                                 <div class="form-group">
-                                    <div class='alert alert-secondary' role='alert'>
+                                    <div class='alert alert-secondary edit-DIV-Input' role='alert'>
                                         <?php echo $projectData["name"] ?>
                                     </div>
                                 </div>
 
-                                <span>Description:</span>
+                                <span class="edit-DIV-InputTitle">Description:</span>
                                 <div class="form-group">
-                                    <div class='alert alert-secondary' role='alert'>
+                                    <div class='alert alert-secondary edit-DIV-Input' role='alert'>
                                         <?php echo $projectData["des"] ?>
                                     </div>
                                 </div>
                                 
                                 <div style="margin-bottom:1rem">
-                                    <span>Status:</span>
+                                    <span class="edit-DIV-InputTitle">Status:</span>
                                     <?php 
-                                        echo "<span class='badge badge-$projectData[badge]'>$projectData[Sname]</span>";
+                                        echo "<span class='badge badge-$projectData[badge] edit-DIV-InputTitle'>$projectData[Sname]</span>";
                                     ?>
                                 </div>
 
-                                <span>Code:</span>
+                                <span class="edit-DIV-InputTitle">Code:</span>
                                 <div class="form-group">
-                                    <div class='alert alert-secondary' role='alert'>
+                                    <div class='alert alert-secondary edit-DIV-Input' role='alert'>
                                         <?php echo $projectData["code"]; ?>
                                     </div>
                                 </div>
 
-                                <span>Last update:</span>
+                                <span class="edit-DIV-InputTitle">Last update:</span>
                                 <div class="form-group">
-                                    <div class='alert alert-secondary' role='alert'>
+                                    <div class='alert alert-secondary edit-DIV-Input' role='alert'>
                                         <?php
                                             echo "
                                                 $projectData[creationDate] by $projectData[idCreator]  
@@ -96,9 +95,9 @@
                                     </div>
                                 </div>
                                 
-                                <span>Creation:</span>
+                                <span class="edit-DIV-InputTitle">Creation:</span>
                                 <div class="form-group">
-                                    <div class='alert alert-secondary' role='alert'>
+                                    <div class='alert alert-secondary edit-DIV-Input' role='alert'>
                                         <?php
                                             echo "
                                                 $projectData[lastupdatedDate] by $projectData[idUpdateUser]  

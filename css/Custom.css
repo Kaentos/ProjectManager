@@ -45,6 +45,7 @@
 }
 /* END Task */
 
+
 /* Issue */
 /* Color: #a32e00 rgb(163, 46, 0) */
 .hr-issue{border-color: #a32e00}
@@ -63,6 +64,31 @@
     font-weight: 500 !important;
 }
 /* END Issue */
+
+
+/* Edit */
+/* Color : #19005c rgb(25, 0, 92) */
+.hr-edit{border-color: #19005c;}
+.edit-DIV{
+    background-color: rgba(25,0,95,.05);
+    margin-bottom: 10px;
+    border: 2px solid #19005c;
+    border-radius: 5px;
+}
+.edit-DIV-title{
+    font-size: 1.6rem;
+    font-weight: bold;
+}
+.edit-DIV-InputTitle{
+    font-size: 1.2rem !important;
+    font-weight: 500 !important;
+}
+.edit-DIV-Input{
+    font-size: 1.1rem !important;
+    font-weight: 400 !important;
+}
+/* END Edit */
+
 
 /* To all divs */
 .DIV-btn-float{
