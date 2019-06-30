@@ -134,7 +134,7 @@
                                 ";
                                 if ($UserRole < 3){
                                     echo "
-                                        <a href='#' class='edit-pen'>
+                                        <a href='/projectmanager/project/editproject.php?id=$projectData[id]' class='edit-pen'>
                                             <i class='fas fa-pen'></i>
                                         </a>
                                     ";
@@ -161,9 +161,17 @@
                                     <div class="btn-group mr-2 DIV-btn-float" style="margin-top:5px">
                                         <a href=<?php echo "'/projectmanager/project/tasks.php?id=$projectData[id]'"; ?> class="btn btn-success task-DIV-btn">All tasks</a>
                                     </div>
-                                    <div class="btn-group mr-2 DIV-btn-float" style="margin-top:5px">
-                                        <a href=<?php echo "'/projectmanager/project/newtask.php?id=$projectData[id]'"; ?> class="btn btn-success task-DIV-btn">New task</a>
-                                    </div>
+                                    <?php
+                                        if ($UserRole < 4){
+                                            echo "
+                                                <div class='btn-group mr-2 DIV-btn-float' style='margin-top:5px'>
+                                                    <a href='/projectmanager/project/newtask.php?id=$projectData[id]' class='btn btn-success task-DIV-btn'>New task</a>
+                                                </div>
+                                            ";
+                                        }
+                                        
+                                    ?>
+                                    
                                 </div>
                             </div>
                             <hr class="hr-task">
