@@ -41,9 +41,11 @@
 
     if (isset($projectID)){
         $projectData = getData($conn, $projectID, $UserData["id"]);
-        print_r($projectData);
         if (isset($projectData)){
-            echo"asd";
+            $tasksData = getTasks($conn, $projectID);
+            if(isset($tasksData)){
+                getIssues();
+            }
         } else {
             // header("location: /projectmanager/dashboard/projects.php");
         }
@@ -65,6 +67,29 @@
         } else {
             die();
         }
+    }
+
+    function getTasks($conn, $projectID){
+        $tasksData = array();
+        $query = "SELECT t.* FROM tasks AS t INNER JOIN projects AS p ON t.idProject=p.id WHERE p.id=$projectID";
+        if ($result = $conn->query($query)) {
+            if ($result->num_rows >= 1){
+                while($row = $result->fetch_array(MYSQLI_ASSOC)){
+                    array_push($tasksData, $row);
+                }
+            } elseif ($result->num_rows == 0) {
+                return;
+            } else {
+                die();
+            }
+        } else {
+            die();
+        }
+        return $tasksData;
+    }
+
+    function getIssues(){
+
     }
 ?>
 
@@ -95,11 +120,64 @@
             <main class="page-content">
                 <div class="container-fluid">
                     <div>
-                        <span style="font-size:2rem; font-weight: 500;">{PROJECT NAME}</span>
-                        
+                        <span style="font-size:2rem; font-weight: 500;">
+                            Project: <?php echo $projectData["name"]; ?>
+                            <span class="badge badge-primary">{STATUS}</span>    
+                        </span>
                     </div>
                     <hr>
-                    
+                    <div class="row d-flex justify-content-center">
+
+                        <!-- Tasks -->
+                        <div class="col-md-5" style="background-color: rgba(0,0,0,.1); margin-bottom: 10px; border: 5px solid green">
+                            <div style="margin-top:15px">
+                                <span style="font-size:1.6rem; font-weight: 500;"> Tasks (last 10) </span>
+                                <span class="float-right" style="font-size:1.6rem; font-weight: 500;"> All tasks </span>
+                            </div>
+                            <hr style="border-color: green">
+                            <div style="word-break: break-word;">
+                                <?php
+                                if(isset($tasksData)){
+                                    foreach($tasksData as $task){
+                                        print_r($task);
+                                        echo "
+                                            <p>$task[name]</p>
+                                        ";
+                                    }
+                                }
+                                ?>
+                                <span style="font-size:1.3rem; font-weight: bold;">
+                                    {TITLE}
+                                    <span class="badge badge-primary">{STATUS}</span>    
+                                </span>
+                                <p style="font-size:1.1rem">
+                                    {Descrição}
+                                </p>
+                            </div>
+                        </div>
+                        <!-- End Tasks -->
+                        
+                        <!-- col to space out cols -->
+                        <div class="col-md-1">
+                        </div>
+                        
+                        <!-- Issues -->
+                        <div class="col-md-5" style="background-color: rgba(0,0,0,.1); margin-bottom: 10px; border: 5px solid red;">
+                            <div style="margin-top:15px">
+                                <span style="font-size:1.6rem; font-weight: 500;"> Issues (last 10) </span>
+                                <span class="float-right" style="font-size:1.6rem; font-weight: 500;"> All Issues </span>
+                            </div>
+                            <hr style="border-color: red">
+                            <div>
+                            
+                            </div>
+                        </div>
+                        <div class="col-md-6" style="background-color: rgba(0,0,0,.1);">
+                            <span style="font-size:1.6rem; font-weight: 500;"> Members </span>
+                            <span style="font-size:1.6rem; font-weight: 500;" class="float-right">All members</span>
+                            <hr style="border-color: blue; margin-top: 5px">
+                        </div>
+                    </div>
                 </div>
             </main>
 
