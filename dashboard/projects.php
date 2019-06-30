@@ -98,7 +98,10 @@
                                     echo "
                                         <div class='card text-white bg-primary mb-3' style='max-width: 18rem;'>
                                             <div class='card-header'>
-                                                $Project[name]";
+                                                <a href='/projectmanager/project/?id=$Project[id]' style='color:white'>
+                                                    $Project[name]
+                                                </a>
+                                                ";
                                     if ($Project["idCreator"] == $UserData["id"]){
                                         echo "
                                                 <a href='#' class='btn btn-light float-right'>

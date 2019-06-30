@@ -56,7 +56,7 @@
     // Project Data
     function getData($conn, $projectID, $userID){
         // Get project data
-        $query = "SELECT p.*, s.name as Sname, u.username FROM projects AS p INNER JOIN pstatus AS s ON p.idStatus=s.id INNER JOIN projectmembers AS pm ON p.id = pm.idProject INNER JOIN user AS u ON p.idCreator = u.id WHERE p.id=$projectID AND pm.idUser=$userID;";
+        $query = "SELECT p.*, s.name as Sname, s.badge, u.username FROM projects AS p INNER JOIN pstatus AS s ON p.idStatus=s.id INNER JOIN projectmembers AS pm ON p.id = pm.idProject INNER JOIN user AS u ON p.idCreator = u.id WHERE p.id=$projectID AND pm.idUser=$userID;";
         if ($result = $conn->query($query)) {
             if ($result->num_rows == 1){
                 if($row = $result->fetch_array(MYSQLI_ASSOC)){
@@ -127,8 +127,25 @@
                 <div class="container-fluid">
                     <div>
                         <span style="font-size:2rem; font-weight: 500;">
-                            Project: <?php echo $projectData["name"]; ?>
-                            <span class="badge badge-primary">{STATUS}</span>    
+                            <?php
+                                echo "
+                                    $projectData[name]
+                                    <span class='badge badge-$projectData[badge]'>$projectData[Sname]</span>   
+                                ";
+                                if ($UserRole < 3){
+                                    echo "
+                                        <a href='#' class='edit-pen'>
+                                            <i class='fas fa-pen'></i>
+                                        </a>
+                                    ";
+                                }
+                            ?>
+                        </span>
+                        <br>
+                        <span style="font-size:1.3rem; font-weight: 400;">
+                            <?php
+                                echo $projectData["des"];
+                            ?>        
                         </span>
                     </div>
                     <hr>
@@ -155,18 +172,19 @@
                                 if(isset($tasksData)){
                                     foreach($tasksData as $task){
                                         echo "
-                                        <span style='font-size:1.3rem; font-weight: bold;'>
-                                            $task[name]
-                                        ";
-                                        if ($UserRole < 3){
-                                            echo "
-                                                <a href='#' class='edit-pen'>
-                                                    <i class='fas fa-pen'></i>
-                                                </a>
-                                            ";
-                                        }
+                                        <span class='task-DIV-list'>
+                                            <a href='banaas'>
+                                                $task[name]
+                                            </a>
+                                            <span class='badge badge-$task[badge]'>$task[status]</span>";
+                                            if ($UserRole < 3){
+                                                echo "
+                                                    <a href='#' class='edit-pen'>
+                                                        <i class='fas fa-pen'></i>
+                                                    </a>
+                                                ";
+                                            }
                                         echo "
-                                            <span class='badge badge-$task[badge]'>$task[status]</span>    
                                         </span>
                                         <p style='font-size:1.1rem'>
                                             $task[Des]

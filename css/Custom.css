@@ -27,6 +27,22 @@
     font-size: 1.2rem !important;
     font-weight: 500 !important;
 }
+.task-DIV-list{
+    font-size:1.3rem;
+    font-weight: bold;
+}
+.task-DIV-list a{
+    color: #212529;
+    font-size:1.3rem;
+    font-weight: bold;
+    text-decoration: none;
+}
+.task-DIV-list a:hover{
+    color: #212529;
+    font-size:1.3rem;
+    font-weight: bold;
+    text-decoration: none;
+}
 /* END Task */
 
 /* Issue */
@@ -48,6 +64,7 @@
 }
 /* END Issue */
 
+/* To all divs */
 .DIV-btn-float{
     float:right;
 }
@@ -64,6 +81,7 @@
     text-decoration: none;
     color: #2e2e2e;
 }
+/* END all */
 /* END PROJECT PAGE */
 
 
@@ -144,7 +162,8 @@
 
 /* LOGIN E REGISTER */
 .background_color{
-    background: -webkit-linear-gradient(left, #3931af, #00c6ff);
+    /* background: -webkit-linear-gradient(left, #3931af, #00c6ff); */
+    background: -webkit-linear-gradient(left, #212121, #595959);
 }
 .register{
     /* margin-top: 3%; */
