@@ -18,6 +18,24 @@
         }
     }
 
+    // Project status
+    function getProjectStatus($conn){
+        $data = array();
+        $query = "SELECT * FROM pstatus;";
+        if ($result = $conn->query($query)) {
+            if ($result->num_rows > 0){
+                while($row = $result->fetch_array(MYSQLI_ASSOC)){
+                    array_push($data, $row);
+                }
+            } else {
+                die("Error PS0");
+            }
+        } else {
+            die();
+        }
+        return $data;
+    }
+
     // Get username
     function getUsername($conn, $userID){
         $query = "SELECT username FROM user WHERE id=$userID;";

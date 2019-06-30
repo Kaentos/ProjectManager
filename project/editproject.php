@@ -73,6 +73,7 @@
         }
     }
 
+    $AllProjectStatus = getProjectStatus($conn);
     $UserRole = getUserProjectRole($conn, $projectID, $UserData["id"]);
 ?>
 
@@ -179,18 +180,23 @@
                             <hr class="hr-task">
                             <div style="word-break: break-word;">
                                 <form method="post" action="">
-                                    <!-- Update email -->
-                                    Current email:
-                                    <div class='alert alert-secondary' role='alert'> <?php echo $UserData["email"]; ?> </div>
-                                    <?php if ($NEmailErr!="") echo "<div class='alert alert-danger' role='alert'> $NEmailErr </div>" ?>
-                                    New email:
+                                    Name:
                                     <div class="form-group">
-                                        <input type="email" class="form-control" name="nEmail" placeholder="example@mail.com" autocomplete="off" />
+                                        <input type="text" class="form-control" name="name" autocomplete="off" value=<?php echo "'$projectData[name]'" ?> />
                                     </div>
-                                    Password:
+
+                                    Description:
                                     <div class="form-group">
-                                        <input type="password" class="form-control" name="EMCPassword" autocomplete="off" />
+                                        <textarea class="form-control" rows="2" name="des" autocomplete="off"><?php echo $projectData["des"] ?></textarea>
                                     </div>
+
+                                    Status:
+                                    <div class="form-group">
+                                        <select class="form-control" name="status">
+                                            
+                                        </select>
+                                    </div>
+
                                     <input type="submit" class="btn btn-success" name="updateEM" value="Update"/>
                                 </form>
                             </div>
