@@ -1,5 +1,30 @@
 <?php
 
+    // PROJECT FUNCTIONS
+
+    // Project Data
+    function getSingleProjectData($conn, $projectID, $userID){
+        // Get project data
+        $query = "SELECT p.*, s.name as Sname, s.badge, u.username FROM projects AS p INNER JOIN pstatus AS s ON p.idStatus=s.id INNER JOIN projectmembers AS pm ON p.id = pm.idProject INNER JOIN user AS u ON p.idCreator = u.id WHERE p.id=$projectID AND pm.idUser=$userID;";
+        if ($result = $conn->query($query)) {
+            if ($result->num_rows == 1){
+                if($row = $result->fetch_array(MYSQLI_ASSOC)){
+                    $Temp = getUsername($conn,$row["idCreator"]);
+                    $row["idCreator"] = $Temp;
+                    $Temp = getUsername($conn,$row["idUpdateUser"]);
+                    $row["idUpdateUser"] = $Temp;
+                    return $row;
+                }
+            } elseif ($result->num_rows > 1) {
+                die("Error P2, report with error code and project name");
+            } else {
+                return;
+            }
+        } else {
+            die();
+        }
+    }
+
     // Get user role in project
     function getUserProjectRole($conn, $projectID, $userID){
         $query = "SELECT pm.idRole FROM projects AS p INNER JOIN projectmembers AS pm ON p.id = pm.idProject INNER JOIN user AS u ON p.idCreator = u.id WHERE p.id=$projectID AND pm.idUser=$userID;";
@@ -35,6 +60,11 @@
         }
         return $data;
     }
+    
+    // END PROJECT FUNCTIONS
+
+
+    // USER FUNCTIONS
 
     // Get username
     function getUsername($conn, $userID){
@@ -53,5 +83,32 @@
             die();
         }
     }
+
+    function getSessionUserData($conn, $sessionData) {
+        $UserData = array();
+        $query = "SELECT * FROM  user WHERE id=".$sessionData["id"];
+        if ($result = $conn->query($query)) {
+            if ($result->num_rows == 1){
+                if ($row = $result->fetch_array(MYSQLI_ASSOC)){
+                    $UserData += ["id" => $row["id"]];
+                    $UserData += ["username" => $row["username"]];
+                    $UserData += ["role" => $row["role"]];
+                    $_SESSION["user"]["role"] = $row["role"];
+                    return $UserData;
+                } else {
+                    die();
+                }
+            } else {
+                die();
+            }
+            $result->close();
+        } else {
+            printf("Error in select user query");
+            die();
+        }
+        die();
+    }
+
+    // END USER FUNCTIONS
 
 ?>

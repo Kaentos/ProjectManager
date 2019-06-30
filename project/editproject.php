@@ -4,36 +4,15 @@
         header("Location: /projectmanager/");
     } else {
         include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/sessionCheckTime.php";
+        include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/getFunctions.php";
         $dbHost = "localhost";
         $dbUser = "root";
         $dbPassword = "";
         $dbName = "pmanager";
         $conn = new mysqli($dbHost, $dbUser, $dbPassword, $dbName);
 
-        $UserData = array();
-        $query = "SELECT * FROM  user WHERE id=".$_SESSION["user"]["id"];
-        if ($result = $conn->query($query)) {
-            if ($result->num_rows == 1){
-                if ($row = $result->fetch_array(MYSQLI_ASSOC)){
-                    $UserData += ["id" => $row["id"]];
-                    $UserData += ["username" => $row["username"]];
-                    $UserData += ["role" => $row["role"]];
-                    $_SESSION["user"]["role"] = $row["role"];
-                } else {
-                    printf("MAJOR ERROR CAN'T CONVERT USER ROW TO ARRAY");
-                    die();
-                }
-            } else {
-                die();
-            }
-            $result->close();
-        } else {
-            printf("Error in select user query");
-            die();
-        }
+        $UserData = getSessionUserData($conn, $_SESSION["user"]);
     }
-
-    include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/getFunctions.php";
 
     if (isset($_GET["id"]) && is_numeric($_GET["id"])){
         $projectID = $_GET["id"];
@@ -42,34 +21,11 @@
     }
 
     if (isset($projectID)){
-        $projectData = getData($conn, $projectID, $UserData["id"]);
+        $projectData = getSingleProjectData($conn, $projectID, $UserData["id"]);
         if (isset($projectData)){
             
         } else {
             header("location: /projectmanager/dashboard/projects.php");
-        }
-    }
-
-    // Project Data
-    function getData($conn, $projectID, $userID){
-        // Get project data
-        $query = "SELECT p.*, s.name as Sname, s.badge, u.username FROM projects AS p INNER JOIN pstatus AS s ON p.idStatus=s.id INNER JOIN projectmembers AS pm ON p.id = pm.idProject INNER JOIN user AS u ON p.idCreator = u.id WHERE p.id=$projectID AND pm.idUser=$userID;";
-        if ($result = $conn->query($query)) {
-            if ($result->num_rows == 1){
-                if($row = $result->fetch_array(MYSQLI_ASSOC)){
-                    $Temp = getUsername($conn,$row["idCreator"]);
-                    $row["idCreator"] = $Temp;
-                    $Temp = getUsername($conn,$row["idUpdateUser"]);
-                    $row["idUpdateUser"] = $Temp;
-                    return $row;
-                }
-            } elseif ($result->num_rows > 1) {
-                die("Error P2, report with error code and project name");
-            } else {
-                return;
-            }
-        } else {
-            die();
         }
     }
 
