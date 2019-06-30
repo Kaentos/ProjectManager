@@ -162,7 +162,7 @@
                             <hr class="hr-task">
                             <div style="word-break: break-word;">
                                 <form method="post" action="">
-                                    <div style="margin-bottom:1rem">
+                                    <div class="form-group">
                                         <span class="edit-DIV-InputTitle">Name:</span>
                                         <?php
                                             if ($nameERR == 0){
@@ -180,7 +180,7 @@
                                         ?>
                                     </div>
 
-                                    <div style="margin-bottom:1rem">
+                                    <div class="form-group">
                                         <span class="edit-DIV-InputTitle">Description:</span>
                                         <?php
                                             if ($desERR == 0){
@@ -197,10 +197,10 @@
                                             }
                                         ?>
                                     </div>
-
-                                    <div style="margin-bottom:1rem">
-                                        <span class="edit-DIV-InputTitle">Status:</span>
-                                        <select class="form-control edit-DIV-Input" name="status">
+                                    
+                                    <span class="edit-DIV-InputTitle">Status:</span>
+                                    <div class="form-group">
+                                        <select class="form-control edit-DIV-Input <?php if($statusERR == 0) echo "is-invalid" ?>" name="status">
                                             <?php
                                                 foreach($AllProjectStatus as $status){
                                                     if ($status["id"] != $projectData["idStatus"]){
@@ -211,6 +211,7 @@
                                                 }
                                             ?>
                                         </select>
+                                        <div class="invalid-feedback">Don't change values, if you didn't report it.</div>
                                     </div>
 
                                     <input type="submit" class="btn btn-success" name="updateP" value="Update"/>
