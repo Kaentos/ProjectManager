@@ -6,6 +6,7 @@
         include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/sessionCheckTime.php";
         include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/getFunctions.php";
         include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/checkFunctions.php";
+        include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/otherFunctions.php";
         include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/databaseConnections.php";
 
         $conn = ConnectRoot();
@@ -30,8 +31,16 @@
     $AllProjectStatus = getProjectStatus($conn);
     $UserRole = getUserProjectRole($conn, $projectID, $UserData["id"]);
 
+    if(isset($_POST["newCode"])){
+        $projectCode = otherGenInviteCode($conn);
+        goto updateProject;
+    } else {
+        $projectCode = $projectData["code"];
+    }
+
     $nameERR = $desERR = $statusERR = -1;
     if(isset($_POST["updateP"])){
+        updateProject:
         if(!isset($_POST["name"]) || strlen($_POST["name"]) > 20){
             $ERR = $_POST["name"];
             $nameERR = 0;
@@ -53,20 +62,21 @@
             $Data = [
                 "name" => $_POST["name"],
                 "des" => $_POST["des"],
-                "status" => $_POST["status"]
+                "status" => $_POST["status"],
+                "code" => $projectCode
             ];
             editProject($conn, $Data, $projectData, $UserData);
         }
     }
 
     function editProject($conn, $Data, $projectData, $UserData){
-        if (!($projectData["name"] == $Data["name"] && $projectData["des"] == $Data["des"] && $projectData["idStatus"] == $Data["status"])){
+        if (!($projectData["name"] == $Data["name"] && $projectData["des"] == $Data["des"] && $projectData["idStatus"] == $Data["status"] && $projectData["code"] == $Data["code"])){
             $currentDate = getCurrentDate();
 
             if(!($stmt = $conn->prepare("UPDATE projects SET name=?, des=?, code=?, idStatus=?, idUpdateUser=?, lastupdatedDate=? WHERE id=?"))) {
                 die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
             }
-            if(!$stmt->bind_param("sssiisi", $Data["name"], $Data["des"], $projectData["code"], $Data["status"], $UserData["id"], $currentDate, $projectData["id"])) {
+            if(!$stmt->bind_param("sssiisi", $Data["name"], $Data["des"], $Data["code"], $Data["status"], $UserData["id"], $currentDate, $projectData["id"])) {
                 die("Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error);
             }
             if(!$stmt->execute()) {
@@ -214,7 +224,8 @@
                                         <div class="invalid-feedback">Don't change values, if you didn't report it.</div>
                                     </div>
 
-                                    <input type="submit" class="btn btn-success" name="updateP" value="Update"/>
+                                    <input type="submit" class="btn btn-success edit-DIV-InputTitle" name="updateP" value="Update"/>
+                                    <input type="submit" class="btn btn-info edit-DIV-InputTitle" name="newCode" value="Update with new code"/>
                                 </form>
                             </div>
                         </div>
