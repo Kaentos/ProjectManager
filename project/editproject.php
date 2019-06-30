@@ -191,6 +191,13 @@
                         </div>
                         <!-- End update -->
                         
+                        <div class="col-lg-11">
+                            <div class="row">
+                                <a href="/projectmanager/project/?id=<?php echo $projectData["id"] ?>" class="btn btn-dark edit-DIV-InputTitle">
+                                    Back to <?php echo $projectData["name"] ?>
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </main>
