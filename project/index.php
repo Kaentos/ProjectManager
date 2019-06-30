@@ -173,7 +173,7 @@
                                     foreach($tasksData as $task){
                                         echo "
                                         <span class='task-DIV-list'>
-                                            <a href='banaas'>
+                                            <a href='/projectmanager/project/tasks.php?id=$projectData[id]&task=$task[id]'>
                                                 $task[name]
                                             </a>
                                             <span class='badge badge-$task[badge]'>$task[status]</span>";
