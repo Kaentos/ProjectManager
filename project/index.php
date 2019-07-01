@@ -108,10 +108,14 @@
                                     <span class="task-DIV-title">Last updated tasks</span>
                                 </div>
                                 <div class="col-md-12 col-lg-6">
-                                    <div class="btn-group mr-2 DIV-btn-float" style="margin-top:5px">
-                                        <a href=<?php echo "'/projectmanager/project/tasks?id=$projectData[id]'"; ?> class="btn btn-success task-DIV-btn">All tasks</a>
-                                    </div>
-                                    <?php
+                                    <?php 
+                                        if(isset($tasksData)) {
+                                            echo "
+                                            <div class='btn-group mr-2 DIV-btn-float' style='margin-top:5px'>
+                                                <a href='/projectmanager/project/tasks?id=$projectData[id]' class='btn btn-success task-DIV-btn'>All tasks</a>
+                                            </div>
+                                            ";
+                                        }
                                         if ($UserRole < 4){
                                             echo "
                                                 
