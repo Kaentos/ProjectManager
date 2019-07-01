@@ -7,3 +7,4 @@ $_SESSION['LAST_ACTIVITY'] = time(); // update last activity time stamp
 Source: https://stackoverflow.com/questions/520237/how-do-i-expire-a-php-session-after-30-minutes
 
 https://stackoverflow.com/questions/4908122/removing-the-php-extension-with-mod-rewrite
+https://bootsnipp.com/snippets/z86nx

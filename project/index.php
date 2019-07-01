@@ -119,7 +119,7 @@
                                             echo "
                                                 
                                                 <div class='btn-group mr-2 DIV-btn-float' style='margin-top:5px'>
-                                                    <a class='btn btn-success task-DIV-btn' data-toggle='modal' href='#ignismyModal'>
+                                                    <a class='btn btn-success task-DIV-btn' data-toggle='modal' href='#newTaskModal'>
                                                         New Task
                                                     </a>
                                                 </div>
@@ -214,8 +214,8 @@
                     </div>
                 </div>
 
-                <!--Model Popup starts-->
-                <div class="modal fade" id="ignismyModal" role="dialog">
+                <!-- New task modal -->
+                <div class="modal fade" id="newTaskModal" role="dialog">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -224,17 +224,14 @@
                             
                             <div class="modal-body">
                                 <div class="thank-you-pop">
-                                    <img src="http://goactionstations.co.uk/wp-content/uploads/2017/03/Green-Round-Tick.png" alt="">
-                                    <h1>Thank You!</h1>
-                                    <p>Your submission is received and we will contact you soon</p>
-                                    <h3 class="cupon-pop">Your Id: <span>12345</span></h3>        
+                                    Texto     
                                 </div>                
                             </div>
                                     
                         </div>
                     </div>
                 </div> 
-                <!--Model Popup ends-->
+                <!-- END task modal -->
             </main>
 
         </div>
