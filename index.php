@@ -3,28 +3,13 @@
     if ( isset( $_SESSION['user'] ) ) {
         header("location: dashboard/");
     }
-
-    //include "serverConRegister.php";
-    $dbHost = "localhost";
-    $dbUser = "root";
-    $dbPassword = "";
-    $dbName = "pmanager";
-    $conn = new mysqli($dbHost, $dbUser, $dbPassword, $dbName);
     
-    if ($conn->connect_errno) {
-        printf("Connect failed: %s\n", $conn->connect_error);
-        exit();
-    }
+    include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/otherFunctions.php";
+    include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/databaseConnections.php";
+    $conn = ConnectRoot();
 
     $LoginUserErr = $REmailErr = $RUsernameErr = $RPasswordErr = $RCPasswordErr = $RQuestionErr = $RAnswerErr = "";
     $RError = false;
-
-    function test_input($data) {
-        $data = trim($data);
-        $data = stripslashes($data);
-        $data = htmlspecialchars($data);
-        return $data;
-    }
     
     // Login Stuff
     if(isset($_POST['LoginBtn'])) {

@@ -4,11 +4,8 @@
         header("Location: /projectmanager/");
     } else {
         include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/sessionCheckTime.php";
-        $dbHost = "localhost";
-        $dbUser = "root";
-        $dbPassword = "";
-        $dbName = "pmanager";
-        $conn = new mysqli($dbHost, $dbUser, $dbPassword, $dbName);
+        include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/databaseConnections.php";
+        $conn = ConnectRoot();
 
         $UserData = array();
         $query = "SELECT * FROM  user WHERE id=".$_SESSION["user"]["id"];

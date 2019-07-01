@@ -3,39 +3,13 @@
     if (!isset($_SESSION["user"])){
         header("Location: /projectmanager/");
     } else {
+        include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/getFunctions.php";
+        include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/otherFunctions.php";
         include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/sessionCheckTime.php";
-        $dbHost = "localhost";
-        $dbUser = "root";
-        $dbPassword = "";
-        $dbName = "pmanager";
-        $conn = new mysqli($dbHost, $dbUser, $dbPassword, $dbName);
+        include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/databaseConnections.php";
+        $conn = ConnectRoot();
 
-        $UserData = array();
-        $query = "SELECT * FROM  user WHERE id=".$_SESSION["user"]["id"];
-        if ($result = $conn->query($query)) {
-            if ($result->num_rows == 1){
-                if ($row = $result->fetch_array(MYSQLI_ASSOC)){
-                    $UserData = $row;
-                    $_SESSION["user"]["role"] = $row["role"];
-                } else {
-                    printf("MAJOR ERROR CAN'T CONVERT USER ROW TO ARRAY");
-                    die();
-                }
-            } else {
-                die();
-            }
-            $result->close();
-        } else {
-            printf("Error in select user query");
-            die();
-        }
-    }
-
-    function test_input($data) {
-        $data = trim($data);
-        $data = stripslashes($data);
-        $data = htmlspecialchars($data);
-        return $data;
+        $UserData = getSessionUserData($conn, $_SESSION["user"]);
     }
 
     $NEmailErr = $NUsernameErr = $NPasswordErr = $NQuestionErr = $DELETEERR = "";

@@ -3,11 +3,8 @@
     if (!isset($_SESSION["user"])){
         header("Location: /projectmanager/");
     } else {
-        $dbHost = "localhost";
-        $dbUser = "root";
-        $dbPassword = "";
-        $dbName = "pmanager";
-        $conn = new mysqli($dbHost, $dbUser, $dbPassword, $dbName);
+        include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/databaseConnections.php";
+        $conn = ConnectRoot();
 
         $UserData = array();
         $query = "SELECT * FROM  user WHERE id=".$_SESSION["user"]["id"];

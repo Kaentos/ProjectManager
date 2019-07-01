@@ -3,37 +3,12 @@
     if (!isset($_SESSION["user"])){
         header("Location: /projectmanager/");
     } else {
+        include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/getFunctions.php";
         include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/sessionCheckTime.php";
-        $dbHost = "localhost";
-        $dbUser = "root";
-        $dbPassword = "";
-        $dbName = "pmanager";
-        $conn = new mysqli($dbHost, $dbUser, $dbPassword, $dbName);
-
-        $UserData = array();
-        $query = "SELECT * FROM  user WHERE id=".$_SESSION["user"]["id"];
-        if ($result = $conn->query($query)) {
-            if ($result->num_rows == 1){
-                if ($row = $result->fetch_array(MYSQLI_ASSOC)){
-                    $UserData += ["id" => $row["id"]];
-                    $UserData += ["username" => $row["username"]];
-                    $UserData += ["role" => $row["role"]];
-                    $_SESSION["user"]["role"] = $row["role"];
-                } else {
-                    printf("MAJOR ERROR CAN'T CONVERT USER ROW TO ARRAY");
-                    die();
-                }
-            } else {
-                die();
-            }
-            $result->close();
-        } else {
-            printf("Error in select user query");
-            die();
-        }
+        include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/databaseConnections.php";
+        $conn = ConnectRoot();
+        $UserData = getSessionUserData($conn, $_SESSION["user"]);
     }
-
-    include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/getFunctions.php";
 
     if (isset($_GET["id"]) && is_numeric($_GET["id"])){
         $projectID = $_GET["id"];
@@ -45,8 +20,8 @@
         $projectData = getData($conn, $projectID, $UserData["id"]);
         if (isset($projectData)){
             $tasksData = getTasks($conn, $projectID);
-            if(isset($tasksData)){
-                // getIssues();
+            if(!isset($tasksData)){
+                $createTask = true;
             }
         } else {
             header("location: /projectmanager/dashboard/projects.php");
@@ -101,21 +76,11 @@
 
 <html lang="en">
     <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=320, height=device-height, target-densitydpi=medium-dpi" />
-        <title><?php echo $projectData["name"] ?></title>
-        <meta name="description" content="Project Manager">
-        <meta name="author" content="Miguel Magueijo">
-        <link rel="icon" href="/projectmanager/img/icon.png">
-
-        <!-- CSS -->
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.9.0/css/all.css" integrity="sha384-i1LQnF23gykqWXg6jxC2ZbCbUMxyw5gLZY6UiUS98LYV5unm8GWmfkIS6jqJfb4E" crossorigin="anonymous">
-        <!-- Remove comment to get local fontawesome, comment link above -->
-        <!-- <link rel="stylesheet" href="/projectmanager/fontawesome/css/all.css"> -->
-        <link rel="stylesheet" href="/projectmanager/css/db.css">
-        <link rel="stylesheet" href="/projectmanager/css/Custom.css">
-        <link rel="stylesheet" href="/projectmanager/css/bootstrap.min.css">
+    <title><?php echo $projectData["name"] ?></title>
+        <?php
+            include "$_SERVER[DOCUMENT_ROOT]/projectmanager/html/Headcontent.html";
+            include "$_SERVER[DOCUMENT_ROOT]/projectmanager/html/CSSimport.html";
+        ?>
     </head>
 
     <body>
@@ -125,7 +90,8 @@
 
             <main class="page-content">
                 <div class="container-fluid">
-                    <div>
+                <div class="row d-flex justify-content-center">
+                    <div class="col-lg-11">
                         <span style="font-size:2rem; font-weight: 500;">
                             <?php
                                 echo "
@@ -134,7 +100,7 @@
                                 ";
                                 if ($UserRole < 3){
                                     echo "
-                                        <a href='/projectmanager/project/editproject.php?id=$projectData[id]' class='edit-pen'>
+                                        <a href='/projectmanager/project/editproject?id=$projectData[id]' class='edit-pen'>
                                             <i class='fas fa-pen'></i>
                                         </a>
                                     ";
@@ -147,10 +113,11 @@
                                 echo $projectData["des"];
                             ?>        
                         </span>
+                        <hr>
                     </div>
-                    <hr>
-                    <div class="row d-flex justify-content-center">
+                    
 
+                    
                         <!-- Tasks -->
                         <div class="col-lg-12 col-xl-5 task-DIV">
                             <div class="btn-toolbar row" style="margin-top:15px">
@@ -199,6 +166,8 @@
                                         </p>
                                         ";
                                     }
+                                } elseif (isset($createTask) && $createTask) {
+                                    echo "<p class='task-DIV-list'> No tasks yet, create them! </p>";
                                 }
                                 ?>
                             </div>
@@ -239,6 +208,8 @@
                                         </p>
                                         ";
                                     }
+                                } elseif (isset($createTask) && $createTask) {
+                                    echo "<p class='task-DIV-list'> No issues yet, create them if you need! </p>";
                                 }
                                 ?>
                             </div>

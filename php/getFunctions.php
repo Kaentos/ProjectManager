@@ -101,6 +101,7 @@
                 if ($row = $result->fetch_array(MYSQLI_ASSOC)){
                     $UserData += ["id" => $row["id"]];
                     $UserData += ["username" => $row["username"]];
+                    $UserData += ["email" => $row["email"]];
                     $UserData += ["role" => $row["role"]];
                     $_SESSION["user"]["role"] = $row["role"];
                     return $UserData;

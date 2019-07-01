@@ -38,7 +38,7 @@
         <?php
             if(isset($_POST["Sproject"])){
                 if ($_POST["Sproject"] == "new"){
-                    header("Location: /projectmanager/dashboard/newproject.php");
+                    header("Location: /projectmanager/dashboard/newproject");
                 } elseif ($_POST["Sproject"] == "join") {
                     header("Location: /projectmanager/invite");
                 } elseif (is_numeric($_POST["Sproject"])) {
@@ -95,7 +95,7 @@
 
                             <!-- Menu Projects -->
                             <li>
-                                <a href="/projectmanager/dashboard/projects.php">
+                                <a href="/projectmanager/dashboard/projects">
                                     <!-- <i class="fas fa-folder"></i> -->
                                     <i class="fas fa-project-diagram"></i>
                                     <span>Projects</span>
