@@ -72,8 +72,10 @@
                         <span style="font-size:2rem; font-weight: 500;">
                             <?php
                                 echo "
-                                    $projectData[name]
-                                    <span class='badge badge-$projectData[badge]'>$projectData[Sname]</span>   
+                                    <a href='/projectmanager/project/?id=$projectData[id]' style='text-decoration:none;'>
+                                        <span style='color: black;'>$projectData[name]</span>
+                                        <span class='badge badge-$projectData[badge]'>$projectData[Sname]</span>
+                                    </a>
                                 ";
                                 if ($UserRole < 3){
                                     echo "

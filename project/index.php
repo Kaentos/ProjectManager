@@ -76,8 +76,10 @@
                         <span style="font-size:2rem; font-weight: 500;">
                             <?php
                                 echo "
-                                    $projectData[name]
-                                    <span class='badge badge-$projectData[badge]'>$projectData[Sname]</span>   
+                                    <a href='/projectmanager/project/?id=$projectData[id]' style='text-decoration:none;'>
+                                        <span style='color: black;'>$projectData[name]</span>
+                                        <span class='badge badge-$projectData[badge]'>$projectData[Sname]</span>
+                                    </a>
                                 ";
                                 if ($UserRole < 3){
                                     echo "
@@ -111,11 +113,6 @@
                                     </div>
                                     <?php
                                         if ($UserRole < 4){
-                                            // echo "
-                                            //     <div class='btn-group mr-2 DIV-btn-float' style='margin-top:5px'>
-                                            //         <a href='/projectmanager/project/newtask?id=$projectData[id]' class='btn btn-success task-DIV-btn'>New task</a>
-                                            //     </div>
-                                            // ";
                                             echo "
                                                 
                                                 <div class='btn-group mr-2 DIV-btn-float' style='margin-top:5px'>
@@ -218,14 +215,16 @@
                 <div class="modal fade" id="newTaskModal" role="dialog">
                     <div class="modal-dialog">
                         <div class="modal-content">
+                            <!-- Head -->
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal" aria-label=""><span>×</span></button>
                             </div>        
-                            
+                            <!-- Body -->
                             <div class="modal-body">
-                                <div class="thank-you-pop">
-                                    Texto     
-                                </div>                
+                                <form method="POST" action="">
+                                    Task name:
+                                    <input type='text' class='form-control edit-DIV-Input' name='TaskName' autocomplete='off'/>
+                                </form>                
                             </div>
                                     
                         </div>
