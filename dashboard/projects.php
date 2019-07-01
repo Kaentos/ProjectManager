@@ -33,7 +33,7 @@
     $ProjectData = array();
     $hasProjects = false;
     // Get all projects user is assigned
-    $query = "SELECT p.*, s.name as Sname, u.username FROM projects AS p INNER JOIN pstatus AS s ON p.idStatus=s.id INNER JOIN projectmembers AS pm ON p.id = pm.idProject INNER JOIN user AS u ON p.idCreator = u.id WHERE pm.idUser =".$UserData["id"]." ORDER BY p.id";
+    $query = "SELECT p.*, s.name as Sname, u.username, pm.idRole AS Role FROM projects AS p INNER JOIN pstatus AS s ON p.idStatus=s.id INNER JOIN projectmembers AS pm ON p.id = pm.idProject INNER JOIN user AS u ON p.idCreator = u.id WHERE pm.idUser =".$UserData["id"]." ORDER BY p.id";
     if ($result = $conn->query($query)) {
         if ($result->num_rows >= 1){
             $hasProjects = true;
@@ -99,9 +99,9 @@
                                                     $Project[name]
                                                 </a>
                                                 ";
-                                    if ($Project["idCreator"] == $UserData["id"]){
+                                    if ($Project["Role"] < 3){
                                         echo "
-                                                <a href='#' class='btn btn-light float-right'>
+                                                <a href='/projectmanager/project/editproject?id=$Project[id]' class='btn btn-light float-right'>
                                                     <i class='fas fa-cog'></i>
                                                 </a>
                                         ";

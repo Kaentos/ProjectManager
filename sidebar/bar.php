@@ -115,8 +115,8 @@
                             <!-- Menu Calendar -->
                             <li>
                                 <a href="/projectmanager/dashboard/calendar.php">
-                                    <i class="fa fa-calendar"></i>
-                                    <span>Calendar</span>
+                                    <i class="fas fa-bug"></i>
+                                    <span>Issues</span>
                                 </a>
                             </li>
                             <!-- End Menu Calendar -->
@@ -124,8 +124,8 @@
                             <!-- Menu Calendar -->
                             <li>
                                 <a href="/projectmanager/dashboard/calendar.php">
-                                    <i class="fas fa-bug"></i>
-                                    <span>Issues</span>
+                                    <i class="fa fa-calendar"></i>
+                                    <span>Calendar</span>
                                 </a>
                             </li>
                             <!-- End Menu Calendar -->
@@ -152,6 +152,24 @@
                             <li class="header-menu">
                                 <span>Extra</span>
                             </li>
+                            
+                            <li class="sidebar-dropdown">
+                                <a class="pointer-mouse">
+                                    <i class="fas fa-project-diagram"></i>
+                                    <span>Project</span>
+                                </a>
+                                <div class="sidebar-submenu">
+                                    <ul>
+                                        <li>
+                                            <a href="/projectmanager/dashboard/newproject">Create new project</a>
+                                        </li>
+                                        <li>
+                                        <a href="/projectmanager/invite">Join project</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+
                             <li>
                                 <a href="#">
                                     <i class="fas fa-stopwatch"></i>

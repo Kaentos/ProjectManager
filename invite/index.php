@@ -184,7 +184,7 @@
                                         echo "
                                             <input type='text' class='form-control is-invalid' name='code' autocomplete='off' $string/>
                                             <div class='invalid-feedback'>
-                                                Enter a valid invite code!
+                                                Enter a valid invite code! Must be 12 characters.
                                             </div>
                                         ";
                                     }
