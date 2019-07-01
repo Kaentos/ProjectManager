@@ -43,6 +43,21 @@
     font-weight: bold;
     text-decoration: none;
 }
+.task-DIV-title2 {
+    font-size: 1.3rem;
+    font-weight: bold;
+}
+.task-DIV-Des {
+    font-size: 1.1rem;
+}
+.task-DIV-text a {
+    color: #212529;
+    text-decoration: none;
+}
+.task-DIV-text a:hover {
+    color: #212529;
+    text-decoration: none;
+}
 /* END Task */
 
 

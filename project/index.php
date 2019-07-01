@@ -17,7 +17,7 @@
     }
 
     if (isset($projectID)){
-        $projectData = getData($conn, $projectID, $UserData["id"]);
+        $projectData = getSingleProjectData($conn, $projectID, $UserData["id"]);
         if (isset($projectData)){
             $tasksData = getTasks($conn, $projectID);
             if(!isset($tasksData)){
@@ -25,25 +25,6 @@
             }
         } else {
             header("location: /projectmanager/dashboard/projects.php");
-        }
-    }
-
-    // Project Data
-    function getData($conn, $projectID, $userID){
-        // Get project data
-        $query = "SELECT p.*, s.name as Sname, s.badge, u.username FROM projects AS p INNER JOIN pstatus AS s ON p.idStatus=s.id INNER JOIN projectmembers AS pm ON p.id = pm.idProject INNER JOIN user AS u ON p.idCreator = u.id WHERE p.id=$projectID AND pm.idUser=$userID;";
-        if ($result = $conn->query($query)) {
-            if ($result->num_rows == 1){
-                if($row = $result->fetch_array(MYSQLI_ASSOC)){
-                    return $row;
-                }
-            } elseif ($result->num_rows > 1) {
-                die("Error P2, report with error code and project name");
-            } else {
-                return;
-            }
-        } else {
-            die();
         }
     }
 
@@ -91,7 +72,7 @@
             <main class="page-content">
                 <div class="container-fluid">
                 <div class="row d-flex justify-content-center">
-                    <div class="col-lg-11">
+                    <div class="col-lg-12">
                         <span style="font-size:2rem; font-weight: 500;">
                             <?php
                                 echo "
@@ -126,13 +107,13 @@
                                 </div>
                                 <div class="col-md-12 col-lg-6">
                                     <div class="btn-group mr-2 DIV-btn-float" style="margin-top:5px">
-                                        <a href=<?php echo "'/projectmanager/project/tasks.php?id=$projectData[id]'"; ?> class="btn btn-success task-DIV-btn">All tasks</a>
+                                        <a href=<?php echo "'/projectmanager/project/tasks?id=$projectData[id]'"; ?> class="btn btn-success task-DIV-btn">All tasks</a>
                                     </div>
                                     <?php
                                         if ($UserRole < 4){
                                             echo "
                                                 <div class='btn-group mr-2 DIV-btn-float' style='margin-top:5px'>
-                                                    <a href='/projectmanager/project/newtask.php?id=$projectData[id]' class='btn btn-success task-DIV-btn'>New task</a>
+                                                    <a href='/projectmanager/project/newtask?id=$projectData[id]' class='btn btn-success task-DIV-btn'>New task</a>
                                                 </div>
                                             ";
                                         }
@@ -148,7 +129,7 @@
                                     foreach($tasksData as $task){
                                         echo "
                                         <span class='task-DIV-list'>
-                                            <a href='/projectmanager/project/tasks.php?id=$projectData[id]&task=$task[id]'>
+                                            <a href='/projectmanager/project/task?id=$projectData[id]&task=$task[id]'>
                                                 $task[name]
                                             </a>
                                             <span class='badge badge-$task[badge]'>$task[status]</span>";
