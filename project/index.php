@@ -38,7 +38,7 @@
                         "des" => $_POST["taskDes"],
                         "status" => $_POST["taskStatus"]
                     ];
-                    print_r($Data);
+                    addNewTask($conn, $projectID, $UserData["id"], $Data);
                 } else {
                     echo "<script type='text/javascript'>alert('Can\'t validate status value! If you didn\'t change value report with error MTS!');</script>";
                 }
@@ -48,17 +48,15 @@
         } else {
             echo "<script type='text/javascript'>alert('Task name must have 1 to 60 characters.');</script>";
         }
-
-        // addNewTask($conn, $projectID, $UserData["id"]);
     }
 
-    function addNewTask($conn, $projectID, $userID){
+    function addNewTask($conn, $projectID, $userID, $task){
         $currentDate = getCurrentDate();
-        $role = 1;
-        if(!($stmt = $conn->prepare("INSERT INTO projects (name, des, code, idStatus, idCreator, creationDate, lastupdatedDate) VALUES (?,?,?,?,?,?,?)"))) {
+
+        if(!($stmt = $conn->prepare("INSERT INTO tasks (idProject, name, des, idStatus, idCreator, lastupdateUser, creationDate, lastupdatedDate) VALUES (?,?,?,?,?,?,?,?)"))) {
             die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
         }
-        if(!$stmt->bind_param("sssiiss", $pname, $pdes, $InviteCode, $status, $UserData["id"], $currentDate, $currentDate)) {
+        if(!$stmt->bind_param("issiiiss", $projectID, $task["name"], $task["des"], $task["status"], $userID, $userID, $currentDate, $currentDate)) {
             die("Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error);
         }
         if(!$stmt->execute()) {
@@ -66,22 +64,6 @@
         } else{
             $last_id = mysqli_insert_id($conn);
             $stmt->close();
-        }
-
-        if(!($stmt = $conn->prepare("INSERT INTO projectmembers (idProject, idUser, idRole) VALUES (?,?,?)"))) {
-            die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
-        }
-        if(!$stmt->bind_param("iii", $last_id, $UserData["id"], $role)) {
-            die("Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error);
-        }
-        if(!$stmt->execute()) {
-            $query = "DELETE FROM projects WHERE id=$last_id";
-            if($result = $conn->query($query)){
-                die("Report with error NPD");
-            }
-            die("Execute failed: (" . $stmt->errno . ") " . $stmt->error);
-        } else {
-            header("location: projects.php");
         }
         return;
     }
