@@ -19,7 +19,7 @@
     if (isset($projectID)){
         $projectData = getSingleProjectData($conn, $projectID, $UserData["id"]);
         if (isset($projectData)){
-            $tasksData = getTasks($conn, $projectID);
+            $tasksData = get5Tasks($conn, $projectID);
             if(!isset($tasksData)){
                 $createTask = true;
             }
@@ -28,31 +28,64 @@
         }
     }
 
-    // Tasks Data
-    function getTasks($conn, $projectID){
-        $tasksData = array();
-        $query = "SELECT t.*, s.name AS status, s.badge FROM tasks AS t INNER JOIN projects AS p ON t.idProject=p.id INNER JOIN tstatus AS s ON t.idStatus=s.id WHERE p.id=$projectID ORDER BY t.lastupdatedDate DESC LIMIT 5";
-        if ($result = $conn->query($query)) {
-            if ($result->num_rows >= 1){
-                while($row = $result->fetch_array(MYSQLI_ASSOC)){
-                    array_push($tasksData, $row);
+    if (isset($_POST["newTaskBTN"])){
+        if ( isset($_POST["taskName"]) && strlen($_POST["taskName"]) <= 60) {
+            if (isset($_POST["taskDes"]) && strlen($_POST["taskDes"]) <= 150) {
+                if (isset($_POST["taskStatus"]) && is_numeric($_POST["taskStatus"]) && checkTaskStatusID($conn, $_POST["taskStatus"])) {
+                    $Data = [
+                        "name" => $_POST["taskName"],
+                        "des" => $_POST["taskDes"],
+                        "status" => $_POST["taskStatus"]
+                    ];
+                } else {
+                    echo "Wrong task status";
                 }
-            } elseif ($result->num_rows == 0) {
-                return;
             } else {
-                die();
+                echo "Wrong task des";
             }
         } else {
-            die();
+            echo "Wrong task name";
         }
-        return $tasksData;
+
+        addNewTask($conn, $projectID, $UserData["id"]);
     }
 
-    function getIssues(){
-        
+    function addNewTask($conn, $projectID, $userID){
+        $currentDate = getCurrentDate();
+        $role = 1;
+        if(!($stmt = $conn->prepare("INSERT INTO projects (name, des, code, idStatus, idCreator, creationDate, lastupdatedDate) VALUES (?,?,?,?,?,?,?)"))) {
+            die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
+        }
+        if(!$stmt->bind_param("sssiiss", $pname, $pdes, $InviteCode, $status, $UserData["id"], $currentDate, $currentDate)) {
+            die("Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error);
+        }
+        if(!$stmt->execute()) {
+            die("Execute failed: (" . $stmt->errno . ") " . $stmt->error);
+        } else{
+            $last_id = mysqli_insert_id($conn);
+            $stmt->close();
+        }
+
+        if(!($stmt = $conn->prepare("INSERT INTO projectmembers (idProject, idUser, idRole) VALUES (?,?,?)"))) {
+            die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
+        }
+        if(!$stmt->bind_param("iii", $last_id, $UserData["id"], $role)) {
+            die("Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error);
+        }
+        if(!$stmt->execute()) {
+            $query = "DELETE FROM projects WHERE id=$last_id";
+            if($result = $conn->query($query)){
+                die("Report with error NPD");
+            }
+            die("Execute failed: (" . $stmt->errno . ") " . $stmt->error);
+        } else {
+            header("location: projects.php");
+        }
+        return;
     }
 
     $UserRole = getUserProjectRole($conn, $projectID, $UserData["id"]);
+    $AllProjectStatus = getTasksStatus($conn);
 ?>
 
 <html lang="en">
@@ -221,13 +254,35 @@
                         <div class="modal-content">
                             <!-- Head -->
                             <div class="modal-header">
+                                <span class="modal-title"> Create new task </span>
                                 <button type="button" class="close" data-dismiss="modal" aria-label=""><span>×</span></button>
                             </div>        
                             <!-- Body -->
                             <div class="modal-body">
                                 <form method="POST" action="">
-                                    Task name:
-                                    <input type='text' class='form-control edit-DIV-Input' name='TaskName' autocomplete='off'/>
+                                    <span class="modal-subtitle">Task name:</span>
+                                    <input type='text' class='form-control edit-DIV-Input' name='taskName' autocomplete='off'/>
+
+                                    <span class="modal-subtitle">Description:</span>
+                                    <textarea class='form-control edit-DIV-Input' rows='3' name='taskDes' autocomplete='off'></textarea>
+
+                                    <span class="modal-subtitle">Status:</span>
+
+                                    <div class="form-group">
+                                        <select class="form-control edit-DIV-Input" name="taskStatus">
+                                            <?php
+                                                foreach($AllProjectStatus as $status){
+                                                    if ($status["id"] != $projectData["idStatus"]){
+                                                        echo "<option value='$status[id]'>$status[name]</option>";
+                                                    } else {
+                                                        echo "<option value='$status[id]' selected>$status[name]</option>";
+                                                    }
+                                                }
+                                            ?>
+                                        </select>
+                                        <div class="invalid-feedback">Don't change values, if you didn't report it.</div>
+                                    </div>
+                                    <input type="submit" class="btn btn-success font-weight-bold" name="newTaskBTN" value="Create task">
                                 </form>                
                             </div>
                                     

@@ -73,6 +73,53 @@
     // END PROJECT FUNCTIONS
 
 
+    // TASK FUNCTIONS
+
+    // Task status
+
+    // Get tasks 5 for a given project ID
+    function get5Tasks($conn, $projectID){
+        $tasksData = array();
+        $query = "SELECT t.*, s.name AS status, s.badge FROM tasks AS t INNER JOIN projects AS p ON t.idProject=p.id INNER JOIN tstatus AS s ON t.idStatus=s.id WHERE p.id=$projectID ORDER BY t.lastupdatedDate DESC LIMIT 5";
+        if ($result = $conn->query($query)) {
+            if ($result->num_rows >= 1){
+                while($row = $result->fetch_array(MYSQLI_ASSOC)){
+                    array_push($tasksData, $row);
+                }
+            } elseif ($result->num_rows == 0) {
+                return;
+            } else {
+                die();
+            }
+        } else {
+            die();
+        }
+        return $tasksData;
+    }
+
+
+    // Task status
+    function getTasksStatus($conn){
+        $data = array();
+        $query = "SELECT * FROM tstatus ORDER BY name;";
+        if ($result = $conn->query($query)) {
+            if ($result->num_rows > 0){
+                while($row = $result->fetch_array(MYSQLI_ASSOC)){
+                    array_push($data, $row);
+                }
+            } else {
+                die("Error PS0");
+            }
+        } else {
+            die();
+        }
+        return $data;
+    }
+
+    // END OF TASK
+
+
+
     // USER FUNCTIONS
 
     // Get username

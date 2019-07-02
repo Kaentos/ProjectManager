@@ -182,7 +182,7 @@
                         if(isset($tasksData) && !isset($NoTasks)){
                             foreach($tasksData as $task){
                                 echo "
-                                <div class='col-lg-12 col-xl-12 task-DIV'>
+                                <div class='col-lg-12 col-xl-6 task-DIV'>
                                     <div class='btn-toolbar row' style='margin-top:15px'>
                                         <div class='col-lg-12' style='margin-top:5px;'>
                                             <span class='task-DIV-title2 task-DIV-text'>

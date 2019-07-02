@@ -51,7 +51,7 @@
             $desERR = 0;
             $nameERR = -1;
             $statusERR = -1;
-        } elseif (!isset($_POST["status"]) || !is_numeric($_POST["status"]) || !checkStatusID($conn, $_POST["status"])) {
+        } elseif (!isset($_POST["status"]) || !is_numeric($_POST["status"]) || !checkProjectStatusID($conn, $_POST["status"])) {
             $statusERR = 0;
             $nameERR = -1;
             $desERR = -1;
