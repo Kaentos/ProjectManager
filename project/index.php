@@ -4,6 +4,7 @@
         header("Location: /projectmanager/");
     } else {
         include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/getFunctions.php";
+        include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/checkFunctions.php";
         include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/sessionCheckTime.php";
         include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/databaseConnections.php";
         $conn = ConnectRoot();
@@ -29,8 +30,8 @@
     }
 
     if (isset($_POST["newTaskBTN"])){
-        if ( isset($_POST["taskName"]) && strlen($_POST["taskName"]) <= 60) {
-            if (isset($_POST["taskDes"]) && strlen($_POST["taskDes"]) <= 150) {
+        if ( isset($_POST["taskName"]) && strlen($_POST["taskName"]) <= 60 && strlen($_POST["taskName"]) > 0) {
+            if (isset($_POST["taskDes"]) && strlen($_POST["taskDes"]) <= 150 && strlen($_POST["taskDes"]) > 0) {
                 if (isset($_POST["taskStatus"]) && is_numeric($_POST["taskStatus"]) && checkTaskStatusID($conn, $_POST["taskStatus"])) {
                     $Data = [
                         "name" => $_POST["taskName"],
@@ -47,7 +48,7 @@
             echo "Wrong task name";
         }
 
-        addNewTask($conn, $projectID, $UserData["id"]);
+        // addNewTask($conn, $projectID, $UserData["id"]);
     }
 
     function addNewTask($conn, $projectID, $userID){
