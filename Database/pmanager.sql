@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 30-Jun-2019 às 21:55
+-- Generation Time: 03-Jul-2019 às 00:02
 -- Versão do servidor: 10.1.39-MariaDB
 -- versão do PHP: 7.3.5
 
@@ -313,7 +313,8 @@ INSERT INTO `projectmembers` (`idProject`, `idUser`, `idRole`) VALUES
 (13, 8, 1),
 (3, 9, 3),
 (4, 8, 3),
-(3, 11, 4);
+(3, 11, 4),
+(12, 11, 4);
 
 -- --------------------------------------------------------
 
@@ -338,10 +339,10 @@ CREATE TABLE `projects` (
 --
 
 INSERT INTO `projects` (`id`, `name`, `des`, `code`, `idStatus`, `idCreator`, `creationDate`, `idUpdateUser`, `lastupdatedDate`) VALUES
-(3, 'Bananas Loucas', 'Teste de update\r\nTeste', 'eftzvzijl7e6', 5, 8, '2019-06-26 01:00:00', 8, '2019-06-30 21:54:38'),
+(3, 'Problem ', 'Teste god', 'eftzvzijl7e6', 5, 8, '2019-06-26 01:00:00', 8, '2019-07-02 22:15:36'),
 (4, 'Laranjas', 'yup', 'c398wgcfhbno', 1, 9, '2019-06-26 09:00:00', 9, '2019-06-26 09:00:00'),
-(12, 'Teste', 'teste', 'tv1phxpqj9dk', 2, 8, '2019-06-28 07:17:33', 8, '2019-06-28 07:17:33'),
-(13, 'teste2', 'teste2', 'ijlvpua79wks', 2, 8, '2019-06-28 07:19:19', 8, '2019-06-28 07:19:19');
+(12, 'Not teste', 'teste', 'drrytauujooj', 5, 8, '2019-06-28 07:17:33', 8, '2019-06-30 21:57:06'),
+(13, 'Ya boi', 'teste2', 's2w4hnhljjit', 2, 8, '2019-06-28 07:19:19', 8, '2019-06-30 21:57:13');
 
 -- --------------------------------------------------------
 
@@ -397,7 +398,7 @@ CREATE TABLE `tasks` (
   `id` int(11) NOT NULL,
   `idProject` int(11) NOT NULL,
   `name` varchar(60) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `Des` varchar(80) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `Des` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL,
   `idStatus` int(11) NOT NULL,
   `idCreator` int(11) NOT NULL,
   `lastupdateUser` int(11) NOT NULL,
@@ -415,7 +416,9 @@ INSERT INTO `tasks` (`id`, `idProject`, `name`, `Des`, `idStatus`, `idCreator`, 
 (3, 3, 'Blyat', 'sdfahjdsasdajdsadsahhdkjkdsahjkdsakjhkjhdaskjdjshjkdjskahkjdhaskjdsahjkjdhsajhkd', 4, 8, 8, '2019-06-30 02:00:00', '2019-06-30 02:00:00'),
 (4, 3, 'miguel', 'miguel', 5, 8, 8, '2019-06-30 02:00:00', '2019-06-30 02:00:00'),
 (5, 3, 'gogogo', 'ghghgh', 3, 8, 8, '2019-06-30 03:00:00', '2019-06-30 03:00:00'),
-(6, 3, 'extra', 'sdadsadsa', 2, 8, 8, '2019-06-30 02:00:00', '2019-06-30 02:00:00');
+(6, 3, 'extra', 'sdadsadsa', 2, 8, 8, '2019-06-30 02:00:00', '2019-06-30 02:00:00'),
+(7, 3, 'Teste', 'Input new task test', 1, 8, 8, '2019-07-02 22:32:05', '2019-07-02 22:32:05'),
+(8, 3, 'Teste 2', 'Tou a fazer um teste de uma nova task para o projeto problem', 2, 8, 8, '2019-07-02 22:35:37', '2019-07-02 22:35:37');
 
 -- --------------------------------------------------------
 
@@ -577,7 +580,7 @@ ALTER TABLE `projects`
 -- AUTO_INCREMENT for table `proles`
 --
 ALTER TABLE `proles`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `pstatus`
@@ -589,7 +592,7 @@ ALTER TABLE `pstatus`
 -- AUTO_INCREMENT for table `tasks`
 --
 ALTER TABLE `tasks`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `tstatus`
