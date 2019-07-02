@@ -5,6 +5,7 @@
     } else {
         include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/getFunctions.php";
         include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/checkFunctions.php";
+        include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/otherFunctions.php";
         include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/sessionCheckTime.php";
         include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/databaseConnections.php";
         $conn = ConnectRoot();
@@ -96,15 +97,16 @@
             if(array_key_exists($_POST["filter"], $orderDic)){
                 $filterORDER = $orderDic["$_POST[filter]"];
             } else {
-                echo "Invalid order filter value";
-                $filterERR = true;
+                $info =  "Invalid order filter value! If you didn't change anything report with TFV!";
+                showAlert($info);
             }
         }
         if(isset($_POST["filterStatus"])){
             if(is_numeric($_POST["filterStatus"]) && checkTaskStatusID($conn, $_POST["taskStatus"])){
                 $filterStatusID = $_POST["filterStatus"];
             } else {
-                echo "Invalid status filter value";
+                $info = "Invalid status filter value! If you didn't change anything report with TFS!";
+                showAlert($info);
             }
         }
     }
