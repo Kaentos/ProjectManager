@@ -102,7 +102,7 @@
             }
         }
         if(isset($_POST["filterStatus"])){
-            if(is_numeric($_POST["filterStatus"]) && checkTaskStatusID($conn, $_POST["taskStatus"])){
+            if(is_numeric($_POST["filterStatus"]) && checkTaskStatusID($conn, $_POST["filterStatus"])){
                 $filterStatusID = $_POST["filterStatus"];
             } else {
                 $info = "Invalid status filter value! If you didn't change anything report with TFS!";
