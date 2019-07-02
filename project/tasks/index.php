@@ -51,48 +51,23 @@
     }
 
     $UserRole = getUserProjectRole($conn, $projectID, $UserData["id"]);
+    $orderDic = [
+        "name" => "ORDER BY t.name",
+        "cd" => "ORDER BY t.creationDate DESC",
+        "lud" => "ORDER BY t.lastupdatedDate DESC"
+    ];
+    $filer1Selected = $filer2Selected = false;
+    $NoTasks = false;
 
-    // Search by name
+    // Apply filters
     if (isset($_POST["searchBTN"])){
+
+        // Filter name
         if(isset($_POST["searchTask"])){
             $StaskName = $_POST["searchTask"];
             $StaskName = "%".$StaskName."%";
+            $filterName = "AND t.name LIKE ?";
         }
-        if (isset($StaskName)){
-            if(!($stmt = $conn->prepare("SELECT t.*, s.name AS status, s.badge FROM tasks AS t INNER JOIN projects AS p ON t.idProject=p.id INNER JOIN tstatus AS s ON t.idStatus=s.id WHERE p.id=$projectID AND t.name LIKE ? ORDER BY t.lastupdatedDate DESC LIMIT 25"))) {
-                die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
-            }
-            if(!$stmt->bind_param("s", $StaskName)) {
-                die("Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error);
-            }
-            if(!$stmt->execute()) {
-                die("Execute failed: (" . $stmt->errno . ") " . $stmt->error);
-            }
-            if ($result = $stmt->get_result()) {
-                if ($result->num_rows > 0){
-                    unset($tasksData);
-                    $tasksData = array();
-                    while ($row = $result->fetch_array(MYSQLI_ASSOC)){
-                        array_push($tasksData, $row); 
-                    }
-                    $stmt->close();
-                } else {
-                    $NoTasks = true;
-                }
-            } else {
-                printf("Error in select user query");
-                return false;
-            }
-        }
-    }
-
-    $orderDic = [
-        "name" => "ORDER BY t.name",
-        "cd" => "ORDER BY t.creationDate",
-        "lud" => "ORDER BY t.lastupdatedDate"
-    ];
-    $filer1Selected = $filer2Selected = false;
-    if (isset($_POST["FilterSelects"])) {
 
         // Filter order
         if(isset($_POST["filter"])){
@@ -111,7 +86,7 @@
         // Filter group / status
         if(isset($_POST["filterStatus"])){
             if(is_numeric($_POST["filterStatus"]) && checkTaskStatusID($conn, $_POST["filterStatus"])){
-                $filterStatusID = "GROUP BY t.idStatus=". $_POST["filterStatus"];
+                $filterStatusID = "AND t.idStatus=". $_POST["filterStatus"];
                 $filer2Selected = $_POST["filterStatus"];
             } elseif ($_POST["filterStatus"] == -1) {
                 $filterStatusID = "";
@@ -125,34 +100,43 @@
             $filterStatusID = "";
         }
 
-        echo $filterORDER ." ". $filterStatusID ." ". $filer2Selected;
+        if ($filterOK = TaskFilter($conn, $projectID, $filterName, $filterORDER, $filterStatusID, $StaskName)){
+            $tasksData = $filterOK;
+        }
     }
 
-    function TaskFilter(){
-        if(!($stmt = $conn->prepare("SELECT t.*, s.name AS status, s.badge FROM tasks AS t INNER JOIN projects AS p ON t.idProject=p.id INNER JOIN tstatus AS s ON t.idStatus=s.id WHERE p.id=$projectID AND t.name LIKE ? ORDER BY t.lastupdatedDate DESC LIMIT 25"))) {
+    function TaskFilter($conn, $projectID, $NAME, $ORDER, $GROUP, $StaskName){
+        if(!($stmt = $conn->prepare("SELECT t.*, s.name AS status, s.badge FROM tasks AS t INNER JOIN projects AS p ON t.idProject=p.id INNER JOIN tstatus AS s ON t.idStatus=s.id WHERE p.id=$projectID $NAME $GROUP $ORDER LIMIT 25"))) {
             die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
         }
+        
         if(!$stmt->bind_param("s", $StaskName)) {
             die("Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error);
         }
+        
         if(!$stmt->execute()) {
             die("Execute failed: (" . $stmt->errno . ") " . $stmt->error);
         }
         if ($result = $stmt->get_result()) {
             if ($result->num_rows > 0){
-                unset($tasksData);
                 $tasksData = array();
                 while ($row = $result->fetch_array(MYSQLI_ASSOC)){
                     array_push($tasksData, $row); 
                 }
                 $stmt->close();
             } else {
-                $NoTasks = true;
+                $GLOBALS["NoTasks"] = true;
             }
         } else {
             printf("Error in select user query");
             return false;
         }
+        if (isset($tasksData)){
+            return $tasksData;
+        } else {
+            return false;
+        }
+        
     }
 
     $AllTasksStatus = getTasksStatus($conn);
@@ -204,6 +188,7 @@
                     
                     <div class="col-lg-12 filter-DIV">
                         <div class="row" style='margin-top:15px;'>
+                            <!-- Name filter -->
                             <div class="col-md-12 col-lg-4 filter-DIV-text">
                                 <form method="POST" action="">
                                     <div class="input-group">
@@ -214,10 +199,9 @@
                                             </button>
                                         </div>
                                     </div>
-                                </form>
                             </div>
+                            <!-- Selects filter -->
                             <div class="col-12 col-sm-12 col-md-9 col-lg-6">
-                                <form method="POST" action="">
                                     <div class="input-group">
                                         <select name="filter" class="form-control" style="background: #3a3f48; color:white; border: none">
                                             <option <?php if(!$filer1Selected){ echo "selected"; } ?> disabled> Order by... </option>
@@ -239,8 +223,6 @@
                                                 }
                                             ?>
                                         </select>
-                                        &nbsp
-                                        <input type="submit" class="btn btn-dark" name="FilterSelects" value="Apply">
                                     </div>
                                     
                                 </form>
@@ -261,7 +243,7 @@
                     
                     <!-- Task -->
                     <?php
-                        if(isset($tasksData) && !isset($NoTasks)){
+                        if(isset($tasksData) && !$NoTasks){
                             foreach($tasksData as $task){
                                 echo "
                                 <div class='col-lg-12 col-xl-6 task-DIV'>
@@ -296,7 +278,7 @@
                             }
                         } elseif (isset($createTask) && $createTask) {
                             echo "<p class='task-DIV-list'> No tasks yet, create them! </p>";
-                        } elseif (isset($NoTasks) && $NoTasks){
+                        } elseif ($NoTasks){
                             echo "<p class='task-DIV-list'> No tasks found! </p>";
                         }
                     ?>
