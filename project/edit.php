@@ -41,12 +41,12 @@
     $nameERR = $desERR = $statusERR = -1;
     if(isset($_POST["updateP"])){
         updateProject:
-        if(!isset($_POST["name"]) || strlen($_POST["name"]) > 20 || strlen($_POST["name"]) == 0){
+        if(!isset($_POST["name"]) || strlen($_POST["name"]) > 20 || empty($_POST["name"])){
             $ERR = $_POST["name"];
             $nameERR = 0;
             $desERR = -1;
             $statusERR = -1;
-        } elseif (!isset($_POST["des"]) || strlen($_POST["des"]) > 60 || strlen($_POST["des"]) == 0) {
+        } elseif (!isset($_POST["des"]) || strlen($_POST["des"]) > 60 || empty($_POST["des"])) {
             $ERR = $_POST["des"];
             $desERR = 0;
             $nameERR = -1;

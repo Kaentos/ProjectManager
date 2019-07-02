@@ -30,8 +30,8 @@
     }
 
     if (isset($_POST["newTaskBTN"])){
-        if ( isset($_POST["taskName"]) && strlen($_POST["taskName"]) <= 60 && strlen($_POST["taskName"]) > 0) {
-            if (isset($_POST["taskDes"]) && strlen($_POST["taskDes"]) <= 150 && strlen($_POST["taskDes"]) > 0) {
+        if ( isset($_POST["taskName"]) && strlen($_POST["taskName"]) <= 60 && !empty($_POST["taskName"])) {
+            if (isset($_POST["taskDes"]) && strlen($_POST["taskDes"]) <= 150 && !empty($_POST["taskDes"])) {
                 if (isset($_POST["taskStatus"]) && is_numeric($_POST["taskStatus"]) && checkTaskStatusID($conn, $_POST["taskStatus"])) {
                     $Data = [
                         "name" => $_POST["taskName"],
