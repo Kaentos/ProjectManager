@@ -10,6 +10,22 @@
 .pointer-mouse{cursor: pointer;}
 
 /* PROJECT PAGE */
+
+/* Filters */
+/* Color: #575757 rgb(87, 87, 87) */
+.filter-DIV{
+    background-color: rgba(87,87,87,.05);
+    margin-bottom: 10px;
+    border: 2px solid #575757;
+    border-radius: 5px;
+}
+.filter-DIV-text{
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+
+/* END Filters */
+
 /* Task */
 /* Color: #007328 rgb(0, 115, 40) */
 .hr-task{border-color: #007328;}
@@ -24,7 +40,7 @@
     font-weight: bold;
 }
 .task-DIV-btn{
-    font-size: 1.2rem !important;
+    font-size: 1.1rem !important;
     font-weight: 500 !important;
 }
 .task-DIV-list{

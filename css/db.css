@@ -76,7 +76,8 @@
     left: 0;
     top: 10px;
     border-radius: 0 4px 4px 0px;
-    width: 35px;
+    width: 27px;
+    height: 54px;
     transition-delay: 0.3s;
   }
   .page-wrapper.toggled #show-sidebar {

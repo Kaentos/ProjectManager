@@ -13,7 +13,7 @@
     if (isset($_GET["id"]) && is_numeric($_GET["id"])){
         $projectID = $_GET["id"];
     } else {
-        header("location: /projectmanager/dashboard/projects.php");
+        header("location: /projectmanager/dashboard/projects");
     }
 
     if (isset($projectID)){
@@ -24,7 +24,7 @@
                 $createTask = true;
             }
         } else {
-            header("location: /projectmanager/dashboard/projects.php");
+            header("location: /projectmanager/dashboard/projects");
         }
     }
 
@@ -83,7 +83,7 @@
                                 ";
                                 if ($UserRole < 3){
                                     echo "
-                                        <a href='/projectmanager/project/editproject?id=$projectData[id]' class='edit-pen'>
+                                        <a href='/projectmanager/project/edit?id=$projectData[id]' class='edit-pen'>
                                             <i class='fas fa-pen'></i>
                                         </a>
                                     ";
@@ -112,7 +112,7 @@
                                         if(isset($tasksData)) {
                                             echo "
                                             <div class='btn-group mr-2 DIV-btn-float' style='margin-top:5px'>
-                                                <a href='/projectmanager/project/tasks?id=$projectData[id]' class='btn btn-success task-DIV-btn'>All tasks</a>
+                                                <a href='/projectmanager/project/tasks/?id=$projectData[id]' class='btn btn-success task-DIV-btn'>All tasks</a>
                                             </div>
                                             ";
                                         }
@@ -138,13 +138,13 @@
                                     foreach($tasksData as $task){
                                         echo "
                                         <span class='task-DIV-list'>
-                                            <a href='/projectmanager/project/task?id=$projectData[id]&task=$task[id]'>
+                                            <a href='/projectmanager/project/tasks/task?id=$projectData[id]&task=$task[id]'>
                                                 $task[name]
                                             </a>
                                             <span class='badge badge-$task[badge]'>$task[status]</span>";
                                             if ($UserRole < 3){
                                                 echo "
-                                                    <a href='#' class='edit-pen'>
+                                                    <a href='/projectmanager/project/tasks/edit?id=$projectData[id]&task=$task[id]' class='edit-pen'>
                                                         <i class='fas fa-pen'></i>
                                                     </a>
                                                 ";

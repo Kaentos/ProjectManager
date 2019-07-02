@@ -1,5 +1,5 @@
 <a id="show-sidebar" class="btn btn-sm btn-dark" href="#">
-    <i class="fas fa-bars"></i>
+    <i class="fas fa-bars" style="padding-top: 15px"></i>
 </a>
 <nav id="sidebar" class="sidebar-wrapper">
     <div class="sidebar-content">

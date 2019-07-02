@@ -109,11 +109,12 @@
     }
 
     function addUserToProject($conn, $ProjectData, $UserData){
-        $query = "INSERT INTO projectmembers (idProject, idUser, idRole) VALUES ('$ProjectData[id]', '$UserData[id]', 5);";
+        $memberRole = 4;
+        $query = "INSERT INTO projectmembers (idProject, idUser, idRole) VALUES ('$ProjectData[id]', '$UserData[id]', $memberRole);";
         if (!$conn->query($query)) {
-            die();
+            die("$ProjectData[id], $UserData[id], $memberRole");
         } else {
-            header("Location: /projectmanager/dashboard/projects.php");
+            header("Location: /projectmanager/dashboard/projects");
         }
         return;
     }

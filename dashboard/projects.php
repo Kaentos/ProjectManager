@@ -101,7 +101,7 @@
                                                 ";
                                     if ($Project["Role"] < 3){
                                         echo "
-                                                <a href='/projectmanager/project/editproject?id=$Project[id]' class='btn btn-light float-right'>
+                                                <a href='/projectmanager/project/edit?id=$Project[id]' class='btn btn-light float-right'>
                                                     <i class='fas fa-cog'></i>
                                                 </a>
                                         ";
