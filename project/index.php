@@ -5,6 +5,7 @@
     } else {
         include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/getFunctions.php";
         include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/checkFunctions.php";
+        include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/otherFunctions.php";
         include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/sessionCheckTime.php";
         include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/databaseConnections.php";
         $conn = ConnectRoot();
@@ -40,13 +41,16 @@
                     ];
                     addNewTask($conn, $projectID, $UserData["id"], $Data);
                 } else {
-                    echo "<script type='text/javascript'>alert('Can\'t validate status value! If you didn\'t change value report with error MTS!');</script>";
+                    $info = "Can\'t validate status value! If you didn\'t change value report with error MTS!";
+                    showAlert($info);
                 }
             } else {
-                echo "<script type='text/javascript'>alert('Task description must have 1 to 150 characters.');</script>";
+                $info = "Task description must have 1 to 150 characters.";
+                showAlert($info);
             }
         } else {
-            echo "<script type='text/javascript'>alert('Task name must have 1 to 60 characters.');</script>";
+            $info = "Task name must have 1 to 60 characters.";
+            showAlert($info);
         }
     }
 

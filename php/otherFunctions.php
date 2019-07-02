@@ -7,6 +7,10 @@
         return $data;
     }
 
+    function showAlert($info){
+        echo "<script type='text/javascript'>alert('$info');</script>";
+    }
+
     // Generate Invite Code
     function otherGenInviteCode($conn){
         $Invalid = true;

@@ -4,6 +4,7 @@
         header("Location: /projectmanager/");
     } else {
         include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/getFunctions.php";
+        include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/checkFunctions.php";
         include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/sessionCheckTime.php";
         include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/databaseConnections.php";
         $conn = ConnectRoot();
@@ -50,6 +51,7 @@
 
     $UserRole = getUserProjectRole($conn, $projectID, $UserData["id"]);
 
+    // Search by name
     if (isset($_POST["searchBTN"])){
         if(isset($_POST["searchTask"])){
             $StaskName = $_POST["searchTask"];
@@ -82,6 +84,32 @@
             }
         }
     }
+
+    $orderDic = [
+        "name" => "ORDER BY t.name",
+        "cd" => "ORDER BY t.creationDate",
+        "lud" => "ORDER BY t.lastupdatedDate"
+    ];
+    
+    if (isset($_POST["FilterSelects"])) {
+        if(isset($_POST["filter"])){
+            if(array_key_exists($_POST["filter"], $orderDic)){
+                $filterORDER = $orderDic["$_POST[filter]"];
+            } else {
+                echo "Invalid order filter value";
+                $filterERR = true;
+            }
+        }
+        if(isset($_POST["filterStatus"])){
+            if(is_numeric($_POST["filterStatus"]) && checkTaskStatusID($conn, $_POST["taskStatus"])){
+                $filterStatusID = $_POST["filterStatus"];
+            } else {
+                echo "Invalid status filter value";
+            }
+        }
+    }
+
+    $AllTasksStatus = getTasksStatus($conn);
 ?>
 
 <html lang="en">
@@ -130,7 +158,7 @@
                     
                     <div class="col-lg-12 filter-DIV">
                         <div class="row" style='margin-top:15px;'>
-                            <div class="col-lg-4 filter-DIV-text">
+                            <div class="col-md-12 col-lg-4 filter-DIV-text">
                                 <form method="POST" action="">
                                     <div class="input-group">
                                         <input type="text" class="form-control" placeholder="Search by task name" name="searchTask">
@@ -142,32 +170,35 @@
                                     </div>
                                 </form>
                             </div>
-                            <div class="col-lg-6">
+                            <div class="col-12 col-sm-12 col-md-9 col-lg-6">
                                 <form method="POST" action="">
                                     <div class="input-group">
-                                        <select name="FilterSelect" class="form-control" style="background: #3a3f48; color:white; border: none" onchange="this.form.submit()">
+                                        <select name="filter" class="form-control" style="background: #3a3f48; color:white; border: none">
                                             <option selected disabled> Order by... </option>
-                                            <option value=""> Creation date </option>
-                                            <option value=""> Name </option>
-                                            <option value=""> Last update date </option>
+                                            <option value="name"> Name </option>
+                                            <option value="cd"> Creation date </option>
+                                            <option value="lud"> Last update date </option>
                                         </select>
                                         &nbsp
-                                        <select name="FilterStatusSelect" class="form-control" style="background: #3a3f48; color:white; border: none" onchange="this.form.submit()">
-                                            <option selected disabled> All status </option>
-                                            <option value=""> Cancelled </option>
-                                            <option value=""> Completed </option>
-                                            <option value=""> In Progress </option>
-                                            <option value=""> Paused </option>
-                                            <option value=""> Stopped </option>
+                                        <select name="filterStatus" class="form-control" style="background: #3a3f48; color:white; border: none">
+                                            <option selected disabled> Task status... </option>
+                                            <?php
+                                                foreach($AllTasksStatus as $task){
+                                                    echo "<option value='$task[id]'>$task[name]</option>";
+                                                }
+                                            ?>
                                         </select>
+                                        &nbsp
+                                        <input type="submit" class="btn btn-dark" name="FilterSelects" value="Apply">
                                     </div>
+                                    
                                 </form>
                             </div>
-                            <div class="col-lg-2">
+                            <div class="col-12 col-sm-12 col-md-3 col-lg-2">
                                 <?php
                                     if ($UserRole < 4){
                                         echo "
-                                            <a class='btn btn-dark' data-toggle='modal' href='#newTaskModal' style='margin-bottom: 15px'>
+                                            <a class='btn btn-dark float-right' data-toggle='modal' href='#newTaskModal' style='margin-bottom: 15px'>
                                                 New Task
                                             </a>
                                         ";
