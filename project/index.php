@@ -38,14 +38,15 @@
                         "des" => $_POST["taskDes"],
                         "status" => $_POST["taskStatus"]
                     ];
+                    print_r($Data);
                 } else {
-                    echo "Wrong task status";
+                    echo "<script type='text/javascript'>alert('Can\'t validate status value! If you didn\'t change value report with error MTS!');</script>";
                 }
             } else {
-                echo "Wrong task des";
+                echo "<script type='text/javascript'>alert('Task description must have 1 to 150 characters.');</script>";
             }
         } else {
-            echo "Wrong task name";
+            echo "<script type='text/javascript'>alert('Task name must have 1 to 60 characters.');</script>";
         }
 
         // addNewTask($conn, $projectID, $UserData["id"]);
