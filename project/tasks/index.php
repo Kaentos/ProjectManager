@@ -91,23 +91,67 @@
         "cd" => "ORDER BY t.creationDate",
         "lud" => "ORDER BY t.lastupdatedDate"
     ];
-    
+    $filer1Selected = $filer2Selected = false;
     if (isset($_POST["FilterSelects"])) {
+
+        // Filter order
         if(isset($_POST["filter"])){
             if(array_key_exists($_POST["filter"], $orderDic)){
                 $filterORDER = $orderDic["$_POST[filter]"];
+                $filer1Selected = $_POST["filter"];
             } else {
                 $info =  "Invalid order filter value! If you didn't change anything report with TFV!";
                 showAlert($info);
             }
+        } else {
+            $filer1Selected = "lud";
+            $filterORDER = "ORDER BY t.lastupdatedDate";
         }
+
+        // Filter group / status
         if(isset($_POST["filterStatus"])){
             if(is_numeric($_POST["filterStatus"]) && checkTaskStatusID($conn, $_POST["filterStatus"])){
-                $filterStatusID = $_POST["filterStatus"];
+                $filterStatusID = "GROUP BY t.idStatus=". $_POST["filterStatus"];
+                $filer2Selected = $_POST["filterStatus"];
+            } elseif ($_POST["filterStatus"] == -1) {
+                $filterStatusID = "";
+                $filer2Selected = false;
             } else {
                 $info = "Invalid status filter value! If you didn't change anything report with TFS!";
                 showAlert($info);
             }
+        } else {
+            $filer2Selected = false;
+            $filterStatusID = "";
+        }
+
+        echo $filterORDER ." ". $filterStatusID ." ". $filer2Selected;
+    }
+
+    function TaskFilter(){
+        if(!($stmt = $conn->prepare("SELECT t.*, s.name AS status, s.badge FROM tasks AS t INNER JOIN projects AS p ON t.idProject=p.id INNER JOIN tstatus AS s ON t.idStatus=s.id WHERE p.id=$projectID AND t.name LIKE ? ORDER BY t.lastupdatedDate DESC LIMIT 25"))) {
+            die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
+        }
+        if(!$stmt->bind_param("s", $StaskName)) {
+            die("Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error);
+        }
+        if(!$stmt->execute()) {
+            die("Execute failed: (" . $stmt->errno . ") " . $stmt->error);
+        }
+        if ($result = $stmt->get_result()) {
+            if ($result->num_rows > 0){
+                unset($tasksData);
+                $tasksData = array();
+                while ($row = $result->fetch_array(MYSQLI_ASSOC)){
+                    array_push($tasksData, $row); 
+                }
+                $stmt->close();
+            } else {
+                $NoTasks = true;
+            }
+        } else {
+            printf("Error in select user query");
+            return false;
         }
     }
 
@@ -176,17 +220,22 @@
                                 <form method="POST" action="">
                                     <div class="input-group">
                                         <select name="filter" class="form-control" style="background: #3a3f48; color:white; border: none">
-                                            <option selected disabled> Order by... </option>
-                                            <option value="name"> Name </option>
-                                            <option value="cd"> Creation date </option>
-                                            <option value="lud"> Last update date </option>
+                                            <option <?php if(!$filer1Selected){ echo "selected"; } ?> disabled> Order by... </option>
+                                            <option <?php if($filer1Selected == "name"){ echo "selected"; } ?> value="name"> Name </option>
+                                            <option <?php if($filer1Selected == "cd"){ echo "selected"; } ?> value="cd"> Creation date </option>
+                                            <option <?php if($filer1Selected == "lud"){ echo "selected"; } ?> value="lud"> Last update date </option>
                                         </select>
                                         &nbsp
                                         <select name="filterStatus" class="form-control" style="background: #3a3f48; color:white; border: none">
-                                            <option selected disabled> Task status... </option>
+                                            <option value="-1" <?php if(!$filer2Selected){ echo "selected"; } ?>> All status </option>
                                             <?php
                                                 foreach($AllTasksStatus as $task){
-                                                    echo "<option value='$task[id]'>$task[name]</option>";
+                                                    if ($filer2Selected == $task["id"]) {
+                                                        echo "<option value='$task[id]' selected>$task[name]</option>";
+                                                    } else {
+                                                        echo "<option value='$task[id]'>$task[name]</option>";
+                                                    }
+                                                    
                                                 }
                                             ?>
                                         </select>
