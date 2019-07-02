@@ -65,7 +65,7 @@
             $last_id = mysqli_insert_id($conn);
             $stmt->close();
         }
-        return;
+        header("Refresh: 0");
     }
 
     $UserRole = getUserProjectRole($conn, $projectID, $UserData["id"]);
