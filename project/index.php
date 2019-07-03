@@ -70,7 +70,7 @@
     </head>
 
     <body>
-        <div class="page-wrapper chiller-theme toggled">
+        <div class="page-wrapper chiller-theme">
             <?php include "$_SERVER[DOCUMENT_ROOT]/projectmanager/sidebar/bar.php"; ?>
 
 

@@ -93,6 +93,24 @@
         }
     }
 
+    $commentERR = false;
+    // New comment btn
+    if (isset($_POST["newCommentBTN"])){
+        if (isset($_POST["comment"]) && !empty($_POST["comment"])){
+            $comment = $_POST["comment"];
+            $commentERR = false;
+        } else {
+            $commentERR = true;
+        }
+        if (isset($comment)){
+            addTaskNewComment($conn, $projectID, $taskID, $comment, $UserData);
+        }
+    }
+
+    function addTaskNewComment($conn, $projectID, $taskID, $comment, $UserData){
+
+    }
+
     $AllTasksStatus = getTasksStatus($conn);
 ?>
 
@@ -106,7 +124,7 @@
     </head>
 
     <body>
-        <div class="page-wrapper chiller-theme toggled">
+        <div class="page-wrapper chiller-theme">
             <?php include "$_SERVER[DOCUMENT_ROOT]/projectmanager/sidebar/bar.php"; ?>
 
 
@@ -181,9 +199,59 @@
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="col-md-12" style="background-color:black;">
-                        INSERT COMMENT
+                <hr class="w-50" style="margin-top:0px; margin-bottom:0px">
+
+                <!-- Comments -->
+                <div class="row d-flex justify-content-center" style="margin-top: 0px">
+                    <div class="col-12 d-flex justify-content-center" style="padding-left:0px">
+                        <div class="col-sm-12 col-md-10 col-lg-10 col-xl-6 Only-task-DIV-title" id="Comments" style="padding-left:5px">
+                            Comments
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-10 col-lg-10 col-xl-6" style="background-color:green;" id="#Dis">
+                        <form class="col-12" method="POST" action="" style="margin-top: 20px">
+                            <div class="row">
+                            <div class="col-lg-4 col-xl-2">
+                                    <img class="img-thumbnail" style="height: 150px; width: 100%;" src="/projectmanager/img/UIMG/9.png" alt="User picture">
+                                </div>
+                                <div class="col-lg-8 col-xl-10">
+                                    <div>
+                                        <textarea class='form-control edit-DIV-Input' placeholder="Write your comment here!" rows='5' name='comment' autocomplete='off'></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-12" style="word-break: break-word; font-size: 1.2rem; margin-top: 5px">
+                                    <input type="submit" class="btn btn-dark float-right" name="newCommentBTN" value="Reply">
+                                </div>
+
+                            </div>
+                        </form>
+
+                        <hr class="w-100" style="border-color:black">
+
+                        <!-- Comment -->
+                        <div class="col-12" style="margin-bottom: 15px">
+                            <div class="row">
+                                <div class="col-lg-4 col-xl-2">
+                                    <img class="img-thumbnail" style="height: 150px; width: 100%;" src="/projectmanager/img/UIMG/9.png" alt="User picture">
+                                </div>
+                                <div class="col-lg-8 col-xl-10">
+                                    <div class="alert alert-dark">
+                                        I don't know
+                                    </div>
+                                </div>
+                                <div class="col-12" style="word-break: break-word; font-size: 1.2rem; margin-top: 5px">
+                                    <div class="alert alert-dark">
+                                        Comment made at $taskData[lastupdatedDate] by $taskData[idUpdateUser]
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- Go back to the top -->
+                        <div class="col-12" style="margin-bottom: 20px">
+                            <a href="#Comments" class="btn btn-dark"> Back to the top </a>
+                        </div>
                     </div>
                 </div>
 

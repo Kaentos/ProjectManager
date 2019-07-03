@@ -183,7 +183,7 @@
     </head>
 
     <body>
-        <div class="page-wrapper chiller-theme toggled">
+        <div class="page-wrapper chiller-theme">
             <?php include "$_SERVER[DOCUMENT_ROOT]/projectmanager/sidebar/bar.php"; ?>
 
 
@@ -286,7 +286,7 @@
                                                 </a>
                                                 <span class='badge badge-$task[badge]'>$task[status]</span>
                                                 <span class='badge badge-dark'>$task[lastupdatedDate]</span>
-                                                <a href='#' class='btn bg-dark text-white float-right'>
+                                                <a href='/projectmanager/project/tasks/task?id=$projectData[id]&task=$task[id]#Comments' class='btn bg-dark text-white float-right'>
                                                     <i class='fas fa-comments'></i>
                                                 </a>
                                             </span>
