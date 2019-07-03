@@ -5,6 +5,7 @@
     } else {
         include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/getFunctions.php";
         include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/checkFunctions.php";
+        include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/editFunctions.php";
         include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/addFunctions.php";
         include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/otherFunctions.php";
         include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/sessionCheckTime.php";
@@ -58,6 +59,38 @@
         $currentTaskName = $taskData["name"];
         $currentTaskDes = $taskData["Des"];
         $currentTaskStatus = $taskData["idStatus"];
+    } else {
+        $currentTaskName = "";
+        $currentTaskDes = "";
+        $currentTaskStatus = "";
+    }
+
+    // Edit task btn
+    if (isset($_POST["editTaskBTN"])){
+        if ( isset($_POST["taskName"]) && strlen($_POST["taskName"]) <= 60 && !empty($_POST["taskName"])) {
+            if (isset($_POST["taskDes"]) && strlen($_POST["taskDes"]) <= 150 && !empty($_POST["taskDes"])) {
+                if (isset($_POST["taskStatus"]) && is_numeric($_POST["taskStatus"]) && checkTaskStatusID($conn, $_POST["taskStatus"])) {
+                    $Data = [
+                        "name" => $_POST["taskName"],
+                        "des" => $_POST["taskDes"],
+                        "status" => $_POST["taskStatus"]
+                    ];
+                    $currentTaskName = $Data["name"];
+                    $currentTaskDes = $Data["des"];
+                    $currentTaskStatus = $Data["status"];
+                    editTask($conn, $Data, $taskData, $UserData);
+                } else {
+                    $info = "Can\'t validate status value! If you didn\'t change value report with error MTS!";
+                    showAlert($info);
+                }
+            } else {
+                $info = "Task description must have 1 to 150 characters.";
+                showAlert($info);
+            }
+        } else {
+            $info = "Task name must have 1 to 60 characters.";
+            showAlert($info);
+        }
     }
 
     $AllTasksStatus = getTasksStatus($conn);

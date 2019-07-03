@@ -5,6 +5,7 @@
     } else {
         include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/sessionCheckTime.php";
         include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/getFunctions.php";
+        include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/editFunctions.php";
         include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/checkFunctions.php";
         include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/otherFunctions.php";
         include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/databaseConnections.php";
@@ -69,25 +70,7 @@
         }
     }
 
-    function editProject($conn, $Data, $projectData, $UserData){
-        if (!($projectData["name"] == $Data["name"] && $projectData["des"] == $Data["des"] && $projectData["idStatus"] == $Data["status"] && $projectData["code"] == $Data["code"])){
-            $currentDate = getCurrentDate();
-
-            if(!($stmt = $conn->prepare("UPDATE projects SET name=?, des=?, code=?, idStatus=?, idUpdateUser=?, lastupdatedDate=? WHERE id=?"))) {
-                die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
-            }
-            if(!$stmt->bind_param("sssiisi", $Data["name"], $Data["des"], $Data["code"], $Data["status"], $UserData["id"], $currentDate, $projectData["id"])) {
-                die("Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error);
-            }
-            if(!$stmt->execute()) {
-                die("Execute failed: (" . $stmt->errno . ") " . $stmt->error);
-            } else {
-                header("Refresh:0");
-            }
-        }
-
-        return;
-    }
+    
 ?>
 
 <html lang="en">
