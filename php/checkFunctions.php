@@ -1,5 +1,25 @@
 <?php
-    
+    // USER
+
+    // Check if user is allowed to see project data
+    function checkUserInProject($conn, $projectID, $userID){
+        $query = "SELECT pm.idRole FROM projects AS p INNER JOIN projectmembers AS pm ON p.id = pm.idProject INNER JOIN user AS u ON p.idCreator = u.id WHERE p.id=$projectID AND pm.idUser=$userID;";
+        if ($result = $conn->query($query)) {
+            if ($result->num_rows == 1){
+                if($row = $result->fetch_array(MYSQLI_ASSOC)){
+                    return true;
+                }
+            } elseif ($result->num_rows > 1) {
+                die("Error PM2, report with error code and project name");
+            } else {
+                return false;
+            }
+        } else {
+            die();
+        }
+    }
+
+    // END USER
     
     // Project
 

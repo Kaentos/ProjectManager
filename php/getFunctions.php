@@ -77,6 +77,27 @@
 
     // Task status
 
+    // Get single task
+    function getSingleTask($conn, $projectID, $taskID){
+        $taskData = array();
+        $query = "SELECT t.*, s.name AS status, s.badge FROM tasks AS t INNER JOIN projects AS p ON t.idProject=p.id INNER JOIN tstatus AS s ON t.idStatus=s.id WHERE p.id=$projectID AND t.id=$taskID";
+        if ($result = $conn->query($query)) {
+            if ($result->num_rows == 1){
+                $taskData = $result->fetch_array(MYSQLI_ASSOC);
+                return $taskData;
+            } elseif ($result->num_rows > 1) {
+                die("report with error t2");
+            } elseif ($result->num_rows == 0) {
+                return false;
+            } else {
+                die();
+            }
+        } else {
+            die();
+        }
+        die();
+    }
+
     // Get tasks 5 for a given project ID
     function get5Tasks($conn, $projectID){
         $tasksData = array();

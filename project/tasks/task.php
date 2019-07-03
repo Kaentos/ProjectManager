@@ -13,6 +13,7 @@
         $UserData = getSessionUserData($conn, $_SESSION["user"]);
     }
 
+    // Get project ID from URL GET
     if (isset($_GET["id"]) && is_numeric($_GET["id"])){
         if (checkProjectID($conn, $_GET["id"])){
             $projectID = $_GET["id"];
@@ -23,6 +24,13 @@
     } else {
         header("location: /projectmanager/dashboard/projects");
     }
+
+    // Checks if user has permission to access project content
+    if (!checkUserInProject($conn, $projectID, $UserData["id"])){
+        header("location: /projectmanager/dashboard/projects");
+    }
+
+    // Get task ID from URL GET
     if (isset($_GET["task"]) && is_numeric($_GET["task"])){
         if (checkTaskID($conn, $_GET["task"])){
             $taskID = $_GET["task"];
@@ -33,38 +41,18 @@
         header("location: /projectmanager/project?id=$projectID");
     }
 
+    // Get task data
     if (isset($projectID)){
         $projectData = getSingleProjectData($conn, $projectID, $UserData["id"]);
         if (isset($projectData)){
-            // $taskData = getTask($conn, $projectID);
+            $taskData = getSingleTask($conn, $projectID, $taskID);
+            print_r($taskData);
             if(!isset($tasksData)){
                 $createTask = true;
             }
         } else {
             header("location: /projectmanager/dashboard/projects");
         }
-    }
-
-    // Tasks Data
-    function getTask($conn, $projectID, $taskID){
-        $taskData = array();
-        $query = "SELECT t.*, s.name AS status, s.badge FROM tasks AS t INNER JOIN projects AS p ON t.idProject=p.id INNER JOIN tstatus AS s ON t.idStatus=s.id WHERE p.id=$projectID AND t.id=$taskID";
-        if ($result = $conn->query($query)) {
-            if ($result->num_rows == 1){
-                $row = $result->fetch_array(MYSQLI_ASSOC);
-                array_push($taskData, $row);
-                return $taskData;
-            } elseif ($result->num_rows > 1) {
-                die("report with error t2");
-            } elseif ($result->num_rows == 0) {
-                return;
-            } else {
-                die();
-            }
-        } else {
-            die();
-        }
-        die();
     }
 
     $UserRole = getUserProjectRole($conn, $projectID, $UserData["id"]);
