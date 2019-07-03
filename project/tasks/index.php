@@ -55,7 +55,7 @@
     $UserRole = getUserProjectRole($conn, $projectID, $UserData["id"]);
     $orderDic = [
         "name" => "ORDER BY t.name",
-        "cd" => "ORDER BY t.creationDate DESC",
+        "cd" => "ORDER BY t.creationDate ASC",
         "lud" => "ORDER BY t.lastupdatedDate DESC"
     ];
     $filer1Selected = $filer2Selected = false;

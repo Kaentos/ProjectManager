@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 03-Jul-2019 às 00:02
+-- Generation Time: 04-Jul-2019 às 00:44
 -- Versão do servidor: 10.1.39-MariaDB
 -- versão do PHP: 7.3.5
 
@@ -311,10 +311,10 @@ INSERT INTO `projectmembers` (`idProject`, `idUser`, `idRole`) VALUES
 (3, 8, 1),
 (12, 8, 1),
 (13, 8, 1),
+(14, 8, 1),
 (3, 9, 3),
 (4, 8, 3),
-(3, 11, 4),
-(12, 11, 4);
+(3, 11, 4);
 
 -- --------------------------------------------------------
 
@@ -339,10 +339,11 @@ CREATE TABLE `projects` (
 --
 
 INSERT INTO `projects` (`id`, `name`, `des`, `code`, `idStatus`, `idCreator`, `creationDate`, `idUpdateUser`, `lastupdatedDate`) VALUES
-(3, 'Problem ', 'Teste god', 'eftzvzijl7e6', 5, 8, '2019-06-26 01:00:00', 8, '2019-07-02 22:15:36'),
+(3, 'Problem', 'BLA BLALBLALBALB ABL AL BLLA BL BA BALLBA', 'eftzvzijl7e6', 4, 8, '2019-06-26 01:00:00', 8, '2019-07-03 15:14:10'),
 (4, 'Laranjas', 'yup', 'c398wgcfhbno', 1, 9, '2019-06-26 09:00:00', 9, '2019-06-26 09:00:00'),
 (12, 'Not teste', 'teste', 'drrytauujooj', 5, 8, '2019-06-28 07:17:33', 8, '2019-06-30 21:57:06'),
-(13, 'Ya boi', 'teste2', 's2w4hnhljjit', 2, 8, '2019-06-28 07:19:19', 8, '2019-06-30 21:57:13');
+(13, 'Ya boi', 'teste2', 's2w4hnhljjit', 2, 8, '2019-06-28 07:19:19', 8, '2019-06-30 21:57:13'),
+(14, 'Project Manager', 'Projeto PAP do aluno Miguel', 'o58ry09smun6', 2, 8, '2019-07-04 12:33:13', 0, '2019-07-04 12:33:13');
 
 -- --------------------------------------------------------
 
@@ -391,6 +392,33 @@ INSERT INTO `pstatus` (`id`, `name`, `badge`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Estrutura da tabela `taskcomments`
+--
+
+CREATE TABLE `taskcomments` (
+  `id` int(11) NOT NULL,
+  `idTask` int(11) NOT NULL,
+  `idUser` int(11) NOT NULL,
+  `comment` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `creationDate` datetime NOT NULL,
+  `lastUpdateDate` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Extraindo dados da tabela `taskcomments`
+--
+
+INSERT INTO `taskcomments` (`id`, `idTask`, `idUser`, `comment`, `creationDate`, `lastUpdateDate`) VALUES
+(3, 9, 8, 'Teste 2', '2019-07-03 23:51:31', '2019-07-03 22:03:55'),
+(4, 9, 8, 'Tipo eu estou a escrever esta porra para nada pois eu nÃ£o sei o que estou a fazer da minha vida e nÃ£o sei o que vou fazer com ela.', '2019-07-03 23:51:53', NULL),
+(5, 9, 11, 'Bananas', '2019-07-04 00:01:29', NULL),
+(6, 7, 8, 'Bananas', '2019-07-04 00:25:27', NULL),
+(7, 7, 8, 'NÃ£o sei o que dizer', '2019-07-04 00:25:33', NULL),
+(8, 10, 8, 'Ya totalmente normal', '2019-07-04 00:28:35', NULL);
+
+-- --------------------------------------------------------
+
+--
 -- Estrutura da tabela `tasks`
 --
 
@@ -401,7 +429,7 @@ CREATE TABLE `tasks` (
   `Des` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL,
   `idStatus` int(11) NOT NULL,
   `idCreator` int(11) NOT NULL,
-  `lastupdateUser` int(11) NOT NULL,
+  `idUpdateUser` int(11) NOT NULL,
   `creationDate` datetime NOT NULL,
   `lastupdatedDate` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -410,7 +438,7 @@ CREATE TABLE `tasks` (
 -- Extraindo dados da tabela `tasks`
 --
 
-INSERT INTO `tasks` (`id`, `idProject`, `name`, `Des`, `idStatus`, `idCreator`, `lastupdateUser`, `creationDate`, `lastupdatedDate`) VALUES
+INSERT INTO `tasks` (`id`, `idProject`, `name`, `Des`, `idStatus`, `idCreator`, `idUpdateUser`, `creationDate`, `lastupdatedDate`) VALUES
 (1, 3, 'Create table', 'Google', 1, 8, 8, '2019-06-30 01:00:00', '2019-06-30 01:00:00'),
 (2, 3, 'Danger', 'gadasd', 2, 8, 8, '2019-06-30 01:00:00', '2019-06-30 01:00:00'),
 (3, 3, 'Blyat', 'sdfahjdsasdajdsadsahhdkjkdsahjkdsakjhkjhdaskjdjshjkdjskahkjdhaskjdsahjkjdhsajhkd', 4, 8, 8, '2019-06-30 02:00:00', '2019-06-30 02:00:00'),
@@ -418,7 +446,19 @@ INSERT INTO `tasks` (`id`, `idProject`, `name`, `Des`, `idStatus`, `idCreator`, 
 (5, 3, 'gogogo', 'ghghgh', 3, 8, 8, '2019-06-30 03:00:00', '2019-06-30 03:00:00'),
 (6, 3, 'extra', 'sdadsadsa', 2, 8, 8, '2019-06-30 02:00:00', '2019-06-30 02:00:00'),
 (7, 3, 'Teste', 'Input new task test', 1, 8, 8, '2019-07-02 22:32:05', '2019-07-02 22:32:05'),
-(8, 3, 'Teste 2', 'Tou a fazer um teste de uma nova task para o projeto problem', 2, 8, 8, '2019-07-02 22:35:37', '2019-07-02 22:35:37');
+(8, 3, 'Teste 2', 'Tou a fazer um teste de uma nova task para o projeto problem', 2, 8, 8, '2019-07-02 22:35:37', '2019-07-02 22:35:37'),
+(9, 3, 'CriaÃ§Ã£o teste', 'NÃ£o sei o que escrever aqui portanto nÃ£o vou escrever nada de Ãºtil pois se escrever algo de Ãºtil Ã© um pouco useless', 1, 8, 8, '2019-07-03 14:03:42', '2019-07-04 00:05:06'),
+(10, 3, 'Uma task normal', 'Esta task nÃ£o Ã© normal LUL', 1, 8, 8, '2019-07-04 00:28:25', '2019-07-04 00:28:25'),
+(11, 14, 'Criar a parte das issues', 'Praticamente Ã© o mesmo que as tasks, basta copiar e criar novas tabelas com nome issue', 4, 8, 8, '2019-07-04 00:36:16', '2019-07-04 00:36:16'),
+(12, 14, 'Adicionar task links', 'Adicionar \"div\" como por exemplo a tasks e issues onde apresenta sites para o github e outras cenas mais usadas.', 4, 8, 8, '2019-07-04 00:37:44', '2019-07-04 00:37:44'),
+(13, 14, 'Task priority', 'Criar sistema de prioridade para as tasks', 4, 8, 8, '2019-07-04 00:38:26', '2019-07-04 00:38:26'),
+(14, 14, 'Associar user a task', 'Ou seja, mostra todos os membros que estÃ£o a trabalhar nessa task', 4, 8, 8, '2019-07-04 00:39:06', '2019-07-04 00:39:06'),
+(15, 14, 'Task comments', 'Possibilidade de um utilizador poder comentar na task', 3, 8, 8, '2019-07-04 00:39:49', '2019-07-04 00:39:49'),
+(16, 14, 'Mostrar project members', 'Mostra todos os membros que estÃ£o associados ao projeto e os utilizadores com permissÃ£o podem remover utilizadores e alterar as suas permissÃµes', 4, 8, 8, '2019-07-04 00:40:56', '2019-07-04 00:40:56'),
+(17, 14, 'Barra para projeto', 'Muda completamente a barra lateral quando estÃ¡ dentro de um projeto, para obter opÃ§Ãµes do tipo ir a todas as tasks ou issues do projeto', 4, 8, 8, '2019-07-04 00:41:54', '2019-07-04 00:41:54'),
+(18, 14, 'Estilos', 'Fazer com que o site seja mais apelativo', 1, 8, 8, '2019-07-04 00:42:14', '2019-07-04 00:42:14'),
+(19, 14, 'Milestones', 'Basta fazer com que aparece a lista de milestones, os dias que faltam para acabar a milestone e se foi concluida ou adiada / inacabada', 4, 8, 8, '2019-07-04 00:43:14', '2019-07-04 00:43:14'),
+(20, 14, 'Adicionar novos status', 'Tanto para o projeto como para o resto', 4, 8, 8, '2019-07-04 00:43:45', '2019-07-04 00:43:45');
 
 -- --------------------------------------------------------
 
@@ -532,13 +572,21 @@ ALTER TABLE `pstatus`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `taskcomments`
+--
+ALTER TABLE `taskcomments`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idTask` (`idTask`),
+  ADD KEY `idUser` (`idUser`);
+
+--
 -- Indexes for table `tasks`
 --
 ALTER TABLE `tasks`
   ADD PRIMARY KEY (`id`),
   ADD KEY `idProject` (`idProject`),
   ADD KEY `idCreator` (`idCreator`),
-  ADD KEY `lastupdateUser` (`lastupdateUser`),
+  ADD KEY `lastupdateUser` (`idUpdateUser`),
   ADD KEY `idStatus` (`idStatus`);
 
 --
@@ -574,7 +622,7 @@ ALTER TABLE `countries`
 -- AUTO_INCREMENT for table `projects`
 --
 ALTER TABLE `projects`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `proles`
@@ -589,10 +637,16 @@ ALTER TABLE `pstatus`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
+-- AUTO_INCREMENT for table `taskcomments`
+--
+ALTER TABLE `taskcomments`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
 -- AUTO_INCREMENT for table `tasks`
 --
 ALTER TABLE `tasks`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `tstatus`
@@ -626,12 +680,19 @@ ALTER TABLE `projects`
   ADD CONSTRAINT `projects_ibfk_2` FOREIGN KEY (`idStatus`) REFERENCES `pstatus` (`id`);
 
 --
+-- Limitadores para a tabela `taskcomments`
+--
+ALTER TABLE `taskcomments`
+  ADD CONSTRAINT `taskcomments_ibfk_1` FOREIGN KEY (`idTask`) REFERENCES `tasks` (`id`),
+  ADD CONSTRAINT `taskcomments_ibfk_2` FOREIGN KEY (`idUser`) REFERENCES `user` (`id`);
+
+--
 -- Limitadores para a tabela `tasks`
 --
 ALTER TABLE `tasks`
   ADD CONSTRAINT `tasks_ibfk_1` FOREIGN KEY (`idProject`) REFERENCES `projects` (`id`),
   ADD CONSTRAINT `tasks_ibfk_2` FOREIGN KEY (`idCreator`) REFERENCES `user` (`id`),
-  ADD CONSTRAINT `tasks_ibfk_3` FOREIGN KEY (`lastupdateUser`) REFERENCES `user` (`id`),
+  ADD CONSTRAINT `tasks_ibfk_3` FOREIGN KEY (`idUpdateUser`) REFERENCES `user` (`id`),
   ADD CONSTRAINT `tasks_ibfk_4` FOREIGN KEY (`idStatus`) REFERENCES `tstatus` (`id`);
 
 --
