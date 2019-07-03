@@ -14,15 +14,29 @@
     }
 
     if (isset($_GET["id"]) && is_numeric($_GET["id"])){
-        $projectID = $_GET["id"];
+        if (checkProjectID($conn, $_GET["id"])){
+            $projectID = $_GET["id"];
+        } else {
+            header("location: /projectmanager/dashboard/projects");
+        }
+        
     } else {
         header("location: /projectmanager/dashboard/projects");
+    }
+    if (isset($_GET["task"]) && is_numeric($_GET["task"])){
+        if (checkTaskID($conn, $_GET["task"])){
+            $taskID = $_GET["task"];
+        } else {
+            header("location: /projectmanager/project?id=$projectID");
+        }
+    } else {
+        header("location: /projectmanager/project?id=$projectID");
     }
 
     if (isset($projectID)){
         $projectData = getSingleProjectData($conn, $projectID, $UserData["id"]);
         if (isset($projectData)){
-            $tasksData = getTasks($conn, $projectID);
+            // $taskData = getTask($conn, $projectID);
             if(!isset($tasksData)){
                 $createTask = true;
             }
