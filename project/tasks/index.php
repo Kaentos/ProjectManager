@@ -5,6 +5,7 @@
     } else {
         include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/getFunctions.php";
         include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/checkFunctions.php";
+        include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/addFunctions.php";
         include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/otherFunctions.php";
         include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/sessionCheckTime.php";
         include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/databaseConnections.php";
@@ -75,8 +76,10 @@
                 $filterORDER = $orderDic["$_POST[filter]"];
                 $filer1Selected = $_POST["filter"];
             } else {
-                $info =  "Invalid order filter value! If you didn't change anything report with TFV!";
+                $info =  "Invalid order filter value! If you didn\'t change anything report with TFV!";
                 showAlert($info);
+                $filer1Selected = "lud";
+                $filterORDER = "ORDER BY t.lastupdatedDate";
             }
         } else {
             $filer1Selected = "lud";
@@ -92,8 +95,10 @@
                 $filterStatusID = "";
                 $filer2Selected = false;
             } else {
-                $info = "Invalid status filter value! If you didn't change anything report with TFS!";
+                $info = "Invalid status filter value! If you didn\'t change anything report with TFS!";
                 showAlert($info);
+                $filer2Selected = false;
+                $filterStatusID = "";
             }
         } else {
             $filer2Selected = false;
@@ -137,6 +142,31 @@
             return false;
         }
         
+    }
+
+    // New task btn
+    if (isset($_POST["newTaskBTN"])){
+        if ( isset($_POST["taskName"]) && strlen($_POST["taskName"]) <= 60 && !empty($_POST["taskName"])) {
+            if (isset($_POST["taskDes"]) && strlen($_POST["taskDes"]) <= 150 && !empty($_POST["taskDes"])) {
+                if (isset($_POST["taskStatus"]) && is_numeric($_POST["taskStatus"]) && checkTaskStatusID($conn, $_POST["taskStatus"])) {
+                    $Data = [
+                        "name" => $_POST["taskName"],
+                        "des" => $_POST["taskDes"],
+                        "status" => $_POST["taskStatus"]
+                    ];
+                    addNewTask($conn, $projectID, $UserData["id"], $Data);
+                } else {
+                    $info = "Can\'t validate status value! If you didn\'t change value report with error MTS!";
+                    showAlert($info);
+                }
+            } else {
+                $info = "Task description must have 1 to 150 characters.";
+                showAlert($info);
+            }
+        } else {
+            $info = "Task name must have 1 to 60 characters.";
+            showAlert($info);
+        }
     }
 
     $AllTasksStatus = getTasksStatus($conn);
@@ -286,6 +316,50 @@
                         
                     </div>
                 </div>
+
+                <!-- New task modal -->
+                <div class="modal fade" id="newTaskModal" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <!-- Head -->
+                            <div class="modal-header">
+                                <span class="modal-title"> Create new task </span>
+                                <button type="button" class="close" data-dismiss="modal" aria-label=""><span>×</span></button>
+                            </div>        
+                            <!-- Body -->
+                            <div class="modal-body">
+                                <form method="POST" action="">
+                                    <span class="modal-subtitle">Task name:</span>
+                                    <input type='text' class='form-control edit-DIV-Input' name='taskName' autocomplete='off'/>
+
+                                    <span class="modal-subtitle">Description:</span>
+                                    <textarea class='form-control edit-DIV-Input' rows='3' name='taskDes' autocomplete='off'></textarea>
+
+                                    <span class="modal-subtitle">Status:</span>
+
+                                    <div class="form-group">
+                                        <select class="form-control edit-DIV-Input" name="taskStatus">
+                                            <?php
+                                                foreach($AllTasksStatus as $status){
+                                                    if ($status["id"] != $projectData["idStatus"]){
+                                                        echo "<option value='$status[id]'>$status[name]</option>";
+                                                    } else {
+                                                        echo "<option value='$status[id]' selected>$status[name]</option>";
+                                                    }
+                                                }
+                                            ?>
+                                        </select>
+                                        <div class="invalid-feedback">Don't change values, if you didn't report it.</div>
+                                    </div>
+                                    <input type="submit" class="btn btn-success font-weight-bold" name="newTaskBTN" value="Create task">
+                                </form>                
+                            </div>
+                                    
+                        </div>
+                    </div>
+                </div> 
+                <!-- END task modal -->
+
             </main>
 
         </div>

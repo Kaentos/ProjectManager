@@ -5,6 +5,7 @@
     } else {
         include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/getFunctions.php";
         include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/checkFunctions.php";
+        include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/addFunctions.php";
         include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/otherFunctions.php";
         include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/sessionCheckTime.php";
         include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/databaseConnections.php";
@@ -30,50 +31,8 @@
         }
     }
 
-    if (isset($_POST["newTaskBTN"])){
-        if ( isset($_POST["taskName"]) && strlen($_POST["taskName"]) <= 60 && !empty($_POST["taskName"])) {
-            if (isset($_POST["taskDes"]) && strlen($_POST["taskDes"]) <= 150 && !empty($_POST["taskDes"])) {
-                if (isset($_POST["taskStatus"]) && is_numeric($_POST["taskStatus"]) && checkTaskStatusID($conn, $_POST["taskStatus"])) {
-                    $Data = [
-                        "name" => $_POST["taskName"],
-                        "des" => $_POST["taskDes"],
-                        "status" => $_POST["taskStatus"]
-                    ];
-                    addNewTask($conn, $projectID, $UserData["id"], $Data);
-                } else {
-                    $info = "Can\'t validate status value! If you didn\'t change value report with error MTS!";
-                    showAlert($info);
-                }
-            } else {
-                $info = "Task description must have 1 to 150 characters.";
-                showAlert($info);
-            }
-        } else {
-            $info = "Task name must have 1 to 60 characters.";
-            showAlert($info);
-        }
-    }
-
-    function addNewTask($conn, $projectID, $userID, $task){
-        $currentDate = getCurrentDate();
-
-        if(!($stmt = $conn->prepare("INSERT INTO tasks (idProject, name, des, idStatus, idCreator, lastupdateUser, creationDate, lastupdatedDate) VALUES (?,?,?,?,?,?,?,?)"))) {
-            die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
-        }
-        if(!$stmt->bind_param("issiiiss", $projectID, $task["name"], $task["des"], $task["status"], $userID, $userID, $currentDate, $currentDate)) {
-            die("Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error);
-        }
-        if(!$stmt->execute()) {
-            die("Execute failed: (" . $stmt->errno . ") " . $stmt->error);
-        } else{
-            $last_id = mysqli_insert_id($conn);
-            $stmt->close();
-        }
-        header("Refresh: 0");
-    }
-
     $UserRole = getUserProjectRole($conn, $projectID, $UserData["id"]);
-    $AllProjectStatus = getTasksStatus($conn);
+    $AllTasksStatus = getTasksStatus($conn);
 ?>
 
 <html lang="en">
@@ -259,7 +218,7 @@
                                     <div class="form-group">
                                         <select class="form-control edit-DIV-Input" name="taskStatus">
                                             <?php
-                                                foreach($AllProjectStatus as $status){
+                                                foreach($AllTasksStatus as $status){
                                                     if ($status["id"] != $projectData["idStatus"]){
                                                         echo "<option value='$status[id]'>$status[name]</option>";
                                                     } else {
