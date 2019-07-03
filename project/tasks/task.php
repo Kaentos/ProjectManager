@@ -113,7 +113,7 @@
             <main class="page-content">
                 <div class="container-fluid">
                 <div class="row d-flex justify-content-center">
-                    <div class="col-lg-12">
+                    <div class="col-lg-12" style="padding-left: 0px">
                         <span style="font-size:2rem; font-weight: 500;">
                             <?php
                                 echo "
@@ -137,8 +137,9 @@
                                 echo $projectData["des"];
                             ?>        
                         </span>
-                        <hr>
                     </div>
+                    <hr class="w-100">
+                    
                     
                     <!-- Task -->
                     <?php
@@ -177,6 +178,12 @@
                     ?>
                     <!-- END Task -->
                         
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12" style="background-color:black;">
+                        INSERT COMMENT
                     </div>
                 </div>
 

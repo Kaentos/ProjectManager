@@ -75,9 +75,8 @@
 
 
             <main class="page-content">
-                <div class="container-fluid">
                 <div class="row d-flex justify-content-center">
-                    <div class="col-lg-12">
+                    <div class="col-lg-12" style="padding-left: 0px">
                         <span style="font-size:2rem; font-weight: 500;">
                             <?php
                                 echo "
@@ -101,10 +100,8 @@
                                 echo $projectData["des"];
                             ?>        
                         </span>
-                        <hr>
                     </div>
-                    
-
+                    <hr class="w-100">
                     
                         <!-- Tasks -->
                         <div class="col-lg-12 col-xl-5 task-DIV">
@@ -146,15 +143,7 @@
                                             <a href='/projectmanager/project/tasks/task?id=$projectData[id]&task=$task[id]'>
                                                 $task[name]
                                             </a>
-                                            <span class='badge badge-$task[badge]'>$task[status]</span>";
-                                            if ($UserRole < 3){
-                                                echo "
-                                                    <a href='/projectmanager/project/tasks/edit?id=$projectData[id]&task=$task[id]' class='edit-pen'>
-                                                        <i class='fas fa-pen'></i>
-                                                    </a>
-                                                ";
-                                            }
-                                        echo "
+                                            <span class='badge badge-$task[badge]'>$task[status]</span>
                                         </span>
                                         <p style='font-size:1.1rem'>
                                             $task[Des]

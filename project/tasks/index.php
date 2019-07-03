@@ -190,7 +190,7 @@
             <main class="page-content">
                 <div class="container-fluid">
                 <div class="row">
-                    <div class="col-lg-12">
+                    <div class="col-lg-12" style="padding-left: 0px">
                         <span style="font-size:2rem; font-weight: 500;">
                             <?php
                                 echo "
@@ -214,8 +214,8 @@
                                 echo $projectData["des"];
                             ?>        
                         </span>
-                        <hr>
                     </div>
+                    <hr class="w-100">
                     
                     <div class="col-lg-12 filter-DIV">
                         <div class="row" style='margin-top:15px;'>
@@ -285,15 +285,7 @@
                                                     $task[name]
                                                 </a>
                                                 <span class='badge badge-$task[badge]'>$task[status]</span>
-                                                <span class='badge badge-dark'>$task[lastupdatedDate]</span>";
-                                                if ($UserRole < 3){
-                                                    echo "
-                                                        <a href='#' class='edit-pen'>
-                                                            <i class='fas fa-pen'></i>
-                                                        </a>
-                                                    ";
-                                                }
-                                echo "
+                                                <span class='badge badge-dark'>$task[lastupdatedDate]</span>
                                                 <a href='#' class='btn bg-dark text-white float-right'>
                                                     <i class='fas fa-comments'></i>
                                                 </a>
