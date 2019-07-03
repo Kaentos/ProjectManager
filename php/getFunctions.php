@@ -141,6 +141,26 @@
         return $data;
     }
 
+    function getTaskComments($conn, $taskID){
+        $Data = array();
+        $query = "SELECT * FROM taskcomments WHERE idTask=$taskID ORDER BY creationDate;";
+        if ($result = $conn->query($query)) {
+            if ($result->num_rows > 0){
+                while($row = $result->fetch_array(MYSQLI_ASSOC)){
+                    $Temp = getUsername($conn, $row["idUser"]);
+                    $row += ["username" => $Temp];
+                    array_push($Data, $row);
+                }
+                return $Data;
+            } else {
+                return false;
+            }
+        } else {
+            die();
+        }
+        return false;
+    }
+
     // END OF TASK
 
 

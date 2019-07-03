@@ -111,43 +111,6 @@
         }
     }
 
-    function addTaskNewComment($conn, $taskID, $comment, $userID){
-        $currentDate = getCurrentDate();
-
-        if(!($stmt = $conn->prepare("INSERT INTO taskcomments (idTask, idUser, comment, creationDate) VALUES (?,?,?,?)"))) {
-            die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
-        }
-        if(!$stmt->bind_param("iiss", $taskID, $userID, $comment, $currentDate)) {
-            die("Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error);
-        }
-        if(!$stmt->execute()) {
-            die("Execute failed: (" . $stmt->errno . ") " . $stmt->error);
-        } else{
-            $stmt->close();
-        }
-        header("Refresh: 0");
-    }
-
-    function getTaskComments($conn, $taskID){
-        $Data = array();
-        $query = "SELECT * FROM taskcomments WHERE idTask=$taskID ORDER BY creationDate;";
-        if ($result = $conn->query($query)) {
-            if ($result->num_rows > 0){
-                while($row = $result->fetch_array(MYSQLI_ASSOC)){
-                    $Temp = getUsername($conn, $row["idUser"]);
-                    $row += ["username" => $Temp];
-                    array_push($Data, $row);
-                }
-                return $Data;
-            } else {
-                return false;
-            }
-        } else {
-            die();
-        }
-        return false;
-    }
-
     $AllTaskComments = getTaskComments($conn, $taskID);
 
     $AllTasksStatus = getTasksStatus($conn);
@@ -168,7 +131,6 @@
 
 
             <main class="page-content">
-                <div class="container-fluid">
                 <div class="row d-flex justify-content-center">
                     <div class="col-lg-12" style="padding-left: 0px">
                         <span style="font-size:2rem; font-weight: 500;">
@@ -234,8 +196,6 @@
                         }
                     ?>
                     <!-- END Task -->
-                        
-                    </div>
                 </div>
 
                 <hr class="w-50" style="margin-top:0px; margin-bottom:0px">

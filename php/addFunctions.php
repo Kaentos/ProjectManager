@@ -19,4 +19,22 @@
         header("Refresh: 0");
     }
 
+    // New comment for certain task
+    function addTaskNewComment($conn, $taskID, $comment, $userID){
+        $currentDate = getCurrentDate();
+
+        if(!($stmt = $conn->prepare("INSERT INTO taskcomments (idTask, idUser, comment, creationDate) VALUES (?,?,?,?)"))) {
+            die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
+        }
+        if(!$stmt->bind_param("iiss", $taskID, $userID, $comment, $currentDate)) {
+            die("Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error);
+        }
+        if(!$stmt->execute()) {
+            die("Execute failed: (" . $stmt->errno . ") " . $stmt->error);
+        } else{
+            $stmt->close();
+        }
+        header("Refresh: 0");
+    }
+
 ?>
