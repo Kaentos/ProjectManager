@@ -282,16 +282,16 @@
                                                     $comment[comment]
                                                 </div>
                                             </div>
-                                            <div class='col-12' style='word-break: break-word; font-size: 1.2rem; margin-top: 5px'>
+                                            <div class='col-12' style='word-break: break-word; margin-top: 5px'>
                                                 <div class='alert alert-light'>
-                                                    Comment made at $comment[creationDate] by $comment[username]";
+                                                    <b>Comment made at $comment[creationDate] by $comment[username]";
 
                                     if($comment["lastUpdateDate"] != null){
                                         echo ", last update at $comment[lastUpdateDate]";
                                     }
                                     
                                 echo "
-                                                </div>
+                                                </b></div>
                                             </div>
                                         </div>
                                     </div>
