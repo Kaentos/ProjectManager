@@ -128,6 +128,28 @@
         header("Refresh: 0");
     }
 
+    function getTaskComments($conn, $taskID){
+        $Data = array();
+        $query = "SELECT * FROM taskcomments WHERE idTask=$taskID ORDER BY creationDate;";
+        if ($result = $conn->query($query)) {
+            if ($result->num_rows > 0){
+                while($row = $result->fetch_array(MYSQLI_ASSOC)){
+                    $Temp = getUsername($conn, $row["idUser"]);
+                    $row += ["username" => $Temp];
+                    array_push($Data, $row);
+                }
+                return $Data;
+            } else {
+                return false;
+            }
+        } else {
+            die();
+        }
+        return false;
+    }
+
+    $AllTaskComments = getTaskComments($conn, $taskID);
+
     $AllTasksStatus = getTasksStatus($conn);
 ?>
 
@@ -246,27 +268,49 @@
                         <hr class="w-100" style="border-color:black">
 
                         <!-- Comment -->
-                        <div class="col-12" style="margin-bottom: 15px">
-                            <div class="row">
-                                <div class="col-lg-4 col-xl-2">
-                                    <img class="img-thumbnail" style="height: 150px; width: 100%;" src="/projectmanager/img/UIMG/9.png" alt="User picture">
-                                </div>
-                                <div class="col-lg-8 col-xl-10">
-                                    <div class="alert alert-dark">
-                                        I don't know
-                                    </div>
-                                </div>
-                                <div class="col-12" style="word-break: break-word; font-size: 1.2rem; margin-top: 5px">
-                                    <div class="alert alert-dark">
-                                        Comment made at $taskData[lastupdatedDate] by $taskData[idUpdateUser]
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <?php
+                            if(isset($AllTaskComments) && $AllTaskComments){
+                                foreach($AllTaskComments as $comment){
+                                    echo "
+                                    <div class='col-12' style='margin-bottom: 15px'>
+                                        <div class='row'>
+                                            <div class='col-lg-4 col-xl-2'>
+                                                <img class='img-thumbnail' style='height: 150px; width: 100%;' src='/projectmanager/img/UIMG/9.png'>
+                                            </div>
+                                            <div class='col-lg-8 col-xl-10'>
+                                                <div class='alert alert-light task-comment-text'>
+                                                    $comment[comment]
+                                                </div>
+                                            </div>
+                                            <div class='col-12' style='word-break: break-word; font-size: 1.2rem; margin-top: 5px'>
+                                                <div class='alert alert-light'>
+                                                    Comment made at $comment[creationDate] by $comment[username]";
 
+                                    if($comment["lastUpdateDate"] != null){
+                                        echo ", last update at $comment[lastUpdateDate]";
+                                    }
+                                    
+                                echo "
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    ";
+                                }
+                            } else {
+                                echo "
+                                    <div class='col-12 Only-task-DIV-title' style='margin-bottom: 15px'>
+                                        No comments found, be the first one!
+                                    </div>
+                                ";
+                            }
+                            
+                        ?>
+
+                        <hr class="w-100" style="border-color:black">
 
                         <!-- Go back to the top -->
-                        <div class="col-12" style="margin-bottom: 20px">
+                        <div class="col-12" style="margin-bottom: 20px; text-align:right">
                             <a href="#Comments" class="btn btn-dark"> Back to the top </a>
                         </div>
                     </div>
