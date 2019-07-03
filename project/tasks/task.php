@@ -97,18 +97,35 @@
     // New comment btn
     if (isset($_POST["newCommentBTN"])){
         if (isset($_POST["comment"]) && !empty($_POST["comment"])){
-            $comment = $_POST["comment"];
-            $commentERR = false;
+            if (strlen($_POST["comment"]) <= 150){
+                $comment = $_POST["comment"];
+                $commentERR = false;
+            } else {
+                $commentERR = true;
+            }
         } else {
             $commentERR = true;
         }
         if (isset($comment)){
-            addTaskNewComment($conn, $projectID, $taskID, $comment, $UserData);
+            addTaskNewComment($conn, $taskID, $comment, $UserData["id"]);
         }
     }
 
-    function addTaskNewComment($conn, $projectID, $taskID, $comment, $UserData){
+    function addTaskNewComment($conn, $taskID, $comment, $userID){
+        $currentDate = getCurrentDate();
 
+        if(!($stmt = $conn->prepare("INSERT INTO taskcomments (idTask, idUser, comment, creationDate) VALUES (?,?,?,?)"))) {
+            die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
+        }
+        if(!$stmt->bind_param("iiss", $taskID, $userID, $comment, $currentDate)) {
+            die("Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error);
+        }
+        if(!$stmt->execute()) {
+            die("Execute failed: (" . $stmt->errno . ") " . $stmt->error);
+        } else{
+            $stmt->close();
+        }
+        header("Refresh: 0");
     }
 
     $AllTasksStatus = getTasksStatus($conn);
