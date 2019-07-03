@@ -74,6 +74,13 @@
     color: #212529;
     text-decoration: none;
 }
+.Only-task-DIV-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+.Only-task-DIV-Des {
+    font-size: 1.3rem;
+}
 /* END Task */
 
 

@@ -280,7 +280,7 @@
                                     <div class='btn-toolbar row' style='margin-top:15px'>
                                         <div class='col-lg-12' style='margin-top:5px;'>
                                             <span class='task-DIV-title2 task-DIV-text'>
-                                                <a href='/projectmanager/project/task?id=$projectData[id]&task=$task[id]'>
+                                                <a href='/projectmanager/project/tasks/task?id=$projectData[id]&task=$task[id]'>
                                                     $task[name]
                                                 </a>
                                                 <span class='badge badge-$task[badge]'>$task[status]</span>

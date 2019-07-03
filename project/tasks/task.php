@@ -46,8 +46,7 @@
         $projectData = getSingleProjectData($conn, $projectID, $UserData["id"]);
         if (isset($projectData)){
             $taskData = getSingleTask($conn, $projectID, $taskID);
-            print_r($taskData);
-            if(!isset($tasksData)){
+            if(!isset($taskData)){
                 $createTask = true;
             }
         } else {
@@ -60,7 +59,7 @@
 
 <html lang="en">
     <head>
-    <title><?php echo "$projectData[name] - Tasks"; ?></title>
+    <title><?php echo "$projectData[name] - $taskData[name]"; ?></title>
         <?php
             include "$_SERVER[DOCUMENT_ROOT]/projectmanager/html/Headcontent.html";
             include "$_SERVER[DOCUMENT_ROOT]/projectmanager/html/CSSimport.html";
@@ -74,7 +73,7 @@
 
             <main class="page-content">
                 <div class="container-fluid">
-                <div class="row">
+                <div class="row d-flex justify-content-center">
                     <div class="col-lg-12">
                         <span style="font-size:2rem; font-weight: 500;">
                             <?php
@@ -104,43 +103,37 @@
                     
                     <!-- Task -->
                     <?php
-                        if(isset($tasksData) && !$NoTasks){
-                            foreach($tasksData as $task){
-                                echo "
-                                <div class='col-lg-12 col-xl-6 task-DIV'>
-                                    <div class='btn-toolbar row' style='margin-top:15px'>
-                                        <div class='col-lg-12' style='margin-top:5px;'>
-                                            <span class='task-DIV-title2 task-DIV-text'>
-                                                <a href='/projectmanager/project/task?id=$projectData[id]&task=$task[id]'>
-                                                    $task[name]
-                                                </a>
-                                                <span class='badge badge-$task[badge]'>$task[status]</span>
-                                                <span class='badge badge-dark'>$task[lastupdatedDate]</span>";
-                                                if ($UserRole < 3){
-                                                    echo "
-                                                        <a href='#' class='edit-pen'>
-                                                            <i class='fas fa-pen'></i>
-                                                        </a>
-                                                    ";
-                                                }
-                                echo "
-                                                <a href='#' class='btn bg-dark text-white float-right'>
-                                                    <i class='fas fa-comments'></i>
-                                                </a>
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <hr class='hr-task'>
-                                    <div class='task-DIV-Des' style='word-break: break-word; margin-bottom: 15px'>
-                                        $task[Des]
+                        if(isset($taskData) && !isset($createTask)){
+                            echo "
+                            <div class='col-sm-12 col-md-10 col-lg-10 col-xl-6 task-DIV'>
+                                <div class='btn-toolbar row' style='margin-top:15px'>
+                                    <div class='col-lg-12' style='margin-top:5px;'>
+                                        <span class='Only-task-DIV-title task-DIV-text'>
+                                            Task name: $taskData[name]";
+                                            if ($UserRole < 3){
+                                                echo "
+                                                    <a href='#' class='edit-pen'>
+                                                        <i class='fas fa-pen'></i>
+                                                    </a>
+                                                ";
+                                            }
+                            echo "
+                                        </span>
                                     </div>
                                 </div>
-                                ";
-                            }
+                                <hr class='hr-task'>
+                                <div class='Only-task-DIV-Des' style='word-break: break-word; margin-bottom: 15px'>
+                                    <p><b>Creation date:</b> <span class='badge badge-dark'>$taskData[creationDate]</span> by <b> $taskData[idCreator] </b> </p>
+                                    <p><b>Last time updated:</b> <span class='badge badge-dark'>$taskData[lastupdatedDate]</span> by <b> $taskData[idUpdateUser] </b> </p>
+                                    <p><b>Task Status: </b><span class='badge badge-$taskData[badge]'>$taskData[status]</span> </p>
+                                    <p><b>Task description:</b><br>
+                                    $taskData[Des]</p>
+                                    
+                                </div>
+                            </div>
+                            ";
                         } elseif (isset($createTask) && $createTask) {
                             echo "<p class='task-DIV-list'> No tasks yet, create them! </p>";
-                        } elseif ($NoTasks){
-                            echo "<p class='task-DIV-list'> No tasks found! </p>";
                         }
                     ?>
                     <!-- END Task -->

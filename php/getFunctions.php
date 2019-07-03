@@ -84,6 +84,10 @@
         if ($result = $conn->query($query)) {
             if ($result->num_rows == 1){
                 $taskData = $result->fetch_array(MYSQLI_ASSOC);
+                $Temp = getUsername($conn,$taskData["idCreator"]);
+                $taskData["idCreator"] = $Temp;
+                $Temp = getUsername($conn,$taskData["idUpdateUser"]);
+                $taskData["idUpdateUser"] = $Temp;
                 return $taskData;
             } elseif ($result->num_rows > 1) {
                 die("report with error t2");

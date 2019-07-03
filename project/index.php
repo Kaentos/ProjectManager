@@ -31,6 +31,31 @@
         }
     }
 
+    // New task btn
+    if (isset($_POST["newTaskBTN"])){
+        if ( isset($_POST["taskName"]) && strlen($_POST["taskName"]) <= 60 && !empty($_POST["taskName"])) {
+            if (isset($_POST["taskDes"]) && strlen($_POST["taskDes"]) <= 150 && !empty($_POST["taskDes"])) {
+                if (isset($_POST["taskStatus"]) && is_numeric($_POST["taskStatus"]) && checkTaskStatusID($conn, $_POST["taskStatus"])) {
+                    $Data = [
+                        "name" => $_POST["taskName"],
+                        "des" => $_POST["taskDes"],
+                        "status" => $_POST["taskStatus"]
+                    ];
+                    addNewTask($conn, $projectID, $UserData["id"], $Data);
+                } else {
+                    $info = "Can\'t validate status value! If you didn\'t change value report with error MTS!";
+                    showAlert($info);
+                }
+            } else {
+                $info = "Task description must have 1 to 150 characters.";
+                showAlert($info);
+            }
+        } else {
+            $info = "Task name must have 1 to 60 characters.";
+            showAlert($info);
+        }
+    }
+
     $UserRole = getUserProjectRole($conn, $projectID, $UserData["id"]);
     $AllTasksStatus = getTasksStatus($conn);
 ?>
