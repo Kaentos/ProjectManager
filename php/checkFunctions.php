@@ -7,7 +7,7 @@
         if ($result = $conn->query($query)) {
             if ($result->num_rows == 1){
                 if($row = $result->fetch_array(MYSQLI_ASSOC)){
-                    return true;
+                    return $row["idRole"];
                 }
             } elseif ($result->num_rows > 1) {
                 die("Error PM2, report with error code and project name");

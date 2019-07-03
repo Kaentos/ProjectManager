@@ -26,7 +26,7 @@
     }
 
     // Checks if user has permission to access project content
-    if (!checkUserInProject($conn, $projectID, $UserData["id"])){
+    if (!$UserRole = checkUserInProject($conn, $projectID, $UserData["id"])){
         header("location: /projectmanager/dashboard/projects");
     }
 
@@ -54,10 +54,6 @@
             header("location: /projectmanager/dashboard/projects");
         }
     }
-
-    $UserRole = getUserProjectRole($conn, $projectID, $UserData["id"]);
-
-    
 
     $AllTasksStatus = getTasksStatus($conn);
 ?>
