@@ -54,6 +54,12 @@
         }
     }
 
+    if(isset($taskData)){
+        $currentTaskName = $taskData["name"];
+        $currentTaskDes = $taskData["Des"];
+        $currentTaskStatus = $taskData["idStatus"];
+    }
+
     $AllTasksStatus = getTasksStatus($conn);
 ?>
 
@@ -112,7 +118,7 @@
                                             Task name: $taskData[name]";
                                             if ($UserRole < 3){
                                                 echo "
-                                                    <a href='#' class='edit-pen'>
+                                                    <a href='#editTaskModal' data-toggle='modal' class='edit-pen'>
                                                         <i class='fas fa-pen'></i>
                                                     </a>
                                                 ";
@@ -140,6 +146,49 @@
                         
                     </div>
                 </div>
+
+                <!-- Edit task modal -->
+                <div class="modal fade" id="editTaskModal" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <!-- Head -->
+                            <div class="modal-header">
+                                <span class="modal-title"> Edit: <?php echo $taskData["name"]?> </span>
+                                <button type="button" class="close" data-dismiss="modal" aria-label=""><span>×</span></button>
+                            </div>        
+                            <!-- Body -->
+                            <div class="modal-body">
+                                <form method="POST" action="">
+                                    <span class="modal-subtitle">Task name:</span>
+                                    <input type='text' class='form-control edit-DIV-Input' name='taskName' value='<?php echo "$currentTaskName"; ?>' autocomplete='off'/>
+
+                                    <span class="modal-subtitle">Description:</span>
+                                    <textarea class='form-control edit-DIV-Input' rows='3' name='taskDes' autocomplete='off'><?php echo "$currentTaskDes"; ?></textarea>
+
+                                    <span class="modal-subtitle">Status:</span>
+
+                                    <div class="form-group">
+                                        <select class="form-control edit-DIV-Input" name="taskStatus">
+                                            <?php
+                                                foreach($AllTasksStatus as $status){
+                                                    if ($status["id"] != $currentTaskStatus){
+                                                        echo "<option value='$status[id]'>$status[name]</option>";
+                                                    } else {
+                                                        echo "<option value='$status[id]' selected>$status[name]</option>";
+                                                    }
+                                                }
+                                            ?>
+                                        </select>
+                                        <div class="invalid-feedback">Don't change values, if you didn't report it.</div>
+                                    </div>
+                                    <input type="submit" class="btn btn-success font-weight-bold" name="editTaskBTN" value="Edit task">
+                                </form>                
+                            </div>
+                                    
+                        </div>
+                    </div>
+                </div> 
+                <!-- END task modal -->
 
             </main>
 
