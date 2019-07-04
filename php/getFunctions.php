@@ -69,6 +69,24 @@
         }
         return $data;
     }
+
+    // Project status
+    function getProjectUserRoles($conn){
+        $Data = array();
+        $query = "SELECT * FROM proles ORDER BY id;";
+        if ($result = $conn->query($query)) {
+            if ($result->num_rows > 0){
+                while($row = $result->fetch_array(MYSQLI_ASSOC)){
+                    array_push($Data, $row);
+                }
+            } else {
+                die("Error PUR0");
+            }
+        } else {
+            die();
+        }
+        return $Data;
+    }
     
     // END PROJECT FUNCTIONS
 
