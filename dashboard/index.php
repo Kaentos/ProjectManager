@@ -3,33 +3,51 @@
     if (!isset($_SESSION["user"])){
         header("Location: /projectmanager/");
     } else {
+        include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/getFunctions.php";
+        include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/otherFunctions.php";
+        include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/sessionCheckTime.php";
         include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/databaseConnections.php";
         $conn = ConnectRoot();
-
-        $UserData = array();
-        $query = "SELECT * FROM  user WHERE id=".$_SESSION["user"]["id"];
-        if ($result = $conn->query($query)) {
-            if ($result->num_rows == 1){
-                if ($row = $result->fetch_array(MYSQLI_ASSOC)){
-                    $UserData += ["id" => $row["id"]];
-                    $UserData += ["username" => $row["username"]];
-                    $UserData += ["role" => $row["role"]];
-                    $_SESSION["user"]["role"] = $row["role"];
-                } else {
-                    printf("MAJOR ERROR CAN'T CONVERT USER ROW TO ARRAY");
-                    die();
-                }
-            } else {
-                die();
-            }
-            $result->close();
-        } else {
-            printf("Error in select user query");
-            die();
-        }
+        $UserData = getSessionUserData($conn, $_SESSION["user"]);
     }
 
+    $ProjectData = array();
+    $hasProjects = false;
+    // Get all projects user is assigned
+    $query = "SELECT p.*, s.name as Sname, u.username, pm.idRole AS Role FROM projects AS p INNER JOIN pstatus AS s ON p.idStatus=s.id INNER JOIN projectmembers AS pm ON p.id = pm.idProject INNER JOIN user AS u ON p.idCreator = u.id WHERE pm.idUser =".$UserData["id"]." ORDER BY p.creationDate DESC LIMIT 5";
+    if ($result = $conn->query($query)) {
+        if ($result->num_rows >= 1){
+            $hasProjects = true;
+            while($row = $result->fetch_array(MYSQLI_ASSOC)){
+                array_push($ProjectData, $row);
+            }
+        } else {
+            $hasProjects = false;
+        }
+        $result->close();
+    } else {
+        printf("Error in select user query");
+        die();
+    }
 
+    $TasksData = array();
+    $hasTasks = false;
+    // Get all projects user is assigned
+    $query = "SELECT t.*, s.name AS status, s.badge, p.id AS projectID FROM tasks AS t INNER JOIN projects AS p ON t.idProject=p.id INNER JOIN tstatus AS s ON t.idStatus=s.id INNER JOIN taskfollow AS tf ON t.id=tf.idTask WHERE tf.idUser=$UserData[id] LIMIT 5";
+    if ($result = $conn->query($query)) {
+        if ($result->num_rows >= 1){
+            $hasTasks = true;
+            while($row = $result->fetch_array(MYSQLI_ASSOC)){
+                array_push($TasksData, $row);
+            }
+        } else {
+            $hasTasks = false;
+        }
+        $result->close();
+    } else {
+        printf("Error in select user query");
+        die();
+    }
 ?>
 
 <html lang="en">
@@ -58,14 +76,146 @@
 
             <main class="page-content">
                 <div class="container-fluid">
-                    <h2>Assigned Tasks</h2>
+                    <!-- 5 Projects -->
+                    <div>
+                        <span style="font-size:2rem; font-weight: 500;">Projects</span>
+                        <a href="/projectmanager/dashboard/projects" class="btn btn-primary float-right" style="margin-top:8px; color:white;">All Project</a>
+                    </div>
                     <hr>
-                        <div class="row">
-                            <div class="form-group col-md-12">
-                                banans
-                            </div>
+                    <div class="card-deck">
+                        <?php
+                            if($hasProjects){
+                                foreach($ProjectData as $Project){
+                                    if ($Project["idCreator"] == $UserData["id"]){
+                                        $code = $Project["code"];
+                                    }
+                                    $dateTimeStamp = strtotime($Project["creationDate"]);
+                                    $Project["creationDate"] = date('d-m-Y', $dateTimeStamp);
+                                    echo "
+                                        <div class='card text-white bg-primary mb-3' style='max-width: 18rem;'>
+                                            <div class='card-header'>
+                                                <a href='/projectmanager/project/?id=$Project[id]' style='color:white'>
+                                                    $Project[name]
+                                                </a>
+                                                ";
+                                    if ($Project["Role"] < 3){
+                                        echo "
+                                                <a href='/projectmanager/project/edit?id=$Project[id]' class='btn btn-light float-right'>
+                                                    <i class='fas fa-cog'></i>
+                                                </a>
+                                        ";
+                                    }
+                                    echo "
+                                            </div>
+                                            <div class='card-body'>
+                                                <h5 class='card-title'>
+                                                    $Project[des]
+                                                </h5>
+                                                <p class='card-text'>
+                                                    Status: $Project[Sname] <br>
+                                                    Creation Date: $Project[creationDate] <br>";
+                                    if (isset($code)){
+                                        echo "Invite code: $code";
+                                        unset($code);
+                                    }
+                                    echo "        
+                                                </p>
+                                            </div>
+                                            <div class='card-footer'>
+                                                <a href='#' class='btn btn-light'>
+                                                    <i class='fas fa-tasks'></i>
+                                                </a>
+                                                <a href='#' class='btn btn-light'>
+                                                    <i class='fas fa-bug'></i>
+                                                </a>
+                                                <a href='#' class='btn btn-light'>
+                                                    <i class='fas fa-calendar'></i>
+                                                </a>
+                                                <a href='#' class='btn btn-light'>
+                                                    <i class='fas fa-comments'></i>
+                                                </a>
+                                                <a href='#' class='btn btn-light'>
+                                                    <i class='fas fa-flag'></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    ";
+                                }
+                            } else {
+                                echo "<div class='col-md-12'><h4>No projects found, what about creating or joining a new one?</h4></div>";
+                            }  
+                        ?>
+                    </div>
+
+                    <!-- 5 Tasks -->
+                    <div>
+                        <span style="font-size:2rem; font-weight: 500;">Tasks</span>
+                        <a href="/projectmanager/dashboard/tasks" class="btn btn-success float-right" style="margin-top:8px; color:white;">All Tasks</a>
+                    </div>
+                    <hr>
+                    <div class="task-DIV">
+                        <div style="word-break: break-word;">
+                            <?php
+                            if(isset($TasksData)){
+                                foreach($TasksData as $task){
+                                    echo "
+                                        <div class='col-md-12'>
+                                        <span class='task-DIV-list'>
+                                            <a href='/projectmanager/project/tasks/task?id=$task[projectID]&task=$task[id]'>
+                                                $task[name]
+                                            </a>
+                                            <span class='badge badge-$task[badge]'>$task[status]</span>
+                                        </span>
+                                        <p style='font-size:1.1rem'>
+                                            $task[Des]
+                                        </p>
+                                        </div>
+                                    ";
+                                }
+                            } elseif (isset($createTask) && $createTask) {
+                                echo "<p class='task-DIV-list'> No tasks yet, create them! </p>";
+                            }
+                            ?>
                         </div>
-                    asds
+                    </div>
+                    <!-- End Tasks -->
+
+                    <!-- 5 Issues -->
+                    <div>
+                        <span style="font-size:2rem; font-weight: 500;">Issues</span>
+                        <a href="/projectmanager/dashboard/tasks" class="btn btn-danger float-right" style="margin-top:8px; color:white;">All Issues</a>
+                    </div>
+                    <hr>
+                    <div class="task-DIV">
+                        <div style="word-break: break-word;">
+                            <?php
+                            if(isset($TasksData)){
+                                foreach($TasksData as $task){
+                                    echo "
+                                        <div class='col-md-12'>
+                                        <span class='task-DIV-list'>
+                                            <a href='/projectmanager/project/tasks/task?id=$task[projectID]&task=$task[id]'>
+                                                $task[name]
+                                            </a>
+                                            <span class='badge badge-$task[badge]'>$task[status]</span>
+                                        </span>
+                                        <p style='font-size:1.1rem'>
+                                            $task[Des]
+                                        </p>
+                                        </div>
+                                    ";
+                                }
+                            } elseif (isset($createTask) && $createTask) {
+                                echo "<p class='task-DIV-list'> No tasks yet, create them! </p>";
+                            }
+                            ?>
+                        </div>
+                    </div>
+                    <!-- End Issues -->
+
+
+
+
                 </div>
             </main>
 
