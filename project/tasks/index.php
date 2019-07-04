@@ -7,6 +7,7 @@
         include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/checkFunctions.php";
         include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/addFunctions.php";
         include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/editFunctions.php";
+        include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/removeFunctions.php";
         include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/otherFunctions.php";
         include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/sessionCheckTime.php";
         include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/databaseConnections.php";
@@ -181,6 +182,16 @@
                 addFollowToTask($conn, $taskID, $UserData["id"]);
             }
             
+        }
+    }
+
+    // User removes follow from task
+    if(isset($_POST["REMfollowTaskBTN"])){
+        if(isset($_POST["singleTaskID"]) && is_numeric($_POST["singleTaskID"])){
+            if(checkTaskID($conn, $_POST["singleTaskID"], $projectID) ){
+                $taskID = $_POST["singleTaskID"];
+                removeUserTaskFollow($conn, $taskID, $UserData["id"]);
+            }   
         }
     }
 
