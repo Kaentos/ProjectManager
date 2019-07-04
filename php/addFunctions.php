@@ -1,5 +1,18 @@
 <?php 
 
+    // Follow task
+    function addFollowToTask($conn, $taskID, $userID){
+        $query = "INSERT INTO taskfollow (idTask, idUser) VALUES ($taskID, $userID)";
+        if (!$conn->query($query)) {
+            die();
+        } else {
+            header("Refresh: 0");
+            return;
+        }
+        die();
+    }
+
+
     // New task
     function addNewTask($conn, $projectID, $userID, $task){
         $currentDate = getCurrentDate();

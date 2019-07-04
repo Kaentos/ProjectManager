@@ -59,9 +59,9 @@
 
     // Task
 
-    function checkTaskID($conn, $id){
+    function checkTaskID($conn, $id, $projectID){
         // Get project data
-        $query = "SELECT * FROM tasks WHERE id=$id;";
+        $query = "SELECT * FROM tasks AS t JOIN projects AS p ON t.idProject=p.id WHERE t.id=$id AND p.id=$projectID;";
         if ($result = $conn->query($query)) {
             if ($result->num_rows == 1){
                 return true;

@@ -107,7 +107,11 @@
                         <div class="col-lg-12 col-xl-5 task-DIV">
                             <div class="btn-toolbar row" style="margin-top:15px">
                                 <div class="col-lg-12 col-xl-6" style="margin-top:5px;">
-                                    <span class="task-DIV-title">Last updated tasks</span>
+                                    <span class="task-DIV-title">
+                                        <a href='/projectmanager/project/tasks/?id=<?php echo $projectData["id"] ?>' style="text-decoration: none; color: black">
+                                            Last updated tasks
+                                        </a>    
+                                    </span>
                                 </div>
                                 <div class="col-md-12 col-lg-6">
                                     <?php 

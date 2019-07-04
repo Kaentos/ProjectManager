@@ -32,6 +32,10 @@
         }
     }
 
+    if (!$UserRole = checkUserInProject($conn, $projectID, $UserData["id"])){
+        header("location: /projectmanager/dashboard/projects");
+    }
+
     // Tasks Data
     function getTasks($conn, $projectID){
         $tasksData = array();
@@ -52,7 +56,6 @@
         return $tasksData;
     }
 
-    $UserRole = getUserProjectRole($conn, $projectID, $UserData["id"]);
     $orderDic = [
         "name" => "ORDER BY t.name",
         "cd" => "ORDER BY t.creationDate ASC",
@@ -170,6 +173,19 @@
         }
     }
 
+    // User starts following task
+    if(isset($_POST["followTaskBTN"])){
+        if(isset($_POST["singleTaskID"]) && is_numeric($_POST["singleTaskID"])){
+            if(checkTaskID($conn, $_POST["singleTaskID"], $projectID) ){
+                $taskID = $_POST["singleTaskID"];
+                addFollowToTask($conn, $taskID, $UserData["id"]);
+            }
+            
+        }
+    }
+
+    
+
     $AllTasksStatus = getTasksStatus($conn);
 ?>
 
@@ -280,16 +296,22 @@
                                 <div class='col-lg-12 col-xl-6 task-DIV'>
                                     <div class='btn-toolbar row' style='margin-top:15px'>
                                         <div class='col-lg-12' style='margin-top:5px;'>
-                                            <span class='task-DIV-title2 task-DIV-text'>
-                                                <a href='/projectmanager/project/tasks/task?id=$projectData[id]&task=$task[id]'>
-                                                    $task[name]
-                                                </a>
-                                                <span class='badge badge-$task[badge]'>$task[status]</span>
-                                                <span class='badge badge-dark'>$task[lastupdatedDate]</span>
-                                                <a href='/projectmanager/project/tasks/task?id=$projectData[id]&task=$task[id]#Comments' class='btn bg-dark text-white float-right'>
-                                                    <i class='fas fa-comments'></i>
-                                                </a>
-                                            </span>
+                                            <form method='POST' action=''>
+                                                <span class='task-DIV-title2 task-DIV-text'>
+                                                    <a href='/projectmanager/project/tasks/task?id=$projectData[id]&task=$task[id]'>
+                                                        $task[name]
+                                                    </a>
+                                                    <span class='badge badge-$task[badge]'>$task[status]</span>
+                                                    <span class='badge badge-dark'>$task[lastupdatedDate]</span>
+                                                    
+                                                    <input type='hidden' name='singleTaskID' value='$task[id]'>
+                                                    <a href='/projectmanager/project/tasks/task?id=$projectData[id]&task=$task[id]#Comments' class='btn bg-dark text-white float-right'>
+                                                        <i class='fas fa-comments'></i>
+                                                    </a>
+                                                    <button type='submit' name='followTaskBTN' class='btn bg-dark text-white float-right'><i class='fas fa-plus'></i></button>&nbsp
+                                                    
+                                                </span>
+                                            </form>
                                         </div>
                                     </div>
                                     <hr class='hr-task'>

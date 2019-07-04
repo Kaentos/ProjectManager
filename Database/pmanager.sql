@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 04-Jul-2019 às 00:44
+-- Generation Time: 04-Jul-2019 às 00:52
 -- Versão do servidor: 10.1.39-MariaDB
 -- versão do PHP: 7.3.5
 
@@ -414,7 +414,8 @@ INSERT INTO `taskcomments` (`id`, `idTask`, `idUser`, `comment`, `creationDate`,
 (5, 9, 11, 'Bananas', '2019-07-04 00:01:29', NULL),
 (6, 7, 8, 'Bananas', '2019-07-04 00:25:27', NULL),
 (7, 7, 8, 'NÃ£o sei o que dizer', '2019-07-04 00:25:33', NULL),
-(8, 10, 8, 'Ya totalmente normal', '2019-07-04 00:28:35', NULL);
+(8, 10, 8, 'Ya totalmente normal', '2019-07-04 00:28:35', NULL),
+(9, 15, 8, 'Fazer com que apareÃ§a mensagem de erro caso o comment nÃ£o possa ser inserido', '2019-07-04 00:49:19', NULL);
 
 -- --------------------------------------------------------
 
@@ -458,7 +459,13 @@ INSERT INTO `tasks` (`id`, `idProject`, `name`, `Des`, `idStatus`, `idCreator`, 
 (17, 14, 'Barra para projeto', 'Muda completamente a barra lateral quando estÃ¡ dentro de um projeto, para obter opÃ§Ãµes do tipo ir a todas as tasks ou issues do projeto', 4, 8, 8, '2019-07-04 00:41:54', '2019-07-04 00:41:54'),
 (18, 14, 'Estilos', 'Fazer com que o site seja mais apelativo', 1, 8, 8, '2019-07-04 00:42:14', '2019-07-04 00:42:14'),
 (19, 14, 'Milestones', 'Basta fazer com que aparece a lista de milestones, os dias que faltam para acabar a milestone e se foi concluida ou adiada / inacabada', 4, 8, 8, '2019-07-04 00:43:14', '2019-07-04 00:43:14'),
-(20, 14, 'Adicionar novos status', 'Tanto para o projeto como para o resto', 4, 8, 8, '2019-07-04 00:43:45', '2019-07-04 00:43:45');
+(20, 14, 'Adicionar novos status', 'Tanto para o projeto como para o resto', 4, 8, 8, '2019-07-04 00:43:45', '2019-07-04 00:43:45'),
+(21, 14, 'User image', 'Dar possibilidade de o utilizador poder alterar a sua imagem', 4, 8, 8, '2019-07-04 00:46:03', '2019-07-04 00:46:03'),
+(22, 14, 'Criar zona de bug/error report', 'Um utilizador pode reportar um erro se for redireccionado por causa de um e queira reporta-lo.', 4, 8, 8, '2019-07-04 00:47:02', '2019-07-04 00:47:02'),
+(23, 14, 'Criar lista de erros', 'Conjuntamente com a task de criar zona de bug e error report, criar uma lista de erros para o admin', 4, 8, 8, '2019-07-04 00:47:33', '2019-07-04 00:47:33'),
+(24, 14, 'Admin dashboard', 'PÃ¡ginas que permite o admin ver todos os dados do website', 2, 8, 8, '2019-07-04 00:48:05', '2019-07-04 00:48:05'),
+(25, 14, 'Input obrigatorio', 'Referir nos inputs que Ã© obrigatÃ³rio', 4, 8, 8, '2019-07-04 00:48:37', '2019-07-04 00:48:37'),
+(26, 14, 'Total etc', 'Criar uma funÃ§Ã£o que diz o total de tasks, issues etc de um certo projeto', 4, 8, 8, '2019-07-04 00:50:06', '2019-07-04 00:50:06');
 
 -- --------------------------------------------------------
 
@@ -640,13 +647,13 @@ ALTER TABLE `pstatus`
 -- AUTO_INCREMENT for table `taskcomments`
 --
 ALTER TABLE `taskcomments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `tasks`
 --
 ALTER TABLE `tasks`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `tstatus`
