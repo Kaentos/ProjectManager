@@ -59,6 +59,22 @@
 
     // Task
 
+    function checkUserTaskFollow($conn, $taskID){
+        $query = "SELECT * FROM taskfollow WHERE idTask=$taskID;";
+        if ($result = $conn->query($query)) {
+            if ($result->num_rows == 1){
+                return true;
+            } elseif ($result->num_rows > 1) {
+                die("Error UTF2");
+            } else {
+                return false;
+            }
+        } else {
+            die();
+        }
+        return false;
+    }
+
     function checkTaskID($conn, $id, $projectID){
         // Get project data
         $query = "SELECT * FROM tasks AS t JOIN projects AS p ON t.idProject=p.id WHERE t.id=$id AND p.id=$projectID;";

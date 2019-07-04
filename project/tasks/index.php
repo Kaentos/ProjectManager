@@ -184,8 +184,6 @@
         }
     }
 
-    
-
     $AllTasksStatus = getTasksStatus($conn);
 ?>
 
@@ -307,9 +305,13 @@
                                                     <input type='hidden' name='singleTaskID' value='$task[id]'>
                                                     <a href='/projectmanager/project/tasks/task?id=$projectData[id]&task=$task[id]#Comments' class='btn bg-dark text-white float-right'>
                                                         <i class='fas fa-comments'></i>
-                                                    </a>
-                                                    <button type='submit' name='followTaskBTN' class='btn bg-dark text-white float-right'><i class='fas fa-plus'></i></button>&nbsp
-                                                    
+                                                    </a>";
+                                if (checkUserTaskFollow($conn, $task["id"])){
+                                    echo "<button type='submit' name='REMfollowTaskBTN' class='btn bg-dark text-white float-right'><i class='fas fa-times'></i></button>";
+                                } else {
+                                    echo "<button type='submit' name='followTaskBTN' class='btn bg-dark text-white float-right'><i class='fas fa-plus'></i></button>";
+                                }
+                                echo "
                                                 </span>
                                             </form>
                                         </div>
