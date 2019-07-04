@@ -27,13 +27,17 @@
             if(!isset($tasksData)){
                 $createTask = true;
             }
+            $membersData = get5Members($conn, $projectID);
+            if(!isset($membersData)){
+                die();
+            }
         } else {
             header("location: /projectmanager/dashboard/projects");
         }
     }
 
     // New task btn
-    if (isset($_POST["newTaskBTN"])){
+    if (isset($_POST["newTaskBTN"]) && $UserRole < 3){
         if ( isset($_POST["taskName"]) && strlen($_POST["taskName"]) <= 60 && !empty($_POST["taskName"])) {
             if (isset($_POST["taskDes"]) && strlen($_POST["taskDes"]) <= 150 && !empty($_POST["taskDes"])) {
                 if (isset($_POST["taskStatus"]) && is_numeric($_POST["taskStatus"]) && checkTaskStatusID($conn, $_POST["taskStatus"])) {
@@ -57,7 +61,7 @@
         }
     }
 
-    if(isset($_POST["QuitProjectBTN"])){
+    if(isset($_POST["QuitProjectBTN"]) && $UserRole > 1){
         removeUserFromProject($conn, $UserData["id"], $projectID);
     }
 
@@ -216,12 +220,85 @@
                         </div>
                         <!-- END Issues -->
 
-
-                        <div class="col-md-6" style="background-color: rgba(0,0,0,.1);">
-                            <span style="font-size:1.6rem; font-weight: 500;"> Members </span>
-                            <span style="font-size:1.6rem; font-weight: 500;" class="float-right">All members</span>
-                            <hr style="border-color: blue; margin-top: 5px">
+                        <!-- Milestones -->
+                        <div class="col-lg-12 col-xl-5 members-DIV">
+                            <div class="btn-toolbar row" style="margin-top:15px">
+                                <div class="col-lg-12 col-xl-6" style="margin-top:5px;">
+                                    <span class="members-DIV-title">Milestones</span>
+                                </div>
+                                <div class="col-md-12 col-lg-6">
+                                    <div class="btn-group mr-2 DIV-btn-float" style="margin-top:5px">
+                                        <a href="#" class="btn btn-danger members-DIV-btn">All milestones</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr class="hr-members">
+                            <div style="word-break: break-word;">
+                                <?php
+                                if(isset($tasksData)){
+                                    foreach($tasksData as $task){
+                                        echo "
+                                        <span style='font-size:1.3rem; font-weight: bold;'>
+                                            $task[name]
+                                            <span class='badge badge-$task[badge]'>$task[status]</span>    
+                                        </span>
+                                        <p style='font-size:1.1rem'>
+                                            $task[Des]
+                                        </p>
+                                        ";
+                                    }
+                                } elseif (isset($createTask) && $createTask) {
+                                    echo "<p class='task-DIV-list'> No issues yet, create them if you need! </p>";
+                                }
+                                ?>
+                            </div>
                         </div>
+                        <!-- END milestones -->
+
+
+                        <!-- col to space out cols -->
+                        <div class="col-md-1">
+                        </div>
+
+
+                        <!-- Members -->
+                        <div class="col-lg-12 col-xl-5 members-DIV">
+                            <div class="btn-toolbar row" style="margin-top:15px">
+                                <div class="col-lg-12 col-xl-6" style="margin-top:5px;">
+                                    <span class="members-DIV-title">
+                                        <a href='/projectmanager/project/members/?id=<?php echo $projectData["id"] ?>' style="text-decoration: none; color: black">
+                                            Members
+                                        </a>
+                                    </span>
+                                </div>
+                                <div class="col-md-12 col-lg-6">
+                                    <div class="btn-group mr-2 DIV-btn-float" style="margin-top:5px">
+                                        <a href="/projectmanager/project/members?id=<?php echo $projectID ?>" class="btn btn-primary members-DIV-btn">All members</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr class="hr-members">
+                            <div class="row" style="word-break: break-word;">
+                                <?php
+                                if(isset($membersData)){
+                                    foreach($membersData as $member){
+                                        echo "
+                                        <div class='col-12 col-md-6'>
+                                            <span style='font-size:1.3rem; font-weight: bold;'>
+                                                <img class='img-thumbnail' style='height: 100px; width: auto;' src='/projectmanager/img/UIMG/9.png'>
+                                                $member[username]
+                                                <span class='badge badge-$member[badge]'>$member[name]</span>    
+                                            </span>
+                                        </div>
+                                        ";
+                                    }
+                                }
+                                ?>
+                            </div>
+                            <br>
+                        </div>
+                        <!-- END Members -->
+
                     </div>
                 </div>
 

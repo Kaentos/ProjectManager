@@ -87,6 +87,26 @@
         }
         return $Data;
     }
+
+    // Get 5 members for a given project ID
+    function get5Members($conn, $projectID){
+        $membersData = array();
+        $query = "SELECT u.id AS userID, u.username, r.* FROM projects AS p INNER JOIN projectmembers AS pm ON p.id=pm.idProject INNER JOIN proles AS r ON pm.idRole = r.id INNER JOIN user AS u ON pm.idUser=u.id WHERE p.id=$projectID ORDER BY r.id LIMIT 5";
+        if ($result = $conn->query($query)) {
+            if ($result->num_rows >= 1){
+                while($row = $result->fetch_array(MYSQLI_ASSOC)){
+                    array_push($membersData, $row);
+                }
+            } elseif ($result->num_rows == 0) {
+                return;
+            } else {
+                die();
+            }
+        } else {
+            die();
+        }
+        return $membersData;
+    }
     
     // END PROJECT FUNCTIONS
 

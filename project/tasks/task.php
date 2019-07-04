@@ -111,6 +111,11 @@
         }
     }
 
+    // Removes himself from project
+    if(isset($_POST["QuitProjectBTN"]) && $UserRole > 1){
+        removeUserFromProject($conn, $UserData["id"], $projectID);
+    }
+
     $AllTaskComments = getTaskComments($conn, $taskID);
 
     $AllTasksStatus = getTasksStatus($conn);

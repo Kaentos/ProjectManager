@@ -104,7 +104,25 @@
     font-size: 1.2rem !important;
     font-weight: 500 !important;
 }
-/* END Issue */
+
+/* Members */
+/* Color: #2969ff rgb(41, 105, 255) */
+.hr-members{border-color: #2969ff}
+.members-DIV{
+    background-color: rgba(41,105,255,.05);
+    margin-bottom: 10px;
+    border: 2px solid #2969ff;
+    border-radius: 5px;
+}
+.members-DIV-title{
+    font-size: 1.6rem;
+    font-weight: bold;
+}
+.members-DIV-btn{
+    font-size: 1.2rem !important;
+    font-weight: 500 !important;
+}
+/* END members */
 
 
 /* Edit */

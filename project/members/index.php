@@ -157,7 +157,8 @@
         }
     }
 
-    if(isset($_POST["QuitProjectBTN"])){
+    // Removes himself from project
+    if(isset($_POST["QuitProjectBTN"]) && $UserRole > 1){
         removeUserFromProject($conn, $UserData["id"], $projectID);
     }
 
@@ -316,7 +317,7 @@
                         if(isset($membersData) && !$noMembersFound){
                             foreach($membersData as $member){
                                 echo "
-                                <div class='col-lg-6 col-xl-4 task-DIV'>
+                                <div class='col-lg-6 col-xl-3 task-DIV'>
                                     <div class='btn-toolbar row' style='margin-top:15px'>
                                         <div class='col-lg-12' style='margin-top:5px;'>
                                             <form method='POST' action=''>
@@ -326,8 +327,8 @@
                                                     <span class='badge badge-$member[badge]'>$member[name]</span>";
                                 
                                 if($UserRole  < 3 && $member["id"] != 1) {
-                                    echo "<button type='submit' name='REMuserFromProjectBTN' class='btn bg-dark text-white float-right'><i class='fas fa-times'></i></button>";
-                                    echo "<button type='submit' name='EditUserRoleBTN' class='btn bg-dark text-white float-right'><i class='fas fa-pen'></i></button>";
+                                    echo "&nbsp<button type='submit' name='EditUserRoleBTN' class='btn bg-dark text-white'><i class='fas fa-pen'></i></button>";
+                                    echo "&nbsp<button type='submit' name='REMuserFromProjectBTN' class='btn bg-dark text-white'><i class='fas fa-times'></i></button>";
                                 }
                                 
                                 echo "
