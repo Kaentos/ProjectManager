@@ -192,7 +192,7 @@
     // Edit
     if (isset($_POST["editRoleBTN"]) && $UserRole < 3){
         if (isset($_POST["editMemberID"]) && is_numeric($_POST["editMemberID"])){
-            if(isset($_POST["newRoleID"]) && is_numeric($_POST["newRoleID"]) && checkProjectUserRoleID($conn, $_POST["newRoleID"])){
+            if(isset($_POST["newRoleID"]) && is_numeric($_POST["newRoleID"]) && $_POST["newRoleID"]!=1 && checkProjectUserRoleID($conn, $_POST["newRoleID"])){
                 editUserRoleInProject($conn, $_POST["editMemberID"], $projectID, $_POST["newRoleID"]);
             }  
         }
