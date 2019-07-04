@@ -394,7 +394,7 @@
             <div class="register">
                 <div class="row">
                     <div class="col-md-3 register-left">
-                        <img src="img/logofinal.png" alt=""/>
+                        <img src="img/icon.png" alt=""/>
                         <h3>Welcome to Project Manager</h3>
                         <p>Manage your projects!</p>
                     </div>
@@ -494,13 +494,12 @@
             </div>
 
 
-            <div class="row">
+            <!-- <div class="row">
                 <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 customPaddingLeft">
-                    <!-- Movies -->
                     <div class="clearfix">
                         <div class="col-md-12" style="background-color: white; text-align: center; border-radius: 10px;">
                             <h2 style="padding: 1%; color: #495057">
-                                Last added movies
+                                
                             </h3>
                         </div>
                     </div>
@@ -511,11 +510,10 @@
                 </div>
 
                 <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 customPaddingRight">
-                    <!-- Series -->
                     <div class="clearfix">
                         <div class="col-md-12" style="background-color: white; text-align: center; border-radius: 10px;">
                             <h2 style="padding: 1%; color: #495057">
-                                Last added series
+                                
                             </h3>
                         </div>
                     </div>
@@ -524,7 +522,7 @@
                         
                     </div>
                 </div>
-            </div>
+            </div> -->
             
         </main>
 
