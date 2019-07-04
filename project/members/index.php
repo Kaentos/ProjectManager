@@ -24,9 +24,9 @@
     if (isset($projectID)){
         $projectData = getSingleProjectData($conn, $projectID, $UserData["id"]);
         if (isset($projectData)){
-            $tasksData = getTasks($conn, $projectID);
-            if(!isset($tasksData)){
-                $createTask = true;
+            $membersData = getAllProjectMembers($conn, $projectID);
+            if(!isset($membersData)){
+                die("MMP");
             }
         } else {
             header("location: /projectmanager/dashboard/projects");
@@ -37,41 +37,40 @@
         header("location: /projectmanager/dashboard/projects");
     }
 
-    // Tasks Data
-    function getTasks($conn, $projectID){
-        $tasksData = array();
-        $query = "SELECT t.*, s.name AS status, s.badge FROM tasks AS t INNER JOIN projects AS p ON t.idProject=p.id INNER JOIN tstatus AS s ON t.idStatus=s.id WHERE p.id=$projectID ORDER BY t.lastupdatedDate DESC LIMIT 25";
+    // Members Data
+    function getAllProjectMembers($conn, $projectID){
+        $membersData = array();
+        $query = "SELECT u.id AS userID, u.username, r.* FROM projects AS p INNER JOIN projectmembers AS pm ON p.id=pm.idProject INNER JOIN proles AS r ON pm.idRole = r.id INNER JOIN user AS u ON pm.idUser=u.id WHERE p.id=$projectID ORDER BY r.id LIMIT 25";
         if ($result = $conn->query($query)) {
             if ($result->num_rows >= 1){
                 while($row = $result->fetch_array(MYSQLI_ASSOC)){
-                    array_push($tasksData, $row);
+                    array_push($membersData, $row);
                 }
             } elseif ($result->num_rows == 0) {
-                return;
+                die("Error MPM");
             } else {
                 die();
             }
         } else {
             die();
         }
-        return $tasksData;
+        return $membersData;
     }
 
     $orderDic = [
-        "name" => "ORDER BY u.name",
-        "role" => "ORDER BY pm.idRole ASC"
+        "name" => "ORDER BY u.username",
+        "role" => "ORDER BY r.id"
     ];
     $filer1Selected = $filer2Selected = false;
-    $NoTasks = false;
 
     // Apply filters
     if (isset($_POST["searchBTN"])){
 
         // Filter name
         if(isset($_POST["usernameSearch"])){
-            $StaskName = $_POST["usernameSearch"];
-            $StaskName = "%".$StaskName."%";
-            $filterName = "AND t.name LIKE ?";
+            $Susername = $_POST["usernameSearch"];
+            $Susername = "%".$Susername."%";
+            $filterName = "AND u.username LIKE ?";
         }
 
         // Filter order
@@ -83,43 +82,43 @@
                 $info =  "Invalid order filter value! If you didn\'t change anything report with TFV!";
                 showAlert($info);
                 $filer1Selected = "role";
-                $filterORDER = "ORDER BY t.lastupdatedDate";
+                $filterORDER = "ORDER BY r.id";
             }
         } else {
             $filer1Selected = "role";
-            $filterORDER = "ORDER BY t.lastupdatedDate";
+            $filterORDER = "ORDER BY r.id";
         }
 
-        // Filter group / status
-        if(isset($_POST["filterStatus"])){
-            if(is_numeric($_POST["filterStatus"]) && checkTaskStatusID($conn, $_POST["filterStatus"])){
-                $filterStatusID = "AND t.idStatus=". $_POST["filterStatus"];
-                $filer2Selected = $_POST["filterStatus"];
-            } elseif ($_POST["filterStatus"] == -1) {
-                $filterStatusID = "";
+        // Filter roles
+        if(isset($_POST["filterRoles"])){
+            if(is_numeric($_POST["filterRoles"]) && checkTaskStatusID($conn, $_POST["filterRoles"])){
+                $filterRolesID = "AND r.id=". $_POST["filterRoles"];
+                $filer2Selected = $_POST["filterRoles"];
+            } elseif ($_POST["filterRoles"] == -1) {
+                $filterRolesID = "";
                 $filer2Selected = false;
             } else {
                 $info = "Invalid status filter value! If you didn\'t change anything report with TFS!";
                 showAlert($info);
                 $filer2Selected = false;
-                $filterStatusID = "";
+                $filterRolesID = "";
             }
         } else {
             $filer2Selected = false;
-            $filterStatusID = "";
+            $filterRolesID = "";
         }
 
-        if ($filterOK = TaskFilter($conn, $projectID, $filterName, $filterORDER, $filterStatusID, $StaskName)){
-            $tasksData = $filterOK;
+        if ($filterOK = TaskFilter($conn, $projectID, $filterName, $filterORDER, $filterRolesID, $Susername)){
+            $membersData = $filterOK;
         }
     }
 
-    function TaskFilter($conn, $projectID, $NAME, $ORDER, $GROUP, $StaskName){
-        if(!($stmt = $conn->prepare("SELECT t.*, s.name AS status, s.badge FROM tasks AS t INNER JOIN projects AS p ON t.idProject=p.id INNER JOIN tstatus AS s ON t.idStatus=s.id WHERE p.id=$projectID $NAME $GROUP $ORDER LIMIT 25"))) {
+    function TaskFilter($conn, $projectID, $NAME, $ORDER, $GROUP, $Susername){
+        if(!($stmt = $conn->prepare("SELECT u.id AS userID, u.username, r.* FROM projects AS p INNER JOIN projectmembers AS pm ON p.id=pm.idProject INNER JOIN proles AS r ON pm.idRole = r.id INNER JOIN user AS u ON pm.idUser=u.id WHERE p.id=$projectID $NAME $GROUP $ORDER LIMIT 25"))) {
             die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
         }
         
-        if(!$stmt->bind_param("s", $StaskName)) {
+        if(!$stmt->bind_param("s", $Susername)) {
             die("Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error);
         }
         
@@ -128,20 +127,18 @@
         }
         if ($result = $stmt->get_result()) {
             if ($result->num_rows > 0){
-                $tasksData = array();
+                $membersData = array();
                 while ($row = $result->fetch_array(MYSQLI_ASSOC)){
-                    array_push($tasksData, $row); 
+                    array_push($membersData, $row); 
                 }
                 $stmt->close();
-            } else {
-                $GLOBALS["NoTasks"] = true;
             }
         } else {
             printf("Error in select user query");
             return false;
         }
-        if (isset($tasksData)){
-            return $tasksData;
+        if (isset($membersData)){
+            return $membersData;
         } else {
             return false;
         }
@@ -272,7 +269,7 @@
                                             <option <?php if($filer1Selected == "role"){ echo "selected"; } ?> value="role"> Role </option>
                                         </select>
                                         &nbsp
-                                        <select name="filterStatus" class="form-control" style="background: #3a3f48; color:white; border: none">
+                                        <select name="filterRoles" class="form-control" style="background: #3a3f48; color:white; border: none">
                                             <option value="-1" <?php if(!$filer2Selected){ echo "selected"; } ?>> All Roles </option>
                                             <?php
                                                 foreach($AllProjectUserRoles as $role){
@@ -303,6 +300,32 @@
                         </div>
                     </div>
                     
+                    <?php
+                        if(isset($membersData)){
+                            foreach($membersData as $member){
+                                echo "
+                                <div class='col-lg-12 col-xl-6 task-DIV'>
+                                    <div class='btn-toolbar row' style='margin-top:15px'>
+                                        <div class='col-lg-12' style='margin-top:5px;'>
+                                            <form method='POST' action=''>
+                                                <span class='task-DIV-title2 task-DIV-text'>
+                                                    $member[username]
+                                                    <span class='badge badge-$member[badge]'>$member[name]</span>
+                                                    
+                                                    
+                                                    <input type='hidden' name='singleTaskID' value='$member[id]'>
+                                                </span>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                ";
+                            }
+                        }
+                    ?>
+                    <!-- END Task -->
+                        
+                    </div>
                     
                 </div>
 
