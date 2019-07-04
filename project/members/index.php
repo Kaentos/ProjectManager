@@ -192,6 +192,12 @@
                 editUserRoleInProject($conn, $_POST["editMemberID"], $projectID, $_POST["newRoleID"]);
             }  
         }
+    } elseif ($UserRole > 3){
+        echo "
+        <script>
+            alert('You cannot do that. Stop doing something you don\'t have access to.');
+        </script>
+        ";
     }
 
     
