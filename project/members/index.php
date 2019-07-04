@@ -147,7 +147,7 @@
         
     }
 
-    // Removes user from project
+    // Removes user from project by other users
     if(isset($_POST["REMuserFromProjectBTN"])){
         if(isset($_POST["memberID"]) && is_numeric($_POST["memberID"])){
             if($Temp = checkUserInProject($conn, $projectID, $_POST["memberID"])){
@@ -155,6 +155,10 @@
                 removeUserFromProject($conn, $memberID, $projectID);
             }   
         }
+    }
+
+    if(isset($_POST["QuitProjectBTN"])){
+        removeUserFromProject($conn, $UserData["id"], $projectID);
     }
 
     $AllProjectUserRoles = getProjectUserRoles($conn);
@@ -192,7 +196,7 @@
                 editUserRoleInProject($conn, $_POST["editMemberID"], $projectID, $_POST["newRoleID"]);
             }  
         }
-    } elseif ($UserRole > 3){
+    } elseif ($UserRole > 3 && isset($_POST["editRoleBTN"])){
         echo "
         <script>
             alert('You cannot do that. Stop doing something you don\'t have access to.');
@@ -298,7 +302,7 @@
                                 <?php
                                     if ($UserRole < 4){
                                         echo "
-                                            <a class='btn btn-dark float-right' data-toggle='modal' href='#inviteCodeModal' style='margin-bottom: 15px'>
+                                            <a class='btn btn-dark float-right' data-toggle='modal' href='#inviteCodeModal' style='margin-bottom: 15px; margin-top:5px'>
                                                 Invite code
                                             </a>
                                         ";
@@ -317,6 +321,7 @@
                                         <div class='col-lg-12' style='margin-top:5px;'>
                                             <form method='POST' action=''>
                                                 <span class='task-DIV-title2 task-DIV-text'>
+                                                    <img class='img-thumbnail' style='height: 100px; width: auto;' src='/projectmanager/img/UIMG/9.png'>
                                                     $member[username]
                                                     <span class='badge badge-$member[badge]'>$member[name]</span>";
                                 
