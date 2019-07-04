@@ -98,8 +98,12 @@
                                             </a>
                                         ";
                                     }
+                                    if ($UserRole > 1){
+                                        echo "
+                                            <button type='submit' class='btn btn-danger float-right' name='QuitProjectBTN'> <i class='fas fa-times'></i> </button>
+                                        ";
+                                    }
                                 ?>
-                                <button type="submit" class="btn btn-danger float-right" name="QuitProjectBTN"> <i class="fas fa-times"></i> </button>
                             </span>
                             <br>
                             <span style="font-size:1.3rem; font-weight: 400;">
