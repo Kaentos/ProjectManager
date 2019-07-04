@@ -132,30 +132,37 @@
 
             <main class="page-content">
                 <div class="row d-flex justify-content-center">
-                    <div class="col-lg-12" style="padding-left: 0px">
-                        <span style="font-size:2rem; font-weight: 500;">
-                            <?php
-                                echo "
-                                    <a href='/projectmanager/project/?id=$projectData[id]' style='text-decoration:none;'>
-                                        <span style='color: black;'>$projectData[name]</span>
-                                        <span class='badge badge-$projectData[badge]'>$projectData[Sname]</span>
-                                    </a>
-                                ";
-                                if ($UserRole < 3){
+                <div class="col-lg-12" style="padding-left: 0px">
+                        <form method="POST" action="">
+                            <span style="font-size:2rem; font-weight: 500;">
+                                <?php
                                     echo "
-                                        <a href='/projectmanager/project/edit?id=$projectData[id]' class='edit-pen'>
-                                            <i class='fas fa-pen'></i>
+                                        <a href='/projectmanager/project/?id=$projectData[id]' style='text-decoration:none;'>
+                                            <span style='color: black;'>$projectData[name]</span>
+                                            <span class='badge badge-$projectData[badge]'>$projectData[Sname]</span>
                                         </a>
                                     ";
-                                }
-                            ?>
-                        </span>
-                        <br>
-                        <span style="font-size:1.3rem; font-weight: 400;">
-                            <?php
-                                echo $projectData["des"];
-                            ?>        
-                        </span>
+                                    if ($UserRole < 3){
+                                        echo "
+                                            <a href='/projectmanager/project/edit?id=$projectData[id]' class='edit-pen'>
+                                                <i class='fas fa-pen'></i>
+                                            </a>
+                                        ";
+                                    }
+                                    if ($UserRole > 1){
+                                        echo "
+                                            <button type='submit' class='btn btn-danger float-right' name='QuitProjectBTN'> <i class='fas fa-times'></i> </button>
+                                        ";
+                                    }
+                                ?>
+                            </span>
+                            <br>
+                            <span style="font-size:1.3rem; font-weight: 400;">
+                                <?php
+                                    echo $projectData["des"];
+                                ?>        
+                            </span>
+                        </form>
                     </div>
                     <hr class="w-100">
                     
