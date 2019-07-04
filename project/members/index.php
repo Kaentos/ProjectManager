@@ -293,8 +293,8 @@
                                 <?php
                                     if ($UserRole < 4){
                                         echo "
-                                            <a class='btn btn-dark float-right' data-toggle='modal' href='#newTaskModal' style='margin-bottom: 15px'>
-                                                New Task
+                                            <a class='btn btn-dark float-right' data-toggle='modal' href='#inviteCodeModal' style='margin-bottom: 15px'>
+                                                Invite code
                                             </a>
                                         ";
                                     }
@@ -305,6 +305,30 @@
                     
                     
                 </div>
+
+                <!-- Invite code modal -->
+                <div class="modal fade" id="inviteCodeModal" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <!-- Head -->
+                            <div class="modal-header">
+                                <span class="modal-title"> Project invite code: </span>
+                                <button type="button" class="close" data-dismiss="modal" aria-label=""><span>×</span></button>
+                            </div>        
+                            <!-- Body -->
+                            <div class="modal-body">
+                                <span class="modal-subtitle">Project name:</span>
+                                <div class='alert alert-secondary edit-DIV-Input'><?php echo $projectData["name"]; ?></div>
+                                <span class="modal-subtitle">Code:</span>
+                                <div class='alert alert-secondary edit-DIV-Input'><?php echo $projectData["code"]; ?></div>
+                                <span class="modal-subtitle">Link:</span>
+                                <div class='alert alert-secondary edit-DIV-Input'>http://localhost/projectmanager/invite/?code=<?php echo $projectData["code"]; ?></div>
+                            </div>
+                                    
+                        </div>
+                    </div>
+                </div> 
+                <!-- END invite code modal -->
 
             </main>
 
