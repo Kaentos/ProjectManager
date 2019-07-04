@@ -62,6 +62,7 @@
         "role" => "ORDER BY r.id"
     ];
     $filer1Selected = $filer2Selected = false;
+    $noMembersFound = false;
 
     // Apply filters
     if (isset($_POST["searchBTN"])){
@@ -108,12 +109,12 @@
             $filterRolesID = "";
         }
 
-        if ($filterOK = TaskFilter($conn, $projectID, $filterName, $filterORDER, $filterRolesID, $Susername)){
+        if ($filterOK = MemberFilter($conn, $projectID, $filterName, $filterORDER, $filterRolesID, $Susername)){
             $membersData = $filterOK;
         }
     }
 
-    function TaskFilter($conn, $projectID, $NAME, $ORDER, $GROUP, $Susername){
+    function MemberFilter($conn, $projectID, $NAME, $ORDER, $GROUP, $Susername){
         if(!($stmt = $conn->prepare("SELECT u.id AS userID, u.username, r.* FROM projects AS p INNER JOIN projectmembers AS pm ON p.id=pm.idProject INNER JOIN proles AS r ON pm.idRole = r.id INNER JOIN user AS u ON pm.idUser=u.id WHERE p.id=$projectID $NAME $GROUP $ORDER LIMIT 25"))) {
             die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
         }
@@ -132,9 +133,10 @@
                     array_push($membersData, $row); 
                 }
                 $stmt->close();
+            } else {
+                $GLOBALS["noMembersFound"] = true;
             }
         } else {
-            printf("Error in select user query");
             return false;
         }
         if (isset($membersData)){
@@ -145,53 +147,6 @@
         
     }
 
-    // New task btn
-    if (isset($_POST["newTaskBTN"])){
-        if ( isset($_POST["taskName"]) && strlen($_POST["taskName"]) <= 60 && !empty($_POST["taskName"])) {
-            if (isset($_POST["taskDes"]) && strlen($_POST["taskDes"]) <= 150 && !empty($_POST["taskDes"])) {
-                if (isset($_POST["taskStatus"]) && is_numeric($_POST["taskStatus"]) && checkTaskStatusID($conn, $_POST["taskStatus"])) {
-                    $Data = [
-                        "name" => $_POST["taskName"],
-                        "des" => $_POST["taskDes"],
-                        "status" => $_POST["taskStatus"]
-                    ];
-                    addNewTask($conn, $projectID, $UserData["id"], $Data);
-                } else {
-                    $info = "Can\'t validate status value! If you didn\'t change value report with error MTS!";
-                    showAlert($info);
-                }
-            } else {
-                $info = "Task description must have 1 to 150 characters.";
-                showAlert($info);
-            }
-        } else {
-            $info = "Task name must have 1 to 60 characters.";
-            showAlert($info);
-        }
-    }
-
-    // User starts following task
-    if(isset($_POST["followTaskBTN"])){
-        if(isset($_POST["singleTaskID"]) && is_numeric($_POST["singleTaskID"])){
-            if(checkTaskID($conn, $_POST["singleTaskID"], $projectID) ){
-                $taskID = $_POST["singleTaskID"];
-                addFollowToTask($conn, $taskID, $UserData["id"]);
-            }
-            
-        }
-    }
-
-    // User removes follow from task
-    if(isset($_POST["REMfollowTaskBTN"])){
-        if(isset($_POST["singleTaskID"]) && is_numeric($_POST["singleTaskID"])){
-            if(checkTaskID($conn, $_POST["singleTaskID"], $projectID) ){
-                $taskID = $_POST["singleTaskID"];
-                removeUserTaskFollow($conn, $taskID, $UserData["id"]);
-            }   
-        }
-    }
-
-    $AllTasksStatus = getTasksStatus($conn);
     $AllProjectUserRoles = getProjectUserRoles($conn);
 ?>
 
@@ -301,17 +256,16 @@
                     </div>
                     
                     <?php
-                        if(isset($membersData)){
+                        if(isset($membersData) && !$noMembersFound){
                             foreach($membersData as $member){
                                 echo "
-                                <div class='col-lg-12 col-xl-6 task-DIV'>
+                                <div class='col-lg-6 col-xl-4 task-DIV'>
                                     <div class='btn-toolbar row' style='margin-top:15px'>
                                         <div class='col-lg-12' style='margin-top:5px;'>
                                             <form method='POST' action=''>
                                                 <span class='task-DIV-title2 task-DIV-text'>
                                                     $member[username]
                                                     <span class='badge badge-$member[badge]'>$member[name]</span>
-                                                    
                                                     
                                                     <input type='hidden' name='singleTaskID' value='$member[id]'>
                                                 </span>
@@ -321,6 +275,8 @@
                                 </div>
                                 ";
                             }
+                        } elseif ($noMembersFound) {
+                            echo "<p class='task-DIV-list'> Didn't find any members. </p>";
                         }
                     ?>
                     <!-- END Task -->
