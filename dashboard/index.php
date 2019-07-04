@@ -32,7 +32,7 @@
 
     $TasksData = array();
     $hasTasks = false;
-    // Get all projects user is assigned
+    // Get all tasks user is assigned
     $query = "SELECT t.*, s.name AS status, s.badge, p.id AS projectID FROM tasks AS t INNER JOIN projects AS p ON t.idProject=p.id INNER JOIN tstatus AS s ON t.idStatus=s.id INNER JOIN taskfollow AS tf ON t.id=tf.idTask WHERE tf.idUser=$UserData[id] LIMIT 5";
     if ($result = $conn->query($query)) {
         if ($result->num_rows >= 1){
@@ -156,7 +156,7 @@
                     <div class="task-DIV">
                         <div style="word-break: break-word;">
                             <?php
-                            if(isset($TasksData)){
+                            if(isset($TasksData) && $hasTasks){
                                 foreach($TasksData as $task){
                                     echo "
                                         <div class='col-md-12'>
@@ -172,8 +172,8 @@
                                         </div>
                                     ";
                                 }
-                            } elseif (isset($createTask) && $createTask) {
-                                echo "<p class='task-DIV-list'> No tasks yet, create them! </p>";
+                            } elseif (!$hasTasks) {
+                                echo "<p class='task-DIV-list col-12' style='margin-top: 5px'> No tasks assigned, go to projects and follow some tasks! </p>";
                             }
                             ?>
                         </div>
@@ -189,7 +189,7 @@
                     <div class="task-DIV">
                         <div style="word-break: break-word;">
                             <?php
-                            if(isset($TasksData)){
+                            if(isset($TasksData) && $hasTasks){
                                 foreach($TasksData as $task){
                                     echo "
                                         <div class='col-md-12'>
@@ -205,8 +205,8 @@
                                         </div>
                                     ";
                                 }
-                            } elseif (isset($createTask) && $createTask) {
-                                echo "<p class='task-DIV-list'> No tasks yet, create them! </p>";
+                            } elseif (!$hasTasks) {
+                                echo "<p class='task-DIV-list col-12' style='margin-top: 5px'> No issues yet, create them! </p>";
                             }
                             ?>
                         </div>
