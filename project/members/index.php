@@ -147,6 +147,16 @@
         
     }
 
+    // Removes user from project
+    if(isset($_POST["REMuserFromProjectBTN"])){
+        if(isset($_POST["memberID"]) && is_numeric($_POST["memberID"])){
+            if($Temp = checkUserInProject($conn, $projectID, $_POST["memberID"])){
+                $memberID = $_POST["memberID"];
+                removeUserFromProject($conn, $memberID, $projectID);
+            }   
+        }
+    }
+
     $AllProjectUserRoles = getProjectUserRoles($conn);
 ?>
 
@@ -265,9 +275,16 @@
                                             <form method='POST' action=''>
                                                 <span class='task-DIV-title2 task-DIV-text'>
                                                     $member[username]
-                                                    <span class='badge badge-$member[badge]'>$member[name]</span>
-                                                    
-                                                    <input type='hidden' name='singleTaskID' value='$member[id]'>
+                                                    <span class='badge badge-$member[badge]'>$member[name]</span>";
+                                
+                                if($UserRole  < 3 && $member["id"] != 1) {
+                                    echo "<button type='submit' name='REMuserFromProjectBTN' class='btn bg-dark text-white float-right'><i class='fas fa-times'></i></button>";
+                                    echo "<button type='submit' name='EditUserRoleBTN' class='btn bg-dark text-white float-right'><i class='fas fa-pen'></i></button>";
+                                }
+                                
+                                echo "
+
+                                                    <input type='hidden' name='memberID' value='$member[userID]'>
                                                 </span>
                                             </form>
                                         </div>
