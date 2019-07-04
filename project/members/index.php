@@ -157,6 +157,23 @@
         }
     }
 
+    // Edit user role
+    if(isset($_POST["EditUserRoleBTN"])){
+        if(isset($_POST["memberID"]) && is_numeric($_POST["memberID"])){
+            if($Temp = checkUserInProject($conn, $projectID, $_POST["memberID"])){
+                $memberID = $_POST["memberID"];
+                echo "
+                    <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js'></script>
+                    <script>
+                        $(document).ready(function(){
+                                $('#editUserRoleModal').modal('show');
+                        });
+                    </script>
+                ";
+            }   
+        }
+    }
+
     $AllProjectUserRoles = getProjectUserRoles($conn);
 ?>
 
@@ -279,7 +296,7 @@
                                 
                                 if($UserRole  < 3 && $member["id"] != 1) {
                                     echo "<button type='submit' name='REMuserFromProjectBTN' class='btn bg-dark text-white float-right'><i class='fas fa-times'></i></button>";
-                                    echo "<button type='submit' name='EditUserRoleBTN' class='btn bg-dark text-white float-right'><i class='fas fa-pen'></i></button>";
+                                    echo "<button id='teste' type='submit' name='EditUserRoleBTN' class='btn bg-dark text-white float-right'><i class='fas fa-pen'></i></button>";
                                 }
                                 
                                 echo "
@@ -325,6 +342,30 @@
                     </div>
                 </div> 
                 <!-- END invite code modal -->
+
+                <!-- Edit User Role modal -->
+                <div class="modal fade" id="editUserRoleModal" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <!-- Head -->
+                            <div class="modal-header">
+                                <span class="modal-title"> Edit permissions of <?php echo $_POST["memberID"] ?>: </span>
+                                <button type="button" class="close" data-dismiss="modal" aria-label=""><span>×</span></button>
+                            </div>        
+                            <!-- Body -->
+                            <div class="modal-body">
+                                <span class="modal-subtitle">Project name:</span>
+                                <div class='alert alert-secondary edit-DIV-Input'><?php echo $projectData["name"]; ?></div>
+                                <span class="modal-subtitle">Code:</span>
+                                <div class='alert alert-secondary edit-DIV-Input'><?php echo $projectData["code"]; ?></div>
+                                <span class="modal-subtitle">Link:</span>
+                                <div class='alert alert-secondary edit-DIV-Input'>http://localhost/projectmanager/invite/?code=<?php echo $projectData["code"]; ?></div>
+                            </div>
+                                    
+                        </div>
+                    </div>
+                </div> 
+                <!-- END edit user role modal -->
 
             </main>
 
