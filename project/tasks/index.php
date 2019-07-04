@@ -384,7 +384,6 @@
                                                 }
                                             ?>
                                         </select>
-                                        <div class="invalid-feedback">Don't change values, if you didn't report it.</div>
                                     </div>
                                     <input type="submit" class="btn btn-success font-weight-bold" name="newTaskBTN" value="Create task">
                                 </form>                

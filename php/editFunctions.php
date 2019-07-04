@@ -22,6 +22,18 @@ function editProject($conn, $Data, $projectData, $UserData){
     return;
 }
 
+function editUserRoleInProject($conn, $userID, $projectID, $roleID){
+    $query = "UPDATE projectmembers SET idRole=$roleID WHERE idProject=$projectID AND idUser=$userID";
+    if (!$conn->query($query)) {
+        die();
+    } else {
+        header("Refresh: 0");
+        return;
+    }
+    die();
+}
+
+
 // END Project
 
 // Task 

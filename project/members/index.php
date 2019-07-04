@@ -159,7 +159,7 @@
 
     $AllProjectUserRoles = getProjectUserRoles($conn);
 
-    // Edit user role
+    // Open edit user role modal
     if(isset($_POST["EditUserRoleBTN"])){
         if(isset($_POST["memberID"]) && is_numeric($_POST["memberID"])){
             if($Temp = checkUserInProject($conn, $projectID, $_POST["memberID"])){
@@ -182,6 +182,15 @@
                     </script>
                 ";
             }   
+        }
+    }
+
+    // Edit
+    if (isset($_POST["editRoleBTN"]) && $UserRole < 3){
+        if (isset($_POST["editMemberID"]) && is_numeric($_POST["editMemberID"])){
+            if(isset($_POST["newRoleID"]) && is_numeric($_POST["newRoleID"]) && checkProjectUserRoleID($conn, $_POST["newRoleID"])){
+                editUserRoleInProject($conn, $_POST["editMemberID"], $projectID, $_POST["newRoleID"]);
+            }  
         }
     }
 
@@ -343,10 +352,17 @@
                             <div class="modal-body">
                                 <span class="modal-subtitle">Project name:</span>
                                 <div class='alert alert-secondary edit-DIV-Input'><?php echo $projectData["name"]; ?></div>
-                                <span class="modal-subtitle">Code:</span>
-                                <div class='alert alert-secondary edit-DIV-Input'><?php echo $projectData["code"]; ?></div>
-                                <span class="modal-subtitle">Link:</span>
-                                <div class='alert alert-secondary edit-DIV-Input'>http://localhost/projectmanager/invite/?code=<?php echo $projectData["code"]; ?></div>
+                                <?php 
+                                    // In case if you can open modal with js without permission
+                                    if($UserRole < 3){
+                                        echo "
+                                            <span class='modal-subtitle'>Code:</span>
+                                            <div class='alert alert-secondary edit-DIV-Input'>$projectData[code]</div>
+                                            <span class='modal-subtitle'>Link:</span>
+                                            <div class='alert alert-secondary edit-DIV-Input'>http://localhost/projectmanager/invite/?code=$projectData[code]</div>
+                                        ";
+                                    }
+                                ?>
                             </div>
                                     
                         </div>
@@ -365,10 +381,25 @@
                             </div>        
                             <!-- Body -->
                             <div class="modal-body">
-                                <span class="modal-subtitle">Current Role:</span>
-                                <div class='alert alert-secondary edit-DIV-Input'><?php echo $memberData["role"]; ?></div>
-                                <span class="modal-subtitle">New Role:</span>
-                                <div class='alert alert-secondary edit-DIV-Input'><?php echo $memberData["role"]; ?></div>
+                                <form method="POST" action="">
+                                    <span class="modal-subtitle">Current Role:</span>
+                                    <div class='alert alert-secondary edit-DIV-Input'><?php echo $memberData["role"]; ?></div>
+
+                                    <span class="modal-subtitle">New Role:</span>
+                                    <div class="form-group">
+                                        <select class="form-control edit-DIV-Input" name="newRoleID">
+                                            <?php
+                                                foreach($AllProjectUserRoles as $role){
+                                                    if ($role["id"] != $memberData["idRole"] && $role["id"] > $UserRole){
+                                                        echo "<option value='$role[id]'>$role[name]</option>";
+                                                    }
+                                                }
+                                            ?>
+                                        </select>
+                                    </div>
+                                    <input type='hidden' name='editMemberID' value='<?php echo $memberData["id"] ?>'>
+                                    <input type="submit" class="btn btn-primary font-weight-bold" name="editRoleBTN" value="Edit role">
+                                </form>
                             </div>
                                     
                         </div>
