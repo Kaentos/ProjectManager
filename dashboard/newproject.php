@@ -70,13 +70,13 @@
     }
 
     function addProject($conn, $pname, $pdes, $UserData, $InviteCode){
-        $currentDate = date("Y-m-d h:i:s");
+        $currentDate = date("Y-m-d H:i:s");
         $status = 2;
         $role = 1;
-        if(!($stmt = $conn->prepare("INSERT INTO projects (name, des, code, idStatus, idCreator, creationDate, lastupdatedDate) VALUES (?,?,?,?,?,?,?)"))) {
+        if(!($stmt = $conn->prepare("INSERT INTO projects (name, des, code, idStatus, idCreator, creationDate, idUpdateUser, lastupdatedDate) VALUES (?,?,?,?,?,?,?,?)"))) {
             die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
         }
-        if(!$stmt->bind_param("sssiiss", $pname, $pdes, $InviteCode, $status, $UserData["id"], $currentDate, $currentDate)) {
+        if(!$stmt->bind_param("sssiisss", $pname, $pdes, $InviteCode, $status, $UserData["id"], $currentDate, $UserData["id"], $currentDate)) {
             die("Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error);
         }
         if(!$stmt->execute()) {

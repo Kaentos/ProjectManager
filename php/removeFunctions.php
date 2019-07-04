@@ -16,4 +16,21 @@
 
 // END OF TASK
 
+// PROJECT
+
+    // Remove user from project
+    function removeUserFromProject($conn, $userID, $projectID){
+        $query = "DELETE FROM projectmembers WHERE idProject=$projectID AND idUser=$userID";
+        if (!$conn->query($query)) {
+            die();
+        }
+        $query = "DELETE FROM taskfollow WHERE idUser=$userID";
+        if (!$conn->query($query)) {
+            die();
+        }
+        header("Refresh: 0");
+    }
+
+// END PROJECT
+
 ?>

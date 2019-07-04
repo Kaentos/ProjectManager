@@ -125,7 +125,7 @@
                                 <div class='alert alert-secondary edit-DIV-Input' role='alert'>
                                     <?php
                                         echo "
-                                            $projectData[creationDate] by $projectData[idCreator]  
+                                            $projectData[creationDate] by $projectData[idUpdateUser]  
                                         ";  
                                     ?>
                                 </div>
@@ -134,7 +134,7 @@
                                 <div class='alert alert-secondary edit-DIV-Input' role='alert'>
                                     <?php
                                         echo "
-                                            $projectData[lastupdatedDate] by $projectData[idUpdateUser]  
+                                            $projectData[lastupdatedDate] by $projectData[idCreator]
                                         ";  
                                     ?>
                                 </div>

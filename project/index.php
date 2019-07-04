@@ -6,6 +6,7 @@
         include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/getFunctions.php";
         include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/checkFunctions.php";
         include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/addFunctions.php";
+        include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/removeFunctions.php";
         include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/otherFunctions.php";
         include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/sessionCheckTime.php";
         include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/databaseConnections.php";
@@ -56,6 +57,10 @@
         }
     }
 
+    if(isset($_POST["QuitProjectBTN"])){
+        removeUserFromProject($conn, $UserData["id"], $projectID);
+    }
+
     $UserRole = getUserProjectRole($conn, $projectID, $UserData["id"]);
     $AllTasksStatus = getTasksStatus($conn);
 ?>
@@ -77,29 +82,32 @@
             <main class="page-content">
                 <div class="row d-flex justify-content-center">
                     <div class="col-lg-12" style="padding-left: 0px">
-                        <span style="font-size:2rem; font-weight: 500;">
-                            <?php
-                                echo "
-                                    <a href='/projectmanager/project/?id=$projectData[id]' style='text-decoration:none;'>
-                                        <span style='color: black;'>$projectData[name]</span>
-                                        <span class='badge badge-$projectData[badge]'>$projectData[Sname]</span>
-                                    </a>
-                                ";
-                                if ($UserRole < 3){
+                        <form method="POST" action="">
+                            <span style="font-size:2rem; font-weight: 500;">
+                                <?php
                                     echo "
-                                        <a href='/projectmanager/project/edit?id=$projectData[id]' class='edit-pen'>
-                                            <i class='fas fa-pen'></i>
+                                        <a href='/projectmanager/project/?id=$projectData[id]' style='text-decoration:none;'>
+                                            <span style='color: black;'>$projectData[name]</span>
+                                            <span class='badge badge-$projectData[badge]'>$projectData[Sname]</span>
                                         </a>
                                     ";
-                                }
-                            ?>
-                        </span>
-                        <br>
-                        <span style="font-size:1.3rem; font-weight: 400;">
-                            <?php
-                                echo $projectData["des"];
-                            ?>        
-                        </span>
+                                    if ($UserRole < 3){
+                                        echo "
+                                            <a href='/projectmanager/project/edit?id=$projectData[id]' class='edit-pen'>
+                                                <i class='fas fa-pen'></i>
+                                            </a>
+                                        ";
+                                    }
+                                ?>
+                                <button type="submit" class="btn btn-danger float-right" name="QuitProjectBTN"> <i class="fas fa-times"></i> </button>
+                            </span>
+                            <br>
+                            <span style="font-size:1.3rem; font-weight: 400;">
+                                <?php
+                                    echo $projectData["des"];
+                                ?>        
+                            </span>
+                        </form>
                     </div>
                     <hr class="w-100">
                     
