@@ -157,11 +157,22 @@
         }
     }
 
+    $AllProjectUserRoles = getProjectUserRoles($conn);
+
     // Edit user role
     if(isset($_POST["EditUserRoleBTN"])){
         if(isset($_POST["memberID"]) && is_numeric($_POST["memberID"])){
             if($Temp = checkUserInProject($conn, $projectID, $_POST["memberID"])){
-                $memberID = $_POST["memberID"];
+                $TempRoleID = getUserProjectRole($conn, $projectID, $_POST["memberID"]);
+                $TempData = $AllProjectUserRoles[$TempRoleID-1]["name"];
+                $memberData = [
+                    "id" => $_POST["memberID"],
+                    "name" => getUsername($conn, $_POST["memberID"]),
+                    "idRole" => $TempRoleID,
+                    "role" => $TempData
+                ];
+                unset($TempRoleID);
+                unset($TempData);
                 echo "
                     <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js'></script>
                     <script>
@@ -174,7 +185,7 @@
         }
     }
 
-    $AllProjectUserRoles = getProjectUserRoles($conn);
+    
 ?>
 
 <html lang="en">
@@ -296,7 +307,7 @@
                                 
                                 if($UserRole  < 3 && $member["id"] != 1) {
                                     echo "<button type='submit' name='REMuserFromProjectBTN' class='btn bg-dark text-white float-right'><i class='fas fa-times'></i></button>";
-                                    echo "<button id='teste' type='submit' name='EditUserRoleBTN' class='btn bg-dark text-white float-right'><i class='fas fa-pen'></i></button>";
+                                    echo "<button type='submit' name='EditUserRoleBTN' class='btn bg-dark text-white float-right'><i class='fas fa-pen'></i></button>";
                                 }
                                 
                                 echo "
@@ -349,17 +360,15 @@
                         <div class="modal-content">
                             <!-- Head -->
                             <div class="modal-header">
-                                <span class="modal-title"> Edit permissions of <?php echo $_POST["memberID"] ?>: </span>
+                                <span class="modal-title"> Edit permissions of <?php echo $memberData["name"] ?>: </span>
                                 <button type="button" class="close" data-dismiss="modal" aria-label=""><span>×</span></button>
                             </div>        
                             <!-- Body -->
                             <div class="modal-body">
-                                <span class="modal-subtitle">Project name:</span>
-                                <div class='alert alert-secondary edit-DIV-Input'><?php echo $projectData["name"]; ?></div>
-                                <span class="modal-subtitle">Code:</span>
-                                <div class='alert alert-secondary edit-DIV-Input'><?php echo $projectData["code"]; ?></div>
-                                <span class="modal-subtitle">Link:</span>
-                                <div class='alert alert-secondary edit-DIV-Input'>http://localhost/projectmanager/invite/?code=<?php echo $projectData["code"]; ?></div>
+                                <span class="modal-subtitle">Current Role:</span>
+                                <div class='alert alert-secondary edit-DIV-Input'><?php echo $memberData["role"]; ?></div>
+                                <span class="modal-subtitle">New Role:</span>
+                                <div class='alert alert-secondary edit-DIV-Input'><?php echo $memberData["role"]; ?></div>
                             </div>
                                     
                         </div>
