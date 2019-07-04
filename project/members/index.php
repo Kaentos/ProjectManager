@@ -317,7 +317,7 @@
                         if(isset($membersData) && !$noMembersFound){
                             foreach($membersData as $member){
                                 echo "
-                                <div class='col-lg-6 col-xl-3 task-DIV'>
+                                <div class='col-lg-6 col-xl-3 members-DIV'>
                                     <div class='btn-toolbar row' style='margin-top:15px'>
                                         <div class='col-lg-12' style='margin-top:5px;'>
                                             <form method='POST' action=''>

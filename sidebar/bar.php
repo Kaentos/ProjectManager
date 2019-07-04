@@ -124,8 +124,8 @@
                             <!-- Menu Calendar -->
                             <li>
                                 <a href="/projectmanager/dashboard/calendar.php">
-                                    <i class="fa fa-calendar"></i>
-                                    <span>Calendar</span>
+                                    <i class="fa fa-flag"></i>
+                                    <span>Milestones</span>
                                 </a>
                             </li>
                             <!-- End Menu Calendar -->
@@ -169,19 +169,7 @@
                                     </ul>
                                 </div>
                             </li>
-
-                            <li>
-                                <a href="#">
-                                    <i class="fas fa-stopwatch"></i>
-                                    <span>Timer</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    <i class="fa fa-calendar"></i>
-                                    <span>Calendar</span>
-                                </a>
-                            </li>
+                            
                             <!-- Example -->
                             <li>
                                 <a href="#">
@@ -204,13 +192,13 @@
                                         <div class='sidebar-submenu'>
                                             <ul>
                                                 <li>
-                                                    <a href='#'>Dashboard 1</a>
+                                                    <a href='#'>All users</a>
                                                 </li>
                                                 <li>
-                                                    <a href='#'>Dashboard 2</a>
+                                                    <a href='#'>Reports</a>
                                                 </li>
                                                 <li>
-                                                    <a href='#'>Dashboard 3</a>
+                                                    <a href='#'>All projects</a>
                                                 </li>
                                             </ul>
                                         </div>
