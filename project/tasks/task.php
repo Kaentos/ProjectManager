@@ -33,7 +33,7 @@
 
     // Get task ID from URL GET
     if (isset($_GET["task"]) && is_numeric($_GET["task"])){
-        if (checkTaskID($conn, $_GET["task"])){
+        if (checkTaskID($conn, $_GET["task"], $projectID)){
             $taskID = $_GET["task"];
         } else {
             header("location: /projectmanager/project?id=$projectID");
@@ -210,10 +210,10 @@
                     <div class="col-sm-12 col-md-10 col-lg-10 col-xl-6" style="background-color:green;" id="#Dis">
                         <form class="col-12" method="POST" action="" style="margin-top: 20px">
                             <div class="row">
-                            <div class="col-lg-4 col-xl-4">
-                                    <img class="img-thumbnail" style="height: 25%; width: 100%;" src="/projectmanager/img/UIMG/9.png" alt="User picture">
+                            <div class="col-4 col-lg-4 col-xl-2">
+                                    <img class="img-thumbnail" style="height: 100px; width: auto;" src="/projectmanager/img/UIMG/9.png" alt="User picture">
                                 </div>
-                                <div class="col-lg-8 col-xl-8">
+                                <div class="col-8 col-lg-8 col-xl-10">
                                     <div>
                                         <textarea class='form-control edit-DIV-Input' placeholder="Write your comment here!" rows='5' name='comment' autocomplete='off'></textarea>
                                     </div>
@@ -234,10 +234,10 @@
                                     echo "
                                     <div class='col-12' style='margin-bottom: 15px'>
                                         <div class='row'>
-                                            <div class='col-lg-4 col-xl-4'>
-                                                <img class='img-thumbnail' style='height: 23%; width: 100%;' src='/projectmanager/img/UIMG/9.png'>
+                                            <div class='col-4 col-lg-4 col-xl-2'>
+                                                <img class='img-thumbnail' style='height: 100px; width: auto;' src='/projectmanager/img/UIMG/9.png'>
                                             </div>
-                                            <div class='col-lg-8 col-xl-8'>
+                                            <div class='col-8 col-lg-8 col-xl-10'>
                                                 <div class='alert alert-light task-comment-text'>
                                                     $comment[comment]
                                                 </div>
