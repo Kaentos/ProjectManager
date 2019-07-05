@@ -48,6 +48,25 @@
         printf("Error in select user query");
         die();
     }
+
+    $IssuesData = array();
+    $hasIssues = false;
+    // Get all issues user is assigned
+    $query = "SELECT i.*, s.name AS status, s.badge, p.id AS projectID FROM issues AS i INNER JOIN projects AS p ON i.idProject=p.id INNER JOIN istatus AS s ON i.idStatus=s.id INNER JOIN issuefollow AS iff ON i.id=iff.idIssue WHERE iff.idUser=$UserData[id] LIMIT 5";
+    if ($result = $conn->query($query)) {
+        if ($result->num_rows >= 1){
+            $hasIssues = true;
+            while($row = $result->fetch_array(MYSQLI_ASSOC)){
+                array_push($IssuesData, $row);
+            }
+        } else {
+            $hasIssues = false;
+        }
+        $result->close();
+    } else {
+        printf("Error in select user query");
+        die();
+    }
 ?>
 
 <html lang="en">
@@ -183,30 +202,30 @@
                     <!-- 5 Issues -->
                     <div>
                         <span style="font-size:2rem; font-weight: 500;">Issues</span>
-                        <a href="/projectmanager/dashboard/tasks" class="btn btn-danger float-right" style="margin-top:8px; color:white;">All Issues</a>
+                        <a href="/projectmanager/dashboard/issues" class="btn btn-danger float-right" style="margin-top:8px; color:white;">All Issues</a>
                     </div>
                     <hr>
-                    <div class="task-DIV">
+                    <div class="issue-DIV">
                         <div style="word-break: break-word;">
                             <?php
-                            if(isset($TasksData) && $hasTasks){
-                                foreach($TasksData as $task){
+                            if(isset($IssuesData) && $hasIssues){
+                                foreach($IssuesData as $issue){
                                     echo "
                                         <div class='col-md-12'>
-                                        <span class='task-DIV-list'>
-                                            <a href='/projectmanager/project/tasks/task?id=$task[projectID]&task=$task[id]'>
-                                                $task[name]
+                                        <span class='issue-DIV-list'>
+                                            <a href='/projectmanager/project/issues/issue?id=$issue[projectID]&issue=$issue[id]'>
+                                                $issue[name]
                                             </a>
-                                            <span class='badge badge-$task[badge]'>$task[status]</span>
+                                            <span class='badge badge-$issue[badge]'>$issue[status]</span>
                                         </span>
                                         <p style='font-size:1.1rem'>
-                                            $task[Des]
+                                            $issue[Des]
                                         </p>
                                         </div>
                                     ";
                                 }
-                            } elseif (!$hasTasks) {
-                                echo "<p class='task-DIV-list col-12' style='margin-top: 5px'> No issues yet, create them! </p>";
+                            } elseif (!$hasIssues) {
+                                echo "<p class='issue-DIV-list col-12' style='margin-top: 5px'> No issues assigned, go to projects and follow some issues! </p>";
                             }
                             ?>
                         </div>
