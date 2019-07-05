@@ -276,33 +276,8 @@
                         <div class="col-lg-12 col-xl-5 members-DIV">
                             <div class="btn-toolbar row" style="margin-top:15px">
                                 <div class="col-lg-12 col-xl-6" style="margin-top:5px;">
-                                    <span class="members-DIV-title">Milestones</span>
+                                    <span class="members-DIV-title">Milestones - Coming soon!</span>
                                 </div>
-                                <div class="col-md-12 col-lg-6">
-                                    <div class="btn-group mr-2 DIV-btn-float" style="margin-top:5px">
-                                        <a href="#" class="btn btn-danger members-DIV-btn">All milestones</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <hr class="hr-members">
-                            <div style="word-break: break-word;">
-                                <?php
-                                if(isset($tasksData)){
-                                    foreach($tasksData as $task){
-                                        echo "
-                                        <span style='font-size:1.3rem; font-weight: bold;'>
-                                            $task[name]
-                                            <span class='badge badge-$task[badge]'>$task[status]</span>    
-                                        </span>
-                                        <p style='font-size:1.1rem'>
-                                            $task[Des]
-                                        </p>
-                                        ";
-                                    }
-                                } elseif (isset($createTask) && $createTask) {
-                                    echo "<p class='task-DIV-list'> No issues yet, create them if you need! </p>";
-                                }
-                                ?>
                             </div>
                         </div>
                         <!-- END milestones -->

@@ -99,7 +99,6 @@
                                         <!-- Menu Projects -->
                                         <li>
                                             <a href='/projectmanager/project/?id=$projectID'>
-                                                <!-- <i class='fas fa-folder'></i> -->
                                                 <i class='fas fa-project-diagram'></i>
                                                 <span>Project page</span>
                                             </a>

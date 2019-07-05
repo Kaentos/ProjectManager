@@ -293,8 +293,8 @@
                     return;
                 }
             }
-            elseif(!empty($_POST["password"])) {
-                $GLOBALS["NPasswordErr"] = "Confirm password invalid.";
+            elseif(!empty($_POST["CnPassword"]) && $pw != $pw2) {
+                $GLOBALS["NPasswordErr"] = "Confirm password is invalid.";
                 return;
             } else {
                 $GLOBALS["NPasswordErr"] = "Empty password input.";
