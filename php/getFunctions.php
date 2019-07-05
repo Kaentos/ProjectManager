@@ -205,7 +205,7 @@
     // Get single issue
     function getSingleIssue($conn, $projectID, $issueID){
         $issueData = array();
-        $query = "SELECT i.*, s.name AS status, s.badge FROM issues AS i INNER JOIN projects AS p ON i.idProject=p.id INNER JOIN istatus AS s ON i.idStatus=s.id WHERE p.id=$projectID AND t.id=$issueID";
+        $query = "SELECT i.*, s.name AS status, s.badge FROM issues AS i INNER JOIN projects AS p ON i.idProject=p.id INNER JOIN istatus AS s ON i.idStatus=s.id WHERE p.id=$projectID AND i.id=$issueID";
         if ($result = $conn->query($query)) {
             if ($result->num_rows == 1){
                 $issueData = $result->fetch_array(MYSQLI_ASSOC);
@@ -222,7 +222,7 @@
                 die();
             }
         } else {
-            die();
+            die("issue");
         }
         die();
     }

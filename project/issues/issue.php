@@ -31,10 +31,10 @@
         header("location: /projectmanager/dashboard/projects");
     }
 
-    // Get task ID from URL GET
-    if (isset($_GET["task"]) && is_numeric($_GET["task"])){
-        if (checkTaskID($conn, $_GET["task"], $projectID)){
-            $taskID = $_GET["task"];
+    // Get issue ID from URL GET
+    if (isset($_GET["issue"]) && is_numeric($_GET["issue"])){
+        if (checkIssueID($conn, $_GET["issue"], $projectID)){
+            $issueID = $_GET["issue"];
         } else {
             header("location: /projectmanager/project?id=$projectID");
         }
@@ -42,53 +42,53 @@
         header("location: /projectmanager/project?id=$projectID");
     }
 
-    // Get task data
+    // Get issue data
     if (isset($projectID)){
         $projectData = getSingleProjectData($conn, $projectID, $UserData["id"]);
         if (isset($projectData)){
-            $taskData = getSingleTask($conn, $projectID, $taskID);
-            if(!isset($taskData)){
-                $createTask = true;
+            $issueData = getSingleIssue($conn, $projectID, $issueID);
+            if(!isset($issueData)){
+                $createIssue = true;
             }
         } else {
             header("location: /projectmanager/dashboard/projects");
         }
     }
 
-    if(isset($taskData)){
-        $currentTaskName = $taskData["name"];
-        $currentTaskDes = $taskData["Des"];
-        $currentTaskStatus = $taskData["idStatus"];
+    if(isset($issueData)){
+        $currentIssueName = $issueData["name"];
+        $currentIssueDes = $issueData["Des"];
+        $currentIssueStatus = $issueData["idStatus"];
     } else {
-        $currentTaskName = "";
-        $currentTaskDes = "";
-        $currentTaskStatus = "";
+        $currentIssueName = "";
+        $currentIssueDes = "";
+        $currentIssueStatus = "";
     }
 
-    // Edit task btn
-    if (isset($_POST["editTaskBTN"])){
-        if ( isset($_POST["taskName"]) && strlen($_POST["taskName"]) <= 60 && !empty($_POST["taskName"])) {
-            if (isset($_POST["taskDes"]) && strlen($_POST["taskDes"]) <= 150 && !empty($_POST["taskDes"])) {
-                if (isset($_POST["taskStatus"]) && is_numeric($_POST["taskStatus"]) && checkTaskStatusID($conn, $_POST["taskStatus"])) {
+    // Edit issue btn
+    if (isset($_POST["editIssueBTN"])){
+        if ( isset($_POST["issueName"]) && strlen($_POST["issueName"]) <= 60 && !empty($_POST["issueName"])) {
+            if (isset($_POST["issueDes"]) && strlen($_POST["issueDes"]) <= 150 && !empty($_POST["issueDes"])) {
+                if (isset($_POST["issueStatus"]) && is_numeric($_POST["issueStatus"]) && checkIssueStatusID($conn, $_POST["issueStatus"])) {
                     $Data = [
-                        "name" => $_POST["taskName"],
-                        "des" => $_POST["taskDes"],
-                        "status" => $_POST["taskStatus"]
+                        "name" => $_POST["issueName"],
+                        "des" => $_POST["issueDes"],
+                        "status" => $_POST["issueStatus"]
                     ];
-                    $currentTaskName = $Data["name"];
-                    $currentTaskDes = $Data["des"];
-                    $currentTaskStatus = $Data["status"];
-                    editTask($conn, $Data, $taskData, $UserData);
+                    $currentIssueName = $Data["name"];
+                    $currentIssueDes = $Data["des"];
+                    $currentIssueStatus = $Data["status"];
+                    editIssue($conn, $Data, $issueData, $UserData);
                 } else {
                     $info = "Can\'t validate status value! If you didn\'t change value report with error MTS!";
                     showAlert($info);
                 }
             } else {
-                $info = "Task description must have 1 to 150 characters.";
+                $info = "Issue description must have 1 to 150 characters.";
                 showAlert($info);
             }
         } else {
-            $info = "Task name must have 1 to 60 characters.";
+            $info = "Issue name must have 1 to 60 characters.";
             showAlert($info);
         }
     }
@@ -107,7 +107,7 @@
             $commentERR = true;
         }
         if (isset($comment)){
-            addTaskNewComment($conn, $taskID, $comment, $UserData["id"]);
+            addIssueNewComment($conn, $issueID, $comment, $UserData["id"]);
         }
     }
 
@@ -116,14 +116,14 @@
         removeUserFromProject($conn, $UserData["id"], $projectID);
     }
 
-    $AllTaskComments = getTaskComments($conn, $taskID);
+    $AllIssueComments = getIssueComments($conn, $issueID);
 
-    $AllTasksStatus = getTasksStatus($conn);
+    $AllIssuesStatus = getIssuesStatus($conn);
 ?>
 
 <html lang="en">
     <head>
-    <title><?php echo "$projectData[name] - $taskData[name]"; ?></title>
+    <title><?php echo "$projectData[name] - $issueData[name]"; ?></title>
         <?php
             include "$_SERVER[DOCUMENT_ROOT]/projectmanager/html/Headcontent.html";
             include "$_SERVER[DOCUMENT_ROOT]/projectmanager/html/CSSimport.html";
@@ -172,18 +172,18 @@
                     <hr class="w-100">
                     
                     
-                    <!-- Task -->
+                    <!-- Issue -->
                     <?php
-                        if(isset($taskData) && !isset($createTask)){
+                        if(isset($issueData) && !isset($createIssue)){
                             echo "
-                            <div class='col-sm-12 col-md-10 col-lg-10 col-xl-6 task-DIV'>
+                            <div class='col-sm-12 col-md-10 col-lg-10 col-xl-6 issue-DIV'>
                                 <div class='btn-toolbar row' style='margin-top:15px'>
                                     <div class='col-lg-12' style='margin-top:5px;'>
-                                        <span class='Only-task-DIV-title task-DIV-text'>
-                                            Task name: $taskData[name]";
+                                        <span class='Only-issue-DIV-title issue-DIV-text'>
+                                            Issue name: $issueData[name]";
                                             if ($UserRole < 3){
                                                 echo "
-                                                    <a href='#editTaskModal' data-toggle='modal' class='edit-pen'>
+                                                    <a href='#editIssueModal' data-toggle='modal' class='edit-pen'>
                                                         <i class='fas fa-pen'></i>
                                                     </a>
                                                 ";
@@ -192,22 +192,22 @@
                                         </span>
                                     </div>
                                 </div>
-                                <hr class='hr-task'>
-                                <div class='Only-task-DIV-Des' style='word-break: break-word; margin-bottom: 15px'>
-                                    <p><b>Creation date:</b> <span class='badge badge-dark'>$taskData[creationDate]</span> by <b> $taskData[idCreator] </b> </p>
-                                    <p><b>Last time updated:</b> <span class='badge badge-dark'>$taskData[lastupdatedDate]</span> by <b> $taskData[idUpdateUser] </b> </p>
-                                    <p><b>Task Status: </b><span class='badge badge-$taskData[badge]'>$taskData[status]</span> </p>
-                                    <p><b>Task description:</b><br>
-                                    $taskData[Des]</p>
+                                <hr class='hr-issue'>
+                                <div class='Only-issue-DIV-Des' style='word-break: break-word; margin-bottom: 15px'>
+                                    <p><b>Creation date:</b> <span class='badge badge-dark'>$issueData[creationDate]</span> by <b> $issueData[idCreator] </b> </p>
+                                    <p><b>Last time updated:</b> <span class='badge badge-dark'>$issueData[lastupdatedDate]</span> by <b> $issueData[idUpdateUser] </b> </p>
+                                    <p><b>Issue Status: </b><span class='badge badge-$issueData[badge]'>$issueData[status]</span> </p>
+                                    <p><b>Issue description:</b><br>
+                                    $issueData[Des]</p>
                                     
                                 </div>
                             </div>
                             ";
-                        } elseif (isset($createTask) && $createTask) {
-                            echo "<p class='task-DIV-list'> No tasks yet, create them! </p>";
+                        } elseif (isset($createIssue) && $createIssue) {
+                            echo "<p class='issue-DIV-list'> No issues yet, create them! </p>";
                         }
                     ?>
-                    <!-- END Task -->
+                    <!-- END Issue -->
                 </div>
 
                 <hr class="w-50" style="margin-top:0px; margin-bottom:0px">
@@ -215,7 +215,7 @@
                 <!-- Comments -->
                 <div class="row d-flex justify-content-center" style="margin-top: 0px">
                     <div class="col-12 d-flex justify-content-center" style="padding-left:0px">
-                        <div class="col-sm-12 col-md-10 col-lg-10 col-xl-6 Only-task-DIV-title" id="Comments" style="padding-left:5px">
+                        <div class="col-sm-12 col-md-10 col-lg-10 col-xl-6 Only-issue-DIV-title" id="Comments" style="padding-left:5px">
                             Comments
                         </div>
                     </div>
@@ -241,8 +241,8 @@
 
                         <!-- Comment -->
                         <?php
-                            if(isset($AllTaskComments) && $AllTaskComments){
-                                foreach($AllTaskComments as $comment){
+                            if(isset($AllIssueComments) && $AllIssueComments){
+                                foreach($AllIssueComments as $comment){
                                     echo "
                                     <div class='col-12' style='margin-bottom: 15px'>
                                         <div class='row'>
@@ -250,7 +250,7 @@
                                                 <img class='img-thumbnail' style='height: 100px; width: auto;' src='/projectmanager/img/UIMG/9.png'>
                                             </div>
                                             <div class='col-8 col-lg-8 col-xl-10'>
-                                                <div class='alert alert-light task-comment-text'>
+                                                <div class='alert alert-light issue-comment-text'>
                                                     $comment[comment]
                                                 </div>
                                             </div>
@@ -271,7 +271,7 @@
                                 }
                             } else {
                                 echo "
-                                    <div class='col-12 Only-task-DIV-title' style='margin-bottom: 15px'>
+                                    <div class='col-12 Only-issue-DIV-title' style='margin-bottom: 15px'>
                                         No comments found, be the first one!
                                     </div>
                                 ";
@@ -288,31 +288,31 @@
                     </div>
                 </div>
 
-                <!-- Edit task modal -->
-                <div class="modal fade" id="editTaskModal" role="dialog">
+                <!-- Edit issue modal -->
+                <div class="modal fade" id="editIssueModal" role="dialog">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <!-- Head -->
                             <div class="modal-header">
-                                <span class="modal-title"> Edit: <?php echo $taskData["name"]?> </span>
+                                <span class="modal-title"> Edit: <?php echo $issueData["name"]?> </span>
                                 <button type="button" class="close" data-dismiss="modal" aria-label=""><span>×</span></button>
                             </div>        
                             <!-- Body -->
                             <div class="modal-body">
                                 <form method="POST" action="">
-                                    <span class="modal-subtitle">Task name:</span>
-                                    <input type='text' class='form-control edit-DIV-Input' name='taskName' value='<?php echo "$currentTaskName"; ?>' autocomplete='off'/>
+                                    <span class="modal-subtitle">Issue name:</span>
+                                    <input type='text' class='form-control edit-DIV-Input' name='issueName' value='<?php echo "$currentIssueName"; ?>' autocomplete='off'/>
 
                                     <span class="modal-subtitle">Description:</span>
-                                    <textarea class='form-control edit-DIV-Input' rows='3' name='taskDes' autocomplete='off'><?php echo "$currentTaskDes"; ?></textarea>
+                                    <textarea class='form-control edit-DIV-Input' rows='3' name='issueDes' autocomplete='off'><?php echo "$currentIssueDes"; ?></textarea>
 
                                     <span class="modal-subtitle">Status:</span>
 
                                     <div class="form-group">
-                                        <select class="form-control edit-DIV-Input" name="taskStatus">
+                                        <select class="form-control edit-DIV-Input" name="issueStatus">
                                             <?php
-                                                foreach($AllTasksStatus as $status){
-                                                    if ($status["id"] != $currentTaskStatus){
+                                                foreach($AllIssuesStatus as $status){
+                                                    if ($status["id"] != $currentIssueStatus){
                                                         echo "<option value='$status[id]'>$status[name]</option>";
                                                     } else {
                                                         echo "<option value='$status[id]' selected>$status[name]</option>";
@@ -322,14 +322,14 @@
                                         </select>
                                         <div class="invalid-feedback">Don't change values, if you didn't report it.</div>
                                     </div>
-                                    <input type="submit" class="btn btn-success font-weight-bold" name="editTaskBTN" value="Edit task">
+                                    <input type="submit" class="btn btn-success font-weight-bold" name="editIssueBTN" value="Edit issue">
                                 </form>                
                             </div>
                                     
                         </div>
                     </div>
                 </div> 
-                <!-- END task modal -->
+                <!-- END issue modal -->
 
             </main>
 
