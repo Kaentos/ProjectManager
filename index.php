@@ -161,21 +161,32 @@
     function validateInput($conn){
         // Var declarations
         $Temp = array();
-        $email = test_input($_POST["REmail"]);
-        $username = test_input($_POST["RUsername"]);
-        $password = test_input($_POST["RPassword"]);;
-        $Cpassword = test_input($_POST["RCPassword"]);
-        $Squestion = test_input($_POST["RQuestion"]);
-        $Sanswer = test_input($_POST["RAnswer"]);
+        if (isset($_POST["REmail"]) && isset($_POST["RUsername"])){
+            $email = test_input($_POST["REmail"]);
+            $username = test_input($_POST["RUsername"]);
+        } else {
+            return;
+        }
+        if (isset($_POST["RPassword"]) && isset($_POST["RCPassword"])){
+            $password = test_input($_POST["RPassword"]);;
+            $Cpassword = test_input($_POST["RCPassword"]);
+            $options = [
+                'cost' => 12,
+            ];
+        } else {
+            return;
+        }
+        if (isset($_POST["RQuestion"]) && isset($_POST["RAnswer"])){
+            $Squestion = test_input($_POST["RQuestion"]);
+            $Sanswer = test_input($_POST["RAnswer"]);
+        } else {
+            return;
+        }
         if (isset($_POST["Rcountry"])){
             $country = $_POST["Rcountry"];
         } else {
             $country = null;
         }
-            
-        $options = [
-            'cost' => 12,
-        ];
 
         // Email validation
         if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -453,32 +464,42 @@
                                                 </div>
                                             </div>
                                             Username
-                                            <div class="form-group">
-                                                <input type="text" class="form-control" name="RUsername" value="" autocomplete="off" />
+                                            <div class="form-group">   
+                                                <input type="text" class="form-control <?php if($RError && !empty($RUsernameErr)) echo "is-invalid" ?>" name="RUsername" value="" autocomplete="off" />
+                                                <div class='invalid-feedback'>
+                                                    <?php if ($RUsernameErr!="") echo $RUsernameErr; ?>
+                                                </div>
                                             </div>
-                                            <?php if ($RUsernameErr!="") echo "<div class='alert alert-secondary' role='alert'> $RUsernameErr </div>" ?>
                                             Password
                                             <div class="form-group">
-                                                <input type="password" class="form-control" name="RPassword" value="" autocomplete="off" />
+                                                <input type="password" class="form-control <?php if($RError && !empty($RPasswordErr)) echo "is-invalid" ?>" name="RPassword" value="" autocomplete="off" />
+                                                <div class='invalid-feedback'>
+                                                    <?php if ($RPasswordErr!="") echo $RPasswordErr; ?>
+                                                </div>
                                             </div>
-                                            <?php if ($RPasswordErr!="") echo "<div class='alert alert-secondary' role='alert'> $RPasswordErr </div>" ?>
                                             Confirm Password
                                             <div class="form-group">
-                                                <input type="password" class="form-control" name="RCPassword" value="" autocomplete="off" />
+                                                <input type="password" class="form-control <?php if($RError && !empty($RCPasswordErr)) echo "is-invalid" ?>" name="RCPassword" value="" autocomplete="off" />
+                                                <div class='invalid-feedback'>
+                                                    <?php if ($RCPasswordErr!="") echo $RCPasswordErr; ?>
+                                                </div>
                                             </div>
-                                            <?php if ($RCPasswordErr!="") echo "<div class='alert alert-secondary' role='alert'> $RCPasswordErr </div>" ?>
                                         </div>
                                         <div class="col-md-6">
                                             Security Question
                                             <div class="form-group">
-                                                <input type="text" class="form-control" name="RQuestion" value="" autocomplete="off" />
+                                                <input type="text" class="form-control <?php if($RError && !empty($RQuestionErr)) echo "is-invalid" ?>" name="RQuestion" value="" autocomplete="off" />
+                                                <div class='invalid-feedback'>
+                                                    <?php if ($RQuestionErr!="") echo $RQuestionErr; ?>
+                                                </div>
                                             </div>
-                                            <?php if ($RQuestionErr!="") echo "<div class='alert alert-secondary' role='alert'> $RQuestionErr </div>" ?>
                                             Security Answer
                                             <div class="form-group">
-                                                <input type="text" class="form-control" name="RAnswer" value="" autocomplete="off" />
+                                                <input type="text" class="form-control <?php if($RError && !empty($RAnswerErr)) echo "is-invalid" ?>" name="RAnswer" value="" autocomplete="off" />
+                                                <div class='invalid-feedback'>
+                                                    <?php if ($RAnswerErr!="") echo $RAnswerErr; ?>
+                                                </div>
                                             </div>
-                                            <?php if ($RAnswerErr!="") echo "<div class='alert alert-secondary' role='alert'> $RAnswerErr </div>" ?>
                                             Country
                                             <div class="form-group">
                                                 <select class="form-control" name="Rcountry">
