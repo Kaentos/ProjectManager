@@ -60,5 +60,29 @@ function editTask($conn, $Data, $taskData, $UserData){
 
 // END Task
 
+// Issue 
+
+function editIssue($conn, $Data, $issueData, $UserData){
+    if (!($issueData["name"] == $Data["name"] && $issueData["Des"] == $Data["des"] && $issueData["idStatus"] == $Data["status"])){
+        $currentDate = getCurrentDate();
+
+        if(!($stmt = $conn->prepare("UPDATE issues SET name=?, Des=?, idStatus=?, idUpdateUser=?, lastupdatedDate=? WHERE id=?"))) {
+            die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
+        }
+        if(!$stmt->bind_param("ssiisi", $Data["name"], $Data["des"], $Data["status"], $UserData["id"], $currentDate, $issueData["id"])) {
+            die("Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error);
+        }
+        if(!$stmt->execute()) {
+            die("Execute failed: (" . $stmt->errno . ") " . $stmt->error);
+        } else {
+            header("Refresh:0");
+        }
+    }
+
+    return;
+}
+
+// END Issue
+
 
 ?>

@@ -42,7 +42,6 @@
         }
         $result->close();
     } else {
-        printf("Error in select user query");
         die();
     }
 

@@ -5,6 +5,7 @@
     } else {
         include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/getFunctions.php";
         include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/otherFunctions.php";
+        include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/removeFunctions.php";
         include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/sessionCheckTime.php";
         include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/databaseConnections.php";
         $conn = ConnectRoot();
@@ -342,18 +343,7 @@
     // Deletes account
     if (isset($_POST["DELETEACC"])){
         if (ConfirmPassword($_POST["DELPassword"], $id, $conn) ){
-            $sql = "DELETE FROM usersecurity WHERE idUser = $id";
-            if (mysqli_query($conn, $sql)) {
-                $sql = "DELETE FROM user WHERE id=$id";
-                if (mysqli_query($conn, $sql)) {
-                    session_destroy();
-                    header("Refresh:0");
-                } else {
-                    die("Error: " . mysqli_error($conn));
-                }
-            } else {
-                die("Error: " . mysqli_error($conn));
-            }
+            REMOVEALLuserInfoFromDataBase($conn, $UserData["id"]);
         } else {
             $GLOBALS["DELETEERR"] = "Invalid password.";
         }
