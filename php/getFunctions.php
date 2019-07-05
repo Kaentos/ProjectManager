@@ -203,7 +203,7 @@
 // ISSUES FUNCTIONS
 
     // Get single issue
-    function getSingleTask($conn, $projectID, $issueID){
+    function getSingleIssue($conn, $projectID, $issueID){
         $issueData = array();
         $query = "SELECT i.*, s.name AS status, s.badge FROM issues AS i INNER JOIN projects AS p ON i.idProject=p.id INNER JOIN istatus AS s ON i.idStatus=s.id WHERE p.id=$projectID AND t.id=$issueID";
         if ($result = $conn->query($query)) {
@@ -227,7 +227,7 @@
         die();
     }
 
-    // Get tasks 5 for a given project ID
+    // Get issues 5 for a given project ID
     function get5Issues($conn, $projectID){
         $issuesData = array();
         $query = "SELECT i.*, s.name AS status, s.badge FROM issues AS i INNER JOIN projects AS p ON i.idProject=p.id INNER JOIN istatus AS s ON i.idStatus=s.id WHERE p.id=$projectID ORDER BY i.lastupdatedDate DESC LIMIT 5";

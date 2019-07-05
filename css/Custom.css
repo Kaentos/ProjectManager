@@ -104,6 +104,48 @@
     font-size: 1.2rem !important;
     font-weight: 500 !important;
 }
+.issue-DIV-list{
+    font-size:1.3rem;
+    font-weight: bold;
+}
+.issue-DIV-list a{
+    color: #212529;
+    font-size:1.3rem;
+    font-weight: bold;
+    text-decoration: none;
+}
+.issue-DIV-list a:hover{
+    color: #212529;
+    font-size:1.3rem;
+    font-weight: bold;
+    text-decoration: none;
+}
+.issue-DIV-title2 {
+    font-size: 1.3rem;
+    font-weight: bold;
+}
+.issue-DIV-Des {
+    font-size: 1.1rem;
+}
+.issue-DIV-text a {
+    color: #212529;
+    text-decoration: none;
+}
+.issue-DIV-text a:hover {
+    color: #212529;
+    text-decoration: none;
+}
+.Only-issue-DIV-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+.Only-issue-DIV-Des {
+    font-size: 1.3rem;
+}
+.issue-comment-text{
+    font-size: 1.2rem;
+}
+/* END issue */
 
 /* Members */
 /* Color: #2969ff rgb(41, 105, 255) */

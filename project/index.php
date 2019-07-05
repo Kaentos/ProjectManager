@@ -24,8 +24,12 @@
         $projectData = getSingleProjectData($conn, $projectID, $UserData["id"]);
         if (isset($projectData)){
             $tasksData = get5Tasks($conn, $projectID);
+            $issuesData = get5Issues($conn, $projectID);
             if(!isset($tasksData)){
                 $createTask = true;
+            }
+            if(!isset($issuesData)){
+                $createIssue = true;
             }
             $membersData = get5Members($conn, $projectID);
             if(!isset($membersData)){
@@ -35,6 +39,7 @@
             header("location: /projectmanager/dashboard/projects");
         }
     }
+    $UserRole = getUserProjectRole($conn, $projectID, $UserData["id"]);
 
     // New task btn
     if (isset($_POST["newTaskBTN"]) && $UserRole < 3){
@@ -61,12 +66,38 @@
         }
     }
 
+    // New issue btn
+    if (isset($_POST["newIssueBTN"]) && $UserRole < 3){
+        if ( isset($_POST["issueName"]) && strlen($_POST["issueName"]) <= 60 && !empty($_POST["issueName"])) {
+            if (isset($_POST["issueDes"]) && strlen($_POST["issueDes"]) <= 150 && !empty($_POST["issueDes"])) {
+                if (isset($_POST["issueStatus"]) && is_numeric($_POST["issueStatus"]) && checkIssueStatusID($conn, $_POST["issueStatus"])) {
+                    $Data = [
+                        "name" => $_POST["issueName"],
+                        "des" => $_POST["issueDes"],
+                        "status" => $_POST["issueStatus"]
+                    ];
+                    addNewIssue($conn, $projectID, $UserData["id"], $Data);
+                } else {
+                    $info = "Can\'t validate status value! If you didn\'t change value report with error ITS!";
+                    showAlert($info);
+                }
+            } else {
+                $info = "Issue description must have 1 to 150 characters.";
+                showAlert($info);
+            }
+        } else {
+            $info = "Issue name must have 1 to 60 characters.";
+            showAlert($info);
+        }
+    }
+
     if(isset($_POST["QuitProjectBTN"]) && $UserRole > 1){
         removeUserFromProject($conn, $UserData["id"], $projectID);
     }
 
-    $UserRole = getUserProjectRole($conn, $projectID, $UserData["id"]);
+
     $AllTasksStatus = getTasksStatus($conn);
+    $AllIssuesStatus = getIssuesStatus($conn);
 ?>
 
 <html lang="en">
@@ -186,34 +217,55 @@
                         <div class="col-lg-12 col-xl-5 issue-DIV">
                             <div class="btn-toolbar row" style="margin-top:15px">
                                 <div class="col-lg-12 col-xl-6" style="margin-top:5px;">
-                                    <span class="issue-DIV-title">Last created issues</span>
+                                    <span class="issue-DIV-title">
+                                        <a href='/projectmanager/project/issues/?id=<?php echo $projectData["id"] ?>' style="text-decoration: none; color: black">
+                                            Last updated issues
+                                        </a>    
+                                    </span>
                                 </div>
                                 <div class="col-md-12 col-lg-6">
-                                    <div class="btn-group mr-2 DIV-btn-float" style="margin-top:5px">
-                                        <a href="#" class="btn btn-danger issue-DIV-btn">All Issues</a>
-                                    </div>
-                                    <div class="btn-group mr-2 DIV-btn-float" style="margin-top:5px">
-                                        <a href="#" class="btn btn-danger issue-DIV-btn">New issue</a>
-                                    </div>
+                                    <?php 
+                                        if(isset($issuesData)) {
+                                            echo "
+                                            <div class='btn-group mr-2 DIV-btn-float' style='margin-top:5px'>
+                                                <a href='/projectmanager/project/issues/?id=$projectData[id]' class='btn btn-danger issue-DIV-btn'>All issues</a>
+                                            </div>
+                                            ";
+                                        }
+                                        if ($UserRole < 4){
+                                            echo "
+                                                
+                                                <div class='btn-group mr-2 DIV-btn-float' style='margin-top:5px'>
+                                                    <a class='btn btn-danger issue-DIV-btn' data-toggle='modal' href='#newIssueModal'>
+                                                        New issue
+                                                    </a>
+                                                </div>
+                                            ";
+                                        }
+                                        
+                                    ?>
+                                    
                                 </div>
                             </div>
                             <hr class="hr-issue">
                             <div style="word-break: break-word;">
                                 <?php
-                                if(isset($tasksData)){
-                                    foreach($tasksData as $task){
+                                if(isset($issuesData)){
+                                    foreach($issuesData as $issue){
                                         echo "
-                                        <span style='font-size:1.3rem; font-weight: bold;'>
-                                            $task[name]
-                                            <span class='badge badge-$task[badge]'>$task[status]</span>    
+                                        <span class='issue-DIV-list'>
+                                            <a href='/projectmanager/project/issues/issue?id=$projectData[id]&issue=$issue[id]'>
+                                                $issue[name]
+                                            </a>
+                                            <span class='badge badge-$issue[badge]'>$issue[status]</span>
                                         </span>
                                         <p style='font-size:1.1rem'>
-                                            $task[Des]
+                                            $issue[Des]
                                         </p>
                                         ";
                                     }
-                                } elseif (isset($createTask) && $createTask) {
-                                    echo "<p class='task-DIV-list'> No issues yet, create them if you need! </p>";
+                                } elseif (isset($createIssue) && $createIssue) {
+                                    echo "<p class='issue-DIV-list'> No issues yet, create them! </p>";
                                 }
                                 ?>
                             </div>
@@ -344,6 +396,49 @@
                     </div>
                 </div> 
                 <!-- END task modal -->
+
+                <!-- New issue modal -->
+                <div class="modal fade" id="newIssueModal" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <!-- Head -->
+                            <div class="modal-header">
+                                <span class="modal-title"> Create new issue </span>
+                                <button type="button" class="close" data-dismiss="modal" aria-label=""><span>×</span></button>
+                            </div>        
+                            <!-- Body -->
+                            <div class="modal-body">
+                                <form method="POST" action="">
+                                    <span class="modal-subtitle">Issue name:</span>
+                                    <input type='text' class='form-control edit-DIV-Input' name='issueName' autocomplete='off'/>
+
+                                    <span class="modal-subtitle">Description:</span>
+                                    <textarea class='form-control edit-DIV-Input' rows='3' name='issueDes' autocomplete='off'></textarea>
+
+                                    <span class="modal-subtitle">Status:</span>
+
+                                    <div class="form-group">
+                                        <select class="form-control edit-DIV-Input" name="issueStatus">
+                                            <?php
+                                                foreach($AllIssuesStatus as $status){
+                                                    if ($status["id"] != $projectData["idStatus"]){
+                                                        echo "<option value='$status[id]'>$status[name]</option>";
+                                                    } else {
+                                                        echo "<option value='$status[id]' selected>$status[name]</option>";
+                                                    }
+                                                }
+                                            ?>
+                                        </select>
+                                        <div class="invalid-feedback">Don't change values, if you didn't report it.</div>
+                                    </div>
+                                    <input type="submit" class="btn btn-danger font-weight-bold" name="newIssueBTN" value="Create issue">
+                                </form>                
+                            </div>
+                                    
+                        </div>
+                    </div>
+                </div> 
+                <!-- END issue modal -->
             </main>
 
         </div>

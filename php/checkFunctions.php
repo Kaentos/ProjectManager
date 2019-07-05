@@ -73,7 +73,7 @@
 
     // END PROJECT
 
-    // Task
+// Task
 
     function checkUserTaskFollow($conn, $taskID){
         $query = "SELECT * FROM taskfollow WHERE idTask=$taskID;";
@@ -123,5 +123,55 @@
         }
     }
 
-    // END TASK
+// END TASK
+
+// Issue
+
+    function checkUserIssueFollow($conn, $issueID){
+        $query = "SELECT * FROM issuefollow WHERE idIssue=$issueID;";
+        if ($result = $conn->query($query)) {
+            if ($result->num_rows == 1){
+                return true;
+            } elseif ($result->num_rows > 1) {
+                die("Error UIF2");
+            } else {
+                return false;
+            }
+        } else {
+            die();
+        }
+        return false;
+    }
+
+    function checkIssueID($conn, $id, $projectID){
+        $query = "SELECT * FROM issues AS i JOIN projects AS p ON i.idProject=p.id WHERE i.id=$id AND p.id=$projectID;";
+        if ($result = $conn->query($query)) {
+            if ($result->num_rows == 1){
+                return true;
+            } elseif ($result->num_rows > 1) {
+                die("Error I2, report with error code and project name");
+            } else {
+                return false;
+            }
+        } else {
+            die();
+        }
+    }
+
+    function checkIssueStatusID($conn, $id){
+        $query = "SELECT * FROM istatus WHERE id=$id;";
+        if ($result = $conn->query($query)) {
+            if ($result->num_rows == 1){
+                return true;
+            } elseif ($result->num_rows > 1) {
+                die("Error IS2, report with error code and project name");
+            } else {
+                return false;
+            }
+        } else {
+            die();
+        }
+    }
+
+// END Issue
 ?>
