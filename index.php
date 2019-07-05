@@ -23,7 +23,7 @@
 
     function Login($conn){
         $Temp = array();
-        if ($_POST["LUserEmail"] == "" || $_POST["LPassword"] == ""){
+        if (empty($_POST["LUserEmail"]) || empty($_POST["LPassword"])){
             $GLOBALS["LoginUserErr"] = "Please enter your data.";
             return false;
         } else {

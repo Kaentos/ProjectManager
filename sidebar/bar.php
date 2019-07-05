@@ -171,12 +171,12 @@
                             </li>
                             
                             <!-- Example -->
-                            <li>
+                            <!-- <li>
                                 <a href="#">
                                     <i class="fa fa-folder"></i>
                                     <span>Examples</span>
                                 </a>
-                            </li>
+                            </li> -->
                             <!-- Example -->
                             <?php 
                                 if($UserData["role"] == 20){
@@ -192,13 +192,13 @@
                                         <div class='sidebar-submenu'>
                                             <ul>
                                                 <li>
-                                                    <a href='#'>All users</a>
+                                                    <a href='/projectmanager/admin/allusers'>All users</a>
                                                 </li>
                                                 <li>
-                                                    <a href='#'>Reports</a>
+                                                    <a href='/projectmanager/admin/reports'>Reports</a>
                                                 </li>
                                                 <li>
-                                                    <a href='#'>All projects</a>
+                                                    <a href='/projectmanager/admin/allprojects'>All projects</a>
                                                 </li>
                                             </ul>
                                         </div>
