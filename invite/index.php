@@ -48,16 +48,13 @@
     }
     if(isset($InProject)){
         if($InProject) {
-            echo "";
             echo "
                 <script>
                     alert('You are already in the project: $ProjectData[name].');
-                    window.location.href='/projectmanager/dashboard/projects.php';
+                    window.location.href='/projectmanager/dashboard/projects';
                 </script>
             ";
         } else {
-            echo "Valid Invite<br>";
-            print_r($ProjectData);
             addUserToProject($conn, $ProjectData, $UserData);
         }
     }
@@ -128,6 +125,13 @@
         if(isset($PData)){
             if(!checkInProject($conn, $PData, $UserData)){
                 addUserToProject($conn, $PData, $UserData);
+            } else {
+                echo "
+                    <script>
+                        alert('You are already in the project: $PData[name].');
+                        window.location.href='/projectmanager/dashboard/projects';
+                    </script>
+                ";
             }
         }
 
@@ -162,7 +166,7 @@
             <main class="page-content">
                 <div class="container-fluid">
                     <div>
-                        <span style="font-size:2rem; font-weight: 500;">Invalid invite code!</span>
+                        <span style="font-size:2rem; font-weight: 500;">Insert invite code!</span>
                     </div>
                     <hr>
                     <form method="post" class="row" action="">
