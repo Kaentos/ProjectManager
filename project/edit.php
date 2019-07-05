@@ -40,7 +40,7 @@
     }
 
     $nameERR = $desERR = $statusERR = -1;
-    if(isset($_POST["updateP"])){
+    if(isset($_POST["updateP"]) && $UserRole < 3){
         updateProject:
         if(!isset($_POST["name"]) || strlen($_POST["name"]) > 20 || empty($_POST["name"])){
             $ERR = $_POST["name"];

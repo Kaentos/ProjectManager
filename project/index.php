@@ -42,7 +42,7 @@
     $UserRole = getUserProjectRole($conn, $projectID, $UserData["id"]);
 
     // New task btn
-    if (isset($_POST["newTaskBTN"]) && $UserRole < 3){
+    if (isset($_POST["newTaskBTN"]) && $UserRole < 4){
         if ( isset($_POST["taskName"]) && strlen($_POST["taskName"]) <= 60 && !empty($_POST["taskName"])) {
             if (isset($_POST["taskDes"]) && strlen($_POST["taskDes"]) <= 150 && !empty($_POST["taskDes"])) {
                 if (isset($_POST["taskStatus"]) && is_numeric($_POST["taskStatus"]) && checkTaskStatusID($conn, $_POST["taskStatus"])) {
@@ -67,7 +67,7 @@
     }
 
     // New issue btn
-    if (isset($_POST["newIssueBTN"]) && $UserRole < 3){
+    if (isset($_POST["newIssueBTN"]) && $UserRole < 4){
         if ( isset($_POST["issueName"]) && strlen($_POST["issueName"]) <= 60 && !empty($_POST["issueName"])) {
             if (isset($_POST["issueDes"]) && strlen($_POST["issueDes"]) <= 150 && !empty($_POST["issueDes"])) {
                 if (isset($_POST["issueStatus"]) && is_numeric($_POST["issueStatus"]) && checkIssueStatusID($conn, $_POST["issueStatus"])) {

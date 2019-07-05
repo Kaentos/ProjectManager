@@ -345,7 +345,6 @@
                             echo "<p class='task-DIV-list'> Didn't find any members. </p>";
                         }
                     ?>
-                    <!-- END Task -->
                         
                     </div>
                     
