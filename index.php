@@ -431,7 +431,7 @@
                                     <h3 class="register-heading">Login</h3>
                                     <div class="row register-form">
                                         <div class="col-md-6">
-                                            Username or email address
+                                            Username or email address *
                                             <div class="form-group">
                                                 <input type="text" class="form-control <?php if(!$RError && !empty($LoginUserErr)) echo "is-invalid" ?>" name="LUserEmail" autofocus value="" autocomplete="off" />
                                                 <div class='invalid-feedback'>
@@ -440,7 +440,7 @@
                                             </div>
                                         </div>
                                         <div class="col-md-6">
-                                            Password
+                                            Password *
                                             <div class="form-group">
                                                 <input type="password" class="form-control" name="LPassword" value="" autocomplete="off" />
                                             </div>  
@@ -456,28 +456,28 @@
                                     <h3  class="register-heading">Register</h3>
                                     <div class="row register-form">
                                         <div class="col-md-6">
-                                            Email
+                                            Email *
                                             <div class="form-group">
                                                 <input type="email" class="form-control <?php if($RError && !empty($REmailErr)) echo "is-invalid" ?>" name="REmail" placeholder="example@mail.com" value="" autocomplete="off" />
                                                 <div class='invalid-feedback'>
                                                     <?php if ($REmailErr!="") echo $REmailErr; ?>
                                                 </div>
                                             </div>
-                                            Username
+                                            Username *
                                             <div class="form-group">   
                                                 <input type="text" class="form-control <?php if($RError && !empty($RUsernameErr)) echo "is-invalid" ?>" name="RUsername" value="" autocomplete="off" />
                                                 <div class='invalid-feedback'>
                                                     <?php if ($RUsernameErr!="") echo $RUsernameErr; ?>
                                                 </div>
                                             </div>
-                                            Password
+                                            Password *
                                             <div class="form-group">
                                                 <input type="password" class="form-control <?php if($RError && !empty($RPasswordErr)) echo "is-invalid" ?>" name="RPassword" value="" autocomplete="off" />
                                                 <div class='invalid-feedback'>
                                                     <?php if ($RPasswordErr!="") echo $RPasswordErr; ?>
                                                 </div>
                                             </div>
-                                            Confirm Password
+                                            Confirm Password *
                                             <div class="form-group">
                                                 <input type="password" class="form-control <?php if($RError && !empty($RCPasswordErr)) echo "is-invalid" ?>" name="RCPassword" value="" autocomplete="off" />
                                                 <div class='invalid-feedback'>
@@ -486,14 +486,14 @@
                                             </div>
                                         </div>
                                         <div class="col-md-6">
-                                            Security Question
+                                            Security Question *
                                             <div class="form-group">
                                                 <input type="text" class="form-control <?php if($RError && !empty($RQuestionErr)) echo "is-invalid" ?>" name="RQuestion" value="" autocomplete="off" />
                                                 <div class='invalid-feedback'>
                                                     <?php if ($RQuestionErr!="") echo $RQuestionErr; ?>
                                                 </div>
                                             </div>
-                                            Security Answer
+                                            Security Answer *
                                             <div class="form-group">
                                                 <input type="text" class="form-control <?php if($RError && !empty($RAnswerErr)) echo "is-invalid" ?>" name="RAnswer" value="" autocomplete="off" />
                                                 <div class='invalid-feedback'>
