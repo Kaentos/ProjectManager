@@ -101,7 +101,7 @@
                                             <a href='/projectmanager/project/?id=$projectID'>
                                                 <!-- <i class='fas fa-folder'></i> -->
                                                 <i class='fas fa-project-diagram'></i>
-                                                <span>Projects</span>
+                                                <span>Project page</span>
                                             </a>
                                         </li>
                                         <!-- End Menu Projects -->
@@ -110,7 +110,7 @@
                                         <li>
                                             <a href='/projectmanager/project/tasks/?id=$projectID'>
                                                 <i class='fa fa-tasks'></i>
-                                                <span>Tasks</span>
+                                                <span>All Tasks</span>
                                             </a>
                                         </li>
                                         <!-- End Menu Projects -->
@@ -119,7 +119,7 @@
                                         <li>
                                             <a href='/projectmanager/project/issues/?id=$projectID'>
                                                 <i class='fas fa-bug'></i>
-                                                <span>Issues</span>
+                                                <span>All Issues</span>
                                             </a>
                                         </li>
                                         <!-- End Menu issues -->
@@ -128,7 +128,7 @@
                                         <li>
                                             <a href='/projectmanager/project/milestones?id=$projectID'>
                                                 <i class='fa fa-flag'></i>
-                                                <span>Milestones</span>
+                                                <span>All Milestones</span>
                                             </a>
                                         </li>
                                         <!-- End Menu Milestones -->
