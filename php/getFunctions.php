@@ -111,9 +111,7 @@
     // END PROJECT FUNCTIONS
 
 
-    // TASK FUNCTIONS
-
-    // Task status
+// TASK FUNCTIONS
 
     // Get single task
     function getSingleTask($conn, $projectID, $taskID){
@@ -179,6 +177,7 @@
         return $data;
     }
 
+    // Task Comments
     function getTaskComments($conn, $taskID){
         $Data = array();
         $query = "SELECT * FROM taskcomments WHERE idTask=$taskID ORDER BY creationDate;";
@@ -199,7 +198,96 @@
         return false;
     }
 
-    // END OF TASK
+// END OF TASK
+
+// ISSUES FUNCTIONS
+
+    // Get single issue
+    function getSingleTask($conn, $projectID, $issueID){
+        $issueData = array();
+        $query = "SELECT i.*, s.name AS status, s.badge FROM issues AS i INNER JOIN projects AS p ON i.idProject=p.id INNER JOIN istatus AS s ON i.idStatus=s.id WHERE p.id=$projectID AND t.id=$issueID";
+        if ($result = $conn->query($query)) {
+            if ($result->num_rows == 1){
+                $issueData = $result->fetch_array(MYSQLI_ASSOC);
+                $Temp = getUsername($conn,$issueData["idCreator"]);
+                $issueData["idCreator"] = $Temp;
+                $Temp = getUsername($conn,$issueData["idUpdateUser"]);
+                $issueData["idUpdateUser"] = $Temp;
+                return $issueData;
+            } elseif ($result->num_rows > 1) {
+                die("report with error t2");
+            } elseif ($result->num_rows == 0) {
+                return false;
+            } else {
+                die();
+            }
+        } else {
+            die();
+        }
+        die();
+    }
+
+    // Get tasks 5 for a given project ID
+    function get5Issues($conn, $projectID){
+        $issuesData = array();
+        $query = "SELECT i.*, s.name AS status, s.badge FROM issues AS i INNER JOIN projects AS p ON i.idProject=p.id INNER JOIN istatus AS s ON i.idStatus=s.id WHERE p.id=$projectID ORDER BY i.lastupdatedDate DESC LIMIT 5";
+        if ($result = $conn->query($query)) {
+            if ($result->num_rows >= 1){
+                while($row = $result->fetch_array(MYSQLI_ASSOC)){
+                    array_push($issuesData, $row);
+                }
+            } elseif ($result->num_rows == 0) {
+                return;
+            } else {
+                die();
+            }
+        } else {
+            die();
+        }
+        return $issuesData;
+    }
+
+
+    // Issue status
+    function getIssuesStatus($conn){
+        $data = array();
+        $query = "SELECT * FROM istatus ORDER BY name;";
+        if ($result = $conn->query($query)) {
+            if ($result->num_rows > 0){
+                while($row = $result->fetch_array(MYSQLI_ASSOC)){
+                    array_push($data, $row);
+                }
+            } else {
+                die("Error IS0");
+            }
+        } else {
+            die();
+        }
+        return $data;
+    }
+
+    // Issue Comments
+    function getIssueComments($conn, $issueID){
+        $Data = array();
+        $query = "SELECT * FROM issuecomments WHERE idIssue=$issueID ORDER BY creationDate;";
+        if ($result = $conn->query($query)) {
+            if ($result->num_rows > 0){
+                while($row = $result->fetch_array(MYSQLI_ASSOC)){
+                    $Temp = getUsername($conn, $row["idUser"]);
+                    $row += ["username" => $Temp];
+                    array_push($Data, $row);
+                }
+                return $Data;
+            } else {
+                return false;
+            }
+        } else {
+            die();
+        }
+        return false;
+    }
+
+// END OF ISSUES
 
 
 
