@@ -93,42 +93,87 @@
                                 <span>General</span>
                             </li>
 
-                            <!-- Menu Projects -->
-                            <li>
-                                <a href="/projectmanager/dashboard/projects">
-                                    <!-- <i class="fas fa-folder"></i> -->
-                                    <i class="fas fa-project-diagram"></i>
-                                    <span>Projects</span>
-                                </a>
-                            </li>
-                            <!-- End Menu Projects -->
+                            <?php
+                                if (isset($barProjectID)){
+                                    echo "
+                                        <!-- Menu Projects -->
+                                        <li>
+                                            <a href='/projectmanager/project/?id=$projectID'>
+                                                <!-- <i class='fas fa-folder'></i> -->
+                                                <i class='fas fa-project-diagram'></i>
+                                                <span>Projects</span>
+                                            </a>
+                                        </li>
+                                        <!-- End Menu Projects -->
 
-                            <!-- Menu Tasks -->
-                            <li>
-                                <a href="/projectmanager/dashboard/tasks.php">
-                                    <i class="fa fa-tasks"></i>
-                                    <span>Tasks</span>
-                                </a>
-                            </li>
-                            <!-- End Menu Projects -->
+                                        <!-- Menu Tasks -->
+                                        <li>
+                                            <a href='/projectmanager/project/tasks/?id=$projectID'>
+                                                <i class='fa fa-tasks'></i>
+                                                <span>Tasks</span>
+                                            </a>
+                                        </li>
+                                        <!-- End Menu Projects -->
 
-                            <!-- Menu Calendar -->
-                            <li>
-                                <a href="/projectmanager/dashboard/calendar.php">
-                                    <i class="fas fa-bug"></i>
-                                    <span>Issues</span>
-                                </a>
-                            </li>
-                            <!-- End Menu Calendar -->
+                                        <!-- Menu issues -->
+                                        <li>
+                                            <a href='/projectmanager/project/issues/?id=$projectID'>
+                                                <i class='fas fa-bug'></i>
+                                                <span>Issues</span>
+                                            </a>
+                                        </li>
+                                        <!-- End Menu issues -->
 
-                            <!-- Menu Calendar -->
-                            <li>
-                                <a href="/projectmanager/dashboard/calendar.php">
-                                    <i class="fa fa-flag"></i>
-                                    <span>Milestones</span>
-                                </a>
-                            </li>
-                            <!-- End Menu Calendar -->
+                                        <!-- Menu Milestones -->
+                                        <li>
+                                            <a href='/projectmanager/project/milestones?id=$projectID'>
+                                                <i class='fa fa-flag'></i>
+                                                <span>Milestones</span>
+                                            </a>
+                                        </li>
+                                        <!-- End Menu Milestones -->
+                                    ";
+                                } else {
+                                    echo "
+                                        <!-- Menu Projects -->
+                                        <li>
+                                            <a href='/projectmanager/dashboard/projects'>
+                                                <!-- <i class='fas fa-folder'></i> -->
+                                                <i class='fas fa-project-diagram'></i>
+                                                <span>Projects</span>
+                                            </a>
+                                        </li>
+                                        <!-- End Menu Projects -->
+
+                                        <!-- Menu Tasks -->
+                                        <li>
+                                            <a href='/projectmanager/dashboard/tasks'>
+                                                <i class='fa fa-tasks'></i>
+                                                <span>Tasks</span>
+                                            </a>
+                                        </li>
+                                        <!-- End Menu Projects -->
+
+                                        <!-- Menu issues -->
+                                        <li>
+                                            <a href='/projectmanager/dashboard/issues'>
+                                                <i class='fas fa-bug'></i>
+                                                <span>Issues</span>
+                                            </a>
+                                        </li>
+                                        <!-- End Menu issues -->
+
+                                        <!-- Menu Milestones -->
+                                        <li>
+                                            <a href='/projectmanager/dashboard/milestones'>
+                                                <i class='fa fa-flag'></i>
+                                                <span>Milestones</span>
+                                            </a>
+                                        </li>
+                                        <!-- End Menu Milestones -->
+                                    ";
+                                }
+                            ?>
 
                             <!-- Menu Example -->
                             <!-- <li class="sidebar-dropdown">
