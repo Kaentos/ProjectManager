@@ -167,7 +167,12 @@
         $Cpassword = test_input($_POST["RCPassword"]);
         $Squestion = test_input($_POST["RQuestion"]);
         $Sanswer = test_input($_POST["RAnswer"]);
-        $country = $_POST["Rcountry"];
+        if (isset($_POST["Rcountry"])){
+            $country = $_POST["Rcountry"];
+        } else {
+            $country = null;
+        }
+            
         $options = [
             'cost' => 12,
         ];
@@ -417,9 +422,11 @@
                                         <div class="col-md-6">
                                             Username or email address
                                             <div class="form-group">
-                                                <input type="text" class="form-control" name="LUserEmail" autofocus value="" autocomplete="off" />
+                                                <input type="text" class="form-control <?php if(!$RError && !empty($LoginUserErr)) echo "is-invalid" ?>" name="LUserEmail" autofocus value="" autocomplete="off" />
+                                                <div class='invalid-feedback'>
+                                                    <?php if ($LoginUserErr!="") echo $LoginUserErr; ?>
+                                                </div>
                                             </div>
-                                            <?php if ($LoginUserErr!="") echo "<div class='alert alert-secondary' role='alert'> $LoginUserErr </div>" ?>
                                         </div>
                                         <div class="col-md-6">
                                             Password
@@ -440,9 +447,11 @@
                                         <div class="col-md-6">
                                             Email
                                             <div class="form-group">
-                                                <input type="email" class="form-control" name="REmail" placeholder="example@mail.com" value="" autocomplete="off" />
+                                                <input type="email" class="form-control <?php if($RError && !empty($REmailErr)) echo "is-invalid" ?>" name="REmail" placeholder="example@mail.com" value="" autocomplete="off" />
+                                                <div class='invalid-feedback'>
+                                                    <?php if ($REmailErr!="") echo $REmailErr; ?>
+                                                </div>
                                             </div>
-                                            <?php if ($REmailErr!="") echo "<div class='alert alert-secondary' role='alert'> $REmailErr </div>" ?>
                                             Username
                                             <div class="form-group">
                                                 <input type="text" class="form-control" name="RUsername" value="" autocomplete="off" />

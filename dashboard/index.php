@@ -13,7 +13,6 @@
 
     $ProjectData = array();
     $hasProjects = false;
-    // Get all projects user is assigned
     $query = "SELECT p.*, s.name as Sname, u.username, pm.idRole AS Role FROM projects AS p INNER JOIN pstatus AS s ON p.idStatus=s.id INNER JOIN projectmembers AS pm ON p.id = pm.idProject INNER JOIN user AS u ON p.idCreator = u.id WHERE pm.idUser =".$UserData["id"]." ORDER BY p.creationDate DESC LIMIT 5";
     if ($result = $conn->query($query)) {
         if ($result->num_rows >= 1){
@@ -26,13 +25,11 @@
         }
         $result->close();
     } else {
-        printf("Error in select user query");
         die();
     }
 
     $TasksData = array();
     $hasTasks = false;
-    // Get all tasks user is assigned
     $query = "SELECT t.*, s.name AS status, s.badge, p.id AS projectID FROM tasks AS t INNER JOIN projects AS p ON t.idProject=p.id INNER JOIN tstatus AS s ON t.idStatus=s.id INNER JOIN taskfollow AS tf ON t.id=tf.idTask WHERE tf.idUser=$UserData[id] LIMIT 5";
     if ($result = $conn->query($query)) {
         if ($result->num_rows >= 1){
@@ -51,7 +48,6 @@
 
     $IssuesData = array();
     $hasIssues = false;
-    // Get all issues user is assigned
     $query = "SELECT i.*, s.name AS status, s.badge, p.id AS projectID FROM issues AS i INNER JOIN projects AS p ON i.idProject=p.id INNER JOIN istatus AS s ON i.idStatus=s.id INNER JOIN issuefollow AS iff ON i.id=iff.idIssue WHERE iff.idUser=$UserData[id] LIMIT 5";
     if ($result = $conn->query($query)) {
         if ($result->num_rows >= 1){
@@ -105,7 +101,7 @@
                         <?php
                             if($hasProjects){
                                 foreach($ProjectData as $Project){
-                                    if ($Project["idCreator"] == $UserData["id"]){
+                                    if ($Project["Role"] < 3){
                                         $code = $Project["code"];
                                     }
                                     $dateTimeStamp = strtotime($Project["creationDate"]);

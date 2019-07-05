@@ -87,7 +87,7 @@
                         <?php
                             if($hasProjects){
                                 foreach($ProjectData as $Project){
-                                    if ($Project["idCreator"] == $UserData["id"]){
+                                    if ($Project["Role"] < 3){
                                         $code = $Project["code"];
                                     }
                                     $dateTimeStamp = strtotime($Project["creationDate"]);

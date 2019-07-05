@@ -58,11 +58,11 @@
     if (isset($_POST["projectC"])) {
         $pname = $_POST["pname"];
         $pdes = $_POST["pdes"];
-        if (strlen($pname) > 20 || empty($pname)){
+        if (strlen($pname) > 20 || strlen($pname) < 6){
             $nameERR = 0;
             $desERR = 1;
         } 
-        if (strlen($pdes) > 60 || empty($pdes)){
+        if (strlen($pdes) > 60 || strlen($pdes) < 6){
             $nameERR = 1;
             $desERR = 0;
         }
