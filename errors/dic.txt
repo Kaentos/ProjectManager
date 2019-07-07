@@ -1,0 +1,25 @@
+Erros:
+FIMI-<file> - File Import/Include
+
+<file>-PT-<type> - Function/File prepare statment error
+
+C2 - country in database is duplicated
+U2 - user in database is duplicated
+US2 - user security id is duplicated
+
+
+
+Files:
+
+OF - otherFunctions
+LRF - login&register
+DBF - databaseconnections
+
+Types:
+
+>PT
+    P - preparing
+    B - binding
+    E - executing
+    FA - fetching to array
+    GR - getting result

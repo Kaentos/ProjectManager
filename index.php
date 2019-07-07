@@ -3,16 +3,15 @@
     if ( isset( $_SESSION['user'] ) ) {
         header("Location: /projectmanager/dashboard/");
     } else  {
-        error_reporting(E_ERROR | E_PARSE);
+        error_reporting(E_ERROR | E_PARSE); // Removes php errors and warnings (avoid showing erros to user)
         if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/otherFunctions.php"){
-            header("Location: /projectmanager/errors/?id=FIMI");
+            header("Location: /projectmanager/errors/?id=FIMI-OF");
         }
         if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/login&register.php"){
-            sendError("FIMI");
+            sendError("FIMI-LRF");
         }
-        
         if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/databaseConnections.php"){
-            sendError("FIMI");
+            sendError("FIMI-DBF");
         }
         
         $conn = ConnectRoot();

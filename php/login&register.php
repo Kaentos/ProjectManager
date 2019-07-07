@@ -16,13 +16,13 @@
         }
 
         if(!($stmt = $conn->prepare("SELECT * FROM  user WHERE ( username= ? OR email = ?)"))) {
-            die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
+            sendError("LRF-PT-P");
         }
         if(!$stmt->bind_param("ss", $username, $username)) {
-            die("Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error);
+            sendError("LRF-PT-B");
         }
         if(!$stmt->execute()) {
-            die("Execute failed: (" . $stmt->errno . ") " . $stmt->error);
+            sendError("LRF-PT-E");
         }
         if ($result = $stmt->get_result()) {
             if ($result->num_rows == 1){
@@ -31,7 +31,7 @@
                     $Temp += ["username" => $row["username"]];
                     $Temp += ["role" => $row["role"]];
                 } else {
-                    die("Unexpected error");
+                    sendError("LRF-PT-FA");
                 }
                 $stmt->close();
             } else {
@@ -39,23 +39,22 @@
                     $GLOBALS["LoginUserErr"]="Invalid username or password";
                     return false;
                 } else {
-                    die("Unexpected error. Report error with code: U2.");
+                    sendError("U2");
                 }
             }
         } else {
-            printf("Error in select user query");
-            return false;
+            sendError("LRF-PT-GR");
         }
 
         // Verify password
         if(!($stmt = $conn->prepare("SELECT * FROM  usersecurity WHERE idUser= ?"))) {
-            die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
+            sendError("LRF-PT-P");
         }
         if(!$stmt->bind_param("i", $Temp["id"])) {
-            die("Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error);
+            sendError("LRF-PT-B");
         }
         if(!$stmt->execute()) {
-            die("Execute failed: (" . $stmt->errno . ") " . $stmt->error);
+            sendError("LRF-PT-E");
         }
         if ($result = $stmt->get_result()) {
             if ($result->num_rows == 1){
@@ -65,7 +64,7 @@
                         return false;
                     }
                 } else {
-                    die("Unexpected error");
+                    sendError("LRF-PT-FA");
                 }
                 $stmt->close();
             } else {
@@ -73,12 +72,11 @@
                     $GLOBALS["LoginUserErr"]="Invalid username or password";
                     return false;
                 } else {
-                    die("Unexpected error. Report error with code: U2.");
+                    sendError("US2");
                 }
             }
         } else {
-            printf("Error in select user query");
-            return false;
+            sendError("LRF-PT-GR");
         }
 
         $Temp;
@@ -95,34 +93,34 @@
         }
 
         if(!($stmt = $conn->prepare("INSERT INTO user (email, username, creationDate, lastUpdateDate, idCountry, role) VALUES (?, ?, ?, ?, ?, ?);"))) {
-            die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
+            sendError("LRF-PT-P");
         }
         if(!$stmt->bind_param("ssssis", $NewUser["email"], $NewUser["username"], $NewUser["creationDate"], $NewUser["lastUpdatedDate"], $NewUser["countryID"], $NewUser["role"])) {
-            die("Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error);
+            sendError("LRF-PT-B");
         }
         if(!$stmt->execute()) {
-            die("Execute failed: (" . $stmt->errno . ") " . $stmt->error);
+            sendError("LRF-PT-E");
         } else {
             $user_id = $conn->insert_id;
         }
 
         if(!($stmt = $conn->prepare("INSERT INTO usersecurity (idUser, password, question, answer) VALUES (?, ?, ?, ?);"))) {
-            die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
+            sendError("LRF-PT-P");
         }
         if(!$stmt->bind_param("isss", $user_id, $NewUser["password"], $NewUser["question"], $NewUser["answer"])) {
-            die("Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error);
+            sendError("LRF-PT-B");
         }
         if(!$stmt->execute()) {
             if(!($stmt = $conn->prepare("DELETE FROM user where id=?;"))) {
-                die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
+                sendError("LRF-PT-P");
             }
             if(!$stmt->bind_param("i", $user_id)) {
-                die("Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error);
+                sendError("LRF-PT-B");
             }
             if(!$stmt->execute()){
-                die("Execute failed: (" . $stmt->errno . ") " . $stmt->error);
+                sendError("LRF-PT-E");
             }
-            die("Execute failed: (" . $stmt->errno . ") " . $stmt->error);
+            sendError("LRF-PT-E");
         }
 
         $Session_data = array();
@@ -169,13 +167,13 @@
         if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
             // Check if email is already taken
             if(!($stmt = $conn->prepare("SELECT id FROM user WHERE email = ?;"))) {
-                die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
+                sendError("LRF-PT-P");
             }
             if(!$stmt->bind_param("s", $email)) {
-                die("Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error);
+                sendError("LRF-PT-B");
             }
             if(!$stmt->execute()) {
-                die("Execute failed: (" . $stmt->errno . ") " . $stmt->error);
+                sendError("LRF-PT-E");
             }
             if ($result = $stmt->get_result()) {
                 if ($result->num_rows == 1){
@@ -184,13 +182,12 @@
                     return;
                 } else {
                     if($result->num_rows > 1) {
-                        die("Report error with the following code: UE2");
+                        sendError("U2");
                     }
                 }
                 $stmt->close();
             } else {
-                printf("Error in select user query");
-                return false;
+                sendError("LRF-PT-GR");
             }
         } else {
             $GLOBALS["REmailErr"] = "Incorrect type of email.";
@@ -204,13 +201,13 @@
         if(preg_match('/^\w{6,16}$/', $username)) { // \w equals "[0-9A-Za-z_]"
             // Check if username is already taken
             if(!($stmt = $conn->prepare("SELECT id FROM user WHERE username = ?;"))) {
-                die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
+                sendError("LRF-PT-P");
             }
             if(!$stmt->bind_param("s", $username)) {
-                die("Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error);
+                sendError("LRF-PT-B");
             }
             if(!$stmt->execute()) {
-                die("Execute failed: (" . $stmt->errno . ") " . $stmt->error);
+                sendError("LRF-PT-E");
             }
             if ($result = $stmt->get_result()) {
                 if ($result->num_rows == 1){
@@ -219,13 +216,12 @@
                     return;
                 } else {
                     if($result->num_rows > 1) {
-                        die("Report error with the following code: U2");
+                        sendError("U2");
                     }
                 }
                 $stmt->close();
             } else {
-                printf("Error in select user query");
-                return false;
+                sendError("LRF-PT-GR");
             }
         } else{
             $GLOBALS["RUsernameErr"] = "Username must contain at least 6 characters and max of 16. Spaces aren't allowed.";
@@ -298,28 +294,27 @@
 
         // Country validation
         if(!($stmt = $conn->prepare("SELECT * FROM countries WHERE id = ?;"))) {
-            die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
+            sendError("LRF-PT-P");
         }
         if(!$stmt->bind_param("i", $country)) {
-            die("Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error);
+            sendError("LRF-PT-B");
         }
         if(!$stmt->execute()) {
-            die("Execute failed: (" . $stmt->errno . ") " . $stmt->error);
+            sendError("LRF-PT-E");
         }
         if ($result = $stmt->get_result()) {
             if ($result->num_rows == 1){
                 $Temp += ["countryID" => $country];
             } else {
                 if($result->num_rows > 1) {
-                    die("Report error with the following code: C2");
+                    sendError("C2");
                 } else {
                     $Temp += ["countryID" => null];
                 }
             }
             $stmt->close();
         } else {
-            printf("Error in select user query");
-            return false;
+            sendError("LRF-PT-GR");
         }
 
         $date = date('Y/m/d h:i:s a', time());
