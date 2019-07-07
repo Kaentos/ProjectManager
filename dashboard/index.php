@@ -21,7 +21,7 @@
 
     $ProjectData = array();
     $hasProjects = false;
-    $query = "SELECT p.*, s.name as Sname, u.username, pm.idRole AS Role FROM projects AS p INNER JOIN pstatus AS s ON p.idStatus=s.id INNER JOIN projectmembers AS pm ON p.id = pm.idProject INNER JOIN user AS u ON p.idCreator = u.id WHERE pm.idUser =".$UserData["id"]." ORDER BY p.creationDate DESC LIMIT 5";
+    $query = "SELECT p.*, s.name as Sname, s.badge AS Sbadge, u.username, pm.idRole AS Role FROM projects AS p INNER JOIN pstatus AS s ON p.idStatus=s.id INNER JOIN projectmembers AS pm ON p.id = pm.idProject INNER JOIN user AS u ON p.idCreator = u.id WHERE pm.idUser =$UserData[id] ORDER BY p.creationDate DESC LIMIT 5";
     if ($result = $conn->query($query)) {
         if ($result->num_rows >= 1){
             $hasProjects = true;
@@ -116,59 +116,72 @@
                                     }
                                     $dateTimeStamp = strtotime($Project["creationDate"]);
                                     $Project["creationDate"] = date('d-m-Y', $dateTimeStamp);
+                                    $dateTimeStamp = strtotime($Project["lastupdatedDate"]);
+                                    $Project["lastupdatedDate"] = date('d-m-Y', $dateTimeStamp);
+
                                     echo "
-                                        <div class='card text-white bg-primary mb-3' style='max-width: 18rem;'>
-                                            <div class='card-header'>
-                                                <a href='/projectmanager/project/?id=$Project[id]' style='color:white'>
+                                    <div class='col-12 col-xs-12 col-sm-12 col-md-* col-lg-4 col-xl-4 bg-dark text-light m-1' style='border-radius: 5px;'>
+                                        <div class='row project-border-bottom'>
+                                            <div class='col-12' style='padding: 20px'>
+                                                <a href='/projectmanager/project/?id=$Project[id]' class='project-title'>
                                                     $Project[name]
-                                                </a>
-                                                ";
-                                    if ($Project["Role"] < 3){
-                                        echo "
-                                                <a href='/projectmanager/project/edit?id=$Project[id]' class='btn btn-light float-right'>
-                                                    <i class='fas fa-cog'></i>
-                                                </a>
-                                        ";
-                                    }
-                                    echo "
-                                            </div>
-                                            <div class='card-body'>
-                                                <h5 class='card-title'>
-                                                    $Project[des]
-                                                </h5>
-                                                <p class='card-text'>
-                                                    Status: $Project[Sname] <br>
-                                                    Creation Date: $Project[creationDate] <br>";
-                                    if (isset($code)){
-                                        echo "Invite code: $code";
-                                        unset($code);
-                                    }
-                                    echo "        
-                                                </p>
-                                            </div>
-                                            <div class='card-footer'>
-                                                <a href='#' class='btn btn-light'>
-                                                    <i class='fas fa-tasks'></i>
-                                                </a>
-                                                <a href='#' class='btn btn-light'>
-                                                    <i class='fas fa-bug'></i>
-                                                </a>
-                                                <a href='#' class='btn btn-light'>
-                                                    <i class='fas fa-calendar'></i>
-                                                </a>
-                                                <a href='#' class='btn btn-light'>
-                                                    <i class='fas fa-comments'></i>
-                                                </a>
-                                                <a href='#' class='btn btn-light'>
-                                                    <i class='fas fa-flag'></i>
                                                 </a>
                                             </div>
                                         </div>
+
+                                        <div class='row project-text' style='margin-top: 10px;'>
+                                            <div class='col-12' style='margin-bottom: 10px'>
+                                                $Project[des]
+                                            </div>
+                                            <div class='col-md-12 col-xl-6' style='margin-top: 10px'>
+                                                Status: <span class='badge badge-$Project[Sbadge]'>$Project[Sname]</span>
+                                                <br>
+                                                Updated: <span class='badge badge-light'>$Project[lastupdatedDate]</span>
+                                            </div>
+                                            <div class='col-md-12 col-xl-6' style='margin-top: 5px'>
+                                                Created: <span class='badge badge-light'>$Project[creationDate]</span>
+                                                <br>";
+                                    if (isset($code)){
+                                        echo "Code: <span class='badge badge-light'>$code</span>";
+                                    }
+                                    echo "    
+                                            </div>
+                                        </div>
+                                        <div class='row project-border-top' style='padding: 10px; margin-top: 10px'>
+                                            <div class='col-12 text-center'>
+                                                <a href='/projectmanager/project/tasks/?id=$Project[id]' class='btn btn-light' style='margin: 5px'>
+                                                    <i class='fas fa-tasks'></i>
+                                                </a>
+                                                <a href='/projectmanager/project/issues/?id=$Project[id]' class='btn btn-light' style='margin: 5px'>
+                                                    <i class='fas fa-bug'></i>
+                                                </a>
+                                                <a href='/projectmanager/project/members/?id=$Project[id]' class='btn btn-light' style='margin: 5px'>
+                                                    <i class='fas fa-users'></i>
+                                                </a>
+                                                <a href='#' class='btn btn-light' style='margin: 5px'>
+                                                    <i class='fas fa-flag'></i>
+                                                </a>
+                                                <a href='#' class='btn btn-light' style='margin: 5px'>
+                                                    <i class='fas fa-comments'></i>
+                                                </a>";
+                                    if ($Project["Role"] < 3){
+                                        echo "
+                                            <a href='/projectmanager/project/edit?id=$Project[id]' class='btn btn-primary' style='margin: 5px'>
+                                                <i class='fas fa-cog'></i>
+                                            </a>";
+                                    }            
+                                    echo "
+                                            </div>
+                                        </div>
+                                    </div>
                                     ";
+                                    if (isset($code)){
+                                        unset($code);
+                                    }
                                 }
                             } else {
-                                echo "<div class='col-md-12'><h4>No projects found, what about creating or joining a new one?</h4></div>";
-                            }  
+                                echo "<div class='col-12'><h4>No projects found, what about creating or joining a new one?</h4></div>";
+                            }
                         ?>
                     </div>
 
