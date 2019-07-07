@@ -9,6 +9,12 @@
         if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/getFunctions.php"){
             sendError("FIM-GF");
         }
+        if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/addFunctions.php"){
+            sendError("FIM-ADDF");
+        }
+        if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/checkFunctions.php"){
+            sendError("FIM-CF");
+        }
         if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/sessionCheckTime.php"){
             sendError("FIM-SCF");
         }
@@ -83,6 +89,7 @@
         }
     }
 
+    // Join new project
     if (isset($_POST["joinProjectBTN"])){
         if(isset($_POST["inviteCode"]) && strlen($_POST["inviteCode"]) == 12){
             $joinCode = $_POST["inviteCode"];
@@ -91,6 +98,21 @@
             $codeInvalid = "Input a valid code! Must be 12 characters";
             activateModal("joinProjectModal");
         }
+
+        if (isset($joinCode)){
+            if ($projectID = checkCode($conn, $joinCode)){
+                if(!checkUserInProject($conn, $projectID, $UserData["id"])){
+                    addUserToProject($conn, $projectID, $UserData["id"]);
+                } else {
+                    $codeInvalid = "You are already in this project!";
+                    activateModal("joinProjectModal");
+                }
+            } else {
+                $codeInvalid = "Invalid code. Try a new one!";
+                activateModal("joinProjectModal");
+            }
+        }
+        
     }
 ?>
 
@@ -145,50 +167,51 @@
                                     $Project["lastupdatedDate"] = date('d-m-Y', $dateTimeStamp);
 
                                     echo "
-                                    <div class='col-12 col-xs-12 col-sm-12 col-md-* col-lg-4 col-xl-4 bg-dark text-light m-1' style='border-radius: 5px;'>
-                                        <div class='row project-border-bottom'>
-                                            <div class='col-12' style='padding: 20px'>
-                                                <a href='/projectmanager/project/?id=$Project[id]' class='project-title'>
-                                                    $Project[name]
-                                                </a>
+                                    <div class='col-12 col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-4 text-light'>
+                                        <div class='col-12 bg-dark' style='border-radius: 5px;'>
+                                            <div class='row project-border-bottom'>
+                                                <div class='col-12' style='padding: 20px'>
+                                                    <a href='/projectmanager/project/?id=$Project[id]' class='project-title'>
+                                                       $Project[name]
+                                                    </a>
+                                                </div>
                                             </div>
-                                        </div>
 
-                                        <div class='row project-text' style='margin-top: 10px;'>
-                                            <div class='col-12' style='margin-bottom: 10px'>
-                                                $Project[des]
-                                            </div>
-                                            <div class='col-md-12 col-xl-6' style='margin-top: 10px'>
-                                                Status: <span class='badge badge-$Project[Sbadge]'>$Project[Sname]</span>
-                                                <br>
-                                                Updated: <span class='badge badge-light'>$Project[lastupdatedDate]</span>
-                                            </div>
-                                            <div class='col-md-12 col-xl-6' style='margin-top: 5px'>
-                                                Created: <span class='badge badge-light'>$Project[creationDate]</span>
-                                                <br>";
+                                            <div class='row project-text' style='margin-top: 10px;'>
+                                                <div class='col-12' style='margin-bottom: 10px; word-break: break-all;'>
+                                                    $Project[des]
+                                                </div>
+                                                <div class='col-md-12 col-xl-6' style='margin-top: 10px'>
+                                                    Status: <span class='badge badge-$Project[Sbadge]'>$Project[Sname]</span>
+                                                    <br>
+                                                    Updated: <span class='badge badge-light'>$Project[lastupdatedDate]</span>
+                                                </div>
+                                                <div class='col-md-12 col-xl-6' style='margin-top: 5px'>
+                                                    Created: <span class='badge badge-light'>$Project[creationDate]</span>
+                                                    <br>";
                                     if (isset($code)){
                                         echo "Code: <span class='badge badge-light'>$code</span>";
                                     }
                                     echo "    
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class='row project-border-top' style='padding: 10px; margin-top: 10px'>
-                                            <div class='col-12 text-center'>
-                                                <a href='/projectmanager/project/tasks/?id=$Project[id]' class='btn btn-light' style='margin: 5px'>
-                                                    <i class='fas fa-tasks'></i>
-                                                </a>
-                                                <a href='/projectmanager/project/issues/?id=$Project[id]' class='btn btn-light' style='margin: 5px'>
-                                                    <i class='fas fa-bug'></i>
-                                                </a>
-                                                <a href='/projectmanager/project/members/?id=$Project[id]' class='btn btn-light' style='margin: 5px'>
-                                                    <i class='fas fa-users'></i>
-                                                </a>
-                                                <a href='#' class='btn btn-light' style='margin: 5px'>
-                                                    <i class='fas fa-flag'></i>
-                                                </a>
-                                                <a href='#' class='btn btn-light' style='margin: 5px'>
-                                                    <i class='fas fa-comments'></i>
-                                                </a>";
+                                            <div class='row project-border-top' style='padding: 10px; margin-top: 10px'>
+                                                <div class='col-12 text-center'>
+                                                    <a href='/projectmanager/project/tasks/?id=$Project[id]' class='btn btn-light' style='margin: 5px'>
+                                                        <i class='fas fa-tasks'></i>
+                                                    </a>
+                                                    <a href='/projectmanager/project/issues/?id=$Project[id]' class='btn btn-light' style='margin: 5px'>
+                                                        <i class='fas fa-bug'></i>
+                                                    </a>
+                                                    <a href='/projectmanager/project/members/?id=$Project[id]' class='btn btn-light' style='margin: 5px'>
+                                                        <i class='fas fa-users'></i>
+                                                    </a>
+                                                    <a href='#' class='btn btn-light' style='margin: 5px'>
+                                                        <i class='fas fa-flag'></i>
+                                                    </a>
+                                                    <a href='#' class='btn btn-light' style='margin: 5px'>
+                                                        <i class='fas fa-comments'></i>
+                                                    </a>";
                                     if ($Project["Role"] < 3){
                                         echo "
                                             <a href='/projectmanager/project/edit?id=$Project[id]' class='btn btn-primary' style='margin: 5px'>
@@ -196,6 +219,7 @@
                                             </a>";
                                     }            
                                     echo "
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

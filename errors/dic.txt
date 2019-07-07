@@ -26,6 +26,8 @@ DBF - databaseconnections
 MPI - dashboard index
 MPP - dashboard projects
 UC - user settings
+CF - checkFunctions
+ADD - addFunctions
 
 
 PI - project index

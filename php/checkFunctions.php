@@ -174,4 +174,35 @@
     }
 
 // END Issue
+
+// Invite
+
+    function checkCode($conn, $code){
+        if(!($stmt = $conn->prepare("SELECT * FROM projects WHERE code=?"))) {
+            die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
+        }
+        if(!$stmt->bind_param("s", $code)) {
+            die("Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error);
+        }
+        if(!$stmt->execute()) {
+            die("Execute failed: (" . $stmt->errno . ") " . $stmt->error);
+        } else{
+            if (!$result = $stmt->get_result()){
+                die();
+            } else{
+                if ($result->num_rows == 1){
+                    if($row = $result->fetch_array(MYSQLI_ASSOC)){
+                        return $row["id"];
+                    }
+                } elseif ($result->num_rows > 1) {
+                    die();
+                } else {
+                    return false;
+                }
+            }   
+        }
+        die();
+    }
+
+// END Invite
 ?>

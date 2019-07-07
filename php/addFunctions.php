@@ -108,4 +108,19 @@
 
 // END ISSUE
 
+// Invite
+
+    function addUserToProject($conn, $projectID, $userID){
+        $memberRole = 4;
+        $query = "INSERT INTO projectmembers (idProject, idUser, idRole) VALUES ('$projectID', '$userID', $memberRole);";
+        if (!$conn->query($query)) {
+            die("Error adding user to project");
+        } else {
+            header("Location: /projectmanager/dashboard/projects");
+        }
+        return;
+    }
+
+// END invite
+
 ?>
