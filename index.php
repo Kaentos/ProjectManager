@@ -2,12 +2,18 @@
     session_start();
     if ( isset( $_SESSION['user'] ) ) {
         header("location: dashboard/");
-    }
-    
-    include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/otherFunctions.php";
-    include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/databaseConnections.php";
-    $conn = ConnectRoot();
+    } else  {
+        try {
+            require "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/otherFunctions.php";
+            require "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/databaseConnections.php";
 
+        } catch (ErrorException $tryERR){
+            die("There is a problem getting some files!");
+        }
+        $conn = ConnectRoot();
+    }
+
+    // Vars that contain errors info to show
     $LoginUserErr = $REmailErr = $RUsernameErr = $RPasswordErr = $RCPasswordErr = $RQuestionErr = $RAnswerErr = "";
     $RError = false;
     
