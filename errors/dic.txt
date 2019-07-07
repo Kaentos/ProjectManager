@@ -14,6 +14,7 @@ GPD-<file> - getting project data
 GTD-<file> - getting task data
 GID-<file> - getting issue data
 
+FGPD-<file> - filter getting project data
 
 Files:
 

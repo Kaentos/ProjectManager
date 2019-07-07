@@ -37,25 +37,60 @@
     } else {
         sendError("GPD-MPP");
     }
+
+    if(isset($_POST["searchBTN"]) && $hasProjects){
+        if(isset($_POST["searchProject"])){
+            $nameFilter = $_POST["searchProject"];
+            $vname = $nameFilter;
+            $nameFilter = "%".$nameFilter."%";
+        } else {
+            $nameFilter = "%%";
+        }
+        if ($temp = searchProject($conn, $nameFilter, $UserData)){
+            $ProjectData = $temp;
+        } else {
+            $filterHasProjects = true;
+        }
+    }
+
+    function searchProject($conn, $nameFilter, $UserData){
+        if(!$stmt = $conn->prepare("SELECT p.*, s.name as Sname, s.badge as Sbadge, u.username, pm.idRole AS Role FROM projects AS p INNER JOIN pstatus AS s ON p.idStatus=s.id INNER JOIN projectmembers AS pm ON p.id = pm.idProject INNER JOIN user AS u ON p.idCreator = u.id WHERE pm.idUser =$UserData[id] AND p.name LIKE ? ORDER BY p.creationDate DESC")) {
+            sendError("MPP-PT-P");
+        }
+        if(!$stmt->bind_param("s", $nameFilter)) {
+            sendError("MPP-PT-B");
+        }
+        if(!$stmt->execute()) {
+            sendError("MPP-PT-E");
+        }
+        if ($result = $stmt->get_result()) {
+            if ($result->num_rows > 0){
+                $Data = array();
+                while ($row = $result->fetch_array(MYSQLI_ASSOC)){
+                    array_push($Data, $row); 
+                }
+                $stmt->close();
+            } else {
+                return false;
+            }
+        } else {
+            sendError("MPP-PT-GR");
+        }
+        if (isset($Data)){
+            return $Data;
+        } else {
+            return false;
+        }
+    }
 ?>
 
 <html lang="en">
     <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=320, height=device-height, target-densitydpi=medium-dpi" />
-        <title>Home</title>
-        <meta name="description" content="Project Manager">
-        <meta name="author" content="Miguel Magueijo">
-        <link rel="icon" href="/projectmanager/img/icon.png">
-
-        <!-- CSS -->
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.9.0/css/all.css" integrity="sha384-i1LQnF23gykqWXg6jxC2ZbCbUMxyw5gLZY6UiUS98LYV5unm8GWmfkIS6jqJfb4E" crossorigin="anonymous">
-        <!-- Remove comment to get local fontawesome, comment link above -->
-        <!-- <link rel="stylesheet" href="/projectmanager/fontawesome/css/all.css"> -->
-        <link rel="stylesheet" href="/projectmanager/css/db.css">
-        <link rel="stylesheet" href="/projectmanager/css/Custom.css">
-        <link rel="stylesheet" href="/projectmanager/css/bootstrap.min.css">
+        <title>Projects</title>
+        <?php
+            include "$_SERVER[DOCUMENT_ROOT]/projectmanager/html/Headcontent.html";
+            include "$_SERVER[DOCUMENT_ROOT]/projectmanager/html/CSSimport.html";
+        ?>
     </head>
 
     <body>
@@ -71,25 +106,25 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class='col-12 row' style="padding-left:0px; padding-right:0px">
-                            <div class="col-12 col-xl-6">
+                            <div class="col-12 col-xl-4">
                                 <span style="font-size:2rem; font-weight: 500;">All projects</span>
                             </div>
-                            <form class="col-12 col-xl-6" style="text-align:right">
+                            <form method="POST" action="" class="col-12 col-xl-8" style="text-align:right">
                                 <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="Search by project name" name="searchIssue">
+                                    <input type="text" class="form-control" placeholder="Search by project name" name="searchProject">
                                     <div class="input-group-append">
                                         <button type="submit" name="searchBTN" class="btn  btn-dark">
                                             <i class="fas fa-search"></i>
                                         </button>
+                                        <a href="/projectmanager/invite/" class="btn btn-dark">Join Project</a>
+                                        <a href="newproject.php" class="btn btn-dark">New Project</a>
                                     </div>
-                                    <a href="/projectmanager/invite/" class="btn btn-dark">Join Project</a>
-                                <a href="newproject.php" class="btn btn-dark">New Project</a>
                                 </div>
                             </form>    
                         </div>
                         <hr class='w-100'>
                         <?php
-                            if($hasProjects){
+                            if($hasProjects && (!isset($filterHasProjects) || !$filterHasProjects)){
                                 foreach($ProjectData as $Project){
                                     if ($Project["Role"] < 3){
                                         $code = $Project["code"];
@@ -152,6 +187,8 @@
                                     </div>
                                     ";
                                 }
+                            } elseif (isset($filterHasProjects) && $filterHasProjects) {
+                                echo "<div class='col-12'><h4>No projects found for $vname.</h4></div>";
                             } else {
                                 echo "<div class='col-12'><h4>No projects found, what about creating or joining a new one?</h4></div>";
                             }
