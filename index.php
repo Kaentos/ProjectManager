@@ -5,12 +5,14 @@
     } else  {
         error_reporting(E_ERROR | E_PARSE);
         if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/login&register.php"){
-            header("Location: /projectmanager/errors/?id=213");
+            header("Location: /projectmanager/errors/?id=FIMI");
         }
-            
-        require "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/otherFunctions.php";
-        require "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/databaseConnections.php";
-
+        if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/otherFunctions.php"){
+            header("Location: /projectmanager/errors/?id=FIMI");
+        }
+        if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/databaseConnections.php"){
+            header("Location: /projectmanager/errors/?id=FIMI");
+        }
         
         $conn = ConnectRoot();
     }
