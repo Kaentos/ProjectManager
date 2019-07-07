@@ -50,6 +50,42 @@
         <!-- CSS -->
         <link rel="stylesheet" href="/projectmanager/css/Custom.css" type="text/css">
         <link rel="stylesheet" href="/projectmanager/css/bootstrap.min.css">
+
+        <style>
+            .customPaddingLeft{
+                padding-left:5%;
+            }
+            .customPaddingRight{
+                padding-right:5%;
+            }
+            ::-webkit-scrollbar {
+                display: none;
+            }
+            @media screen and (max-width: 990px) {
+                .onlyText{
+                    padding-left: 0rem; 
+                    padding-right: 0.5rem
+                }
+                .customPaddingLeft{
+                    padding-left: 5%;
+                    padding-right: 5%;
+                }
+                .customPaddingRight{
+                    padding-left: 5%;
+                    padding-right: 5%;
+                }
+            }
+            @media screen and (max-width: 1200px) {
+                .customPaddingLeft{
+                    padding-left: 5%;
+                    padding-right: 5%;
+                }
+                .customPaddingRight{
+                    padding-left: 5%;
+                    padding-right: 5%;
+                }
+            }
+        </style>
     </head>
     <body class="background_color">    
         <main>
