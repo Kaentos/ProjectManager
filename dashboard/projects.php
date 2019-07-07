@@ -70,14 +70,22 @@
             <main class="page-content">
                 <div class="container-fluid">
                     <div class="row">
-                        <div class='col-12 row' style="padding-left:0px">
-                            <div class="col-6 col-xl-6">
+                        <div class='col-12 row' style="padding-left:0px; padding-right:0px">
+                            <div class="col-12 col-xl-6">
                                 <span style="font-size:2rem; font-weight: 500;">All projects</span>
                             </div>
-                            <form class="col-6 col-xl-6">
-                                <a href="/projectmanager/invite/" class="btn btn-dark">Join Project</a>
+                            <form class="col-12 col-xl-6" style="text-align:right">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Search by project name" name="searchIssue">
+                                    <div class="input-group-append">
+                                        <button type="submit" name="searchBTN" class="btn  btn-dark">
+                                            <i class="fas fa-search"></i>
+                                        </button>
+                                    </div>
+                                    <a href="/projectmanager/invite/" class="btn btn-dark">Join Project</a>
                                 <a href="newproject.php" class="btn btn-dark">New Project</a>
-                            </form>          
+                                </div>
+                            </form>    
                         </div>
                         <hr class='w-100'>
                         <?php
@@ -92,7 +100,7 @@
                                     $Project["lastupdatedDate"] = date('d-m-Y', $dateTimeStamp);
 
                                     echo "
-                                    <div class='col-12 col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-4 bg-dark text-light m-1' style='border-radius: 5px;'>
+                                    <div class='col-12 col-xs-12 col-sm-12 col-md-* col-lg-4 col-xl-4 bg-dark text-light m-1' style='border-radius: 5px;'>
                                         <div class='row project-border-bottom'>
                                             <div class='col-12' style='padding: 20px'>
                                                 <a href='/projectmanager/project/?id=$Project[id]' class='project-title'>
