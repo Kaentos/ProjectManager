@@ -3,10 +3,18 @@
     if (!isset($_SESSION["user"])){
         header("Location: /projectmanager/");
     } else {
-        include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/getFunctions.php";
-        include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/otherFunctions.php";
-        include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/sessionCheckTime.php";
-        include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/databaseConnections.php";
+        if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/otherFunctions.php"){
+            header("Location: /projectmanager/errors/?id=FIM-OF");
+        }
+        if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/getFunctions.php"){
+            sendError("FIM-GF");
+        }
+        if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/sessionCheckTime.php"){
+            sendError("FIM-SCF");
+        }
+        if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/databaseConnections.php"){
+            sendError("FIM-DBF");
+        }
         $conn = ConnectRoot();
         $UserData = getSessionUserData($conn, $_SESSION["user"]);
     }
@@ -25,7 +33,7 @@
         }
         $result->close();
     } else {
-        die("Project data die");
+        sendError("GPD-MPI");
     }
 
     $TasksData = array();
@@ -42,7 +50,7 @@
         }
         $result->close();
     } else {
-        die("Task data die");
+        sendError("GTD-MPI");
     }
 
     $IssuesData = array();
@@ -59,8 +67,7 @@
         }
         $result->close();
     } else {
-        printf("Error in select user query");
-        die("Issue data die");
+        sendError("GID-MPI");
     }
 ?>
 

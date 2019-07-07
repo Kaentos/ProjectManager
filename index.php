@@ -48,44 +48,8 @@
         <link rel="icon" href="img/icon.png">
         
         <!-- CSS -->
-        <link rel="stylesheet" href="css/Custom.css" type="text/css">
-        <link rel="stylesheet" href="css/bootstrap.min.css">
-        
-        <style>
-            .customPaddingLeft{
-                padding-left:5%;
-            }
-            .customPaddingRight{
-                padding-right:5%;
-            }
-            ::-webkit-scrollbar {
-                display: none;
-            }
-            @media screen and (max-width: 990px) {
-                .onlyText{
-                    padding-left: 0rem; 
-                    padding-right: 0.5rem
-                }
-                .customPaddingLeft{
-                    padding-left: 5%;
-                    padding-right: 5%;
-                }
-                .customPaddingRight{
-                    padding-left: 5%;
-                    padding-right: 5%;
-                }
-            }
-            @media screen and (max-width: 1200px) {
-                .customPaddingLeft{
-                    padding-left: 5%;
-                    padding-right: 5%;
-                }
-                .customPaddingRight{
-                    padding-left: 5%;
-                    padding-right: 5%;
-                }
-            }
-        </style>
+        <link rel="stylesheet" href="/projectmanager/css/Custom.css" type="text/css">
+        <link rel="stylesheet" href="/projectmanager/css/bootstrap.min.css">
     </head>
     <body class="background_color">    
         <main>
@@ -204,37 +168,6 @@
                     </div>
                 </div>
             </div>
-
-
-            <!-- <div class="row">
-                <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 customPaddingLeft">
-                    <div class="clearfix">
-                        <div class="col-md-12" style="background-color: white; text-align: center; border-radius: 10px;">
-                            <h2 style="padding: 1%; color: #495057">
-                                
-                            </h3>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        
-                    </div>
-                </div>
-
-                <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 customPaddingRight">
-                    <div class="clearfix">
-                        <div class="col-md-12" style="background-color: white; text-align: center; border-radius: 10px;">
-                            <h2 style="padding: 1%; color: #495057">
-                                
-                            </h3>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        
-                    </div>
-                </div>
-            </div> -->
             
         </main>
 

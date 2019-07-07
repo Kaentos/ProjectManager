@@ -1,5 +1,6 @@
 Erros:
-FIMI-<file> - File Import/Include
+FIMI-<file> - File Import/Include Index (login and register)
+FIM-<file> - File Import/Include
 
 <file>-PT-<type> - Function/File prepare statment error
 
@@ -7,13 +8,19 @@ C2 - country in database is duplicated
 U2 - user in database is duplicated
 US2 - user security id is duplicated
 
+GPD-<file> - getting project data
+GTD-<file> - getting task data
+GID-<file> - getting issue data
 
 
 Files:
 
+GF - getFunctions
+SCF - sessionCheckFunctions
 OF - otherFunctions
 LRF - login&register
 DBF - databaseconnections
+MPI - dashboard index
 
 Types:
 
