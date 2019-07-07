@@ -192,7 +192,6 @@
                                                     <a href='#editTaskModal' data-toggle='modal' class='edit-pen'>
                                                         <i class='fas fa-pen'></i>
                                                     </a>
-                                                    
                                                     <button type='submit' name='REMtask' class='btn btn-danger'>
                                                         <i class='far fa-times-circle'></i>
                                                     </button>

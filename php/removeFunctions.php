@@ -48,7 +48,7 @@
         if (!$conn->query($query)) {
             die("Report with error DT");
         } else {
-            header("Location: /projectmanager/project/tasks?id=$projectID");
+            header("Location: /projectmanager/project/issues?id=$projectID");
             return;
         }
         die("Repor with error FDT");
