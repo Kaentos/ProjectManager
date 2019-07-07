@@ -22,8 +22,8 @@
 
     $ProjectData = array();
     $hasProjects = false;
-    // Get all projects user is assigned
-    $query = "SELECT p.*, s.name as Sname, s.badge as Sbadge, u.username, pm.idRole AS Role FROM projects AS p INNER JOIN pstatus AS s ON p.idStatus=s.id INNER JOIN projectmembers AS pm ON p.id = pm.idProject INNER JOIN user AS u ON p.idCreator = u.id WHERE pm.idUser =$UserData[id] ORDER BY p.creationDate DESC";
+
+    $query = "SELECT p.*, s.name as Sname, s.badge as Sbadge, u.username, pm.idRole AS Role FROM projects AS p INNER JOIN pstatus AS s ON p.idStatus=s.id INNER JOIN projectmembers AS pm ON p.id = pm.idProject INNER JOIN user AS u ON p.idCreator = u.id WHERE pm.idUser =$UserData[id] ORDER BY p.creationDate DESC LIMIT 25";
     if ($result = $conn->query($query)) {
         if ($result->num_rows >= 1){
             $hasProjects = true;
@@ -54,7 +54,7 @@
     }
 
     function searchProject($conn, $nameFilter, $UserData){
-        if(!$stmt = $conn->prepare("SELECT p.*, s.name as Sname, s.badge as Sbadge, u.username, pm.idRole AS Role FROM projects AS p INNER JOIN pstatus AS s ON p.idStatus=s.id INNER JOIN projectmembers AS pm ON p.id = pm.idProject INNER JOIN user AS u ON p.idCreator = u.id WHERE pm.idUser =$UserData[id] AND p.name LIKE ? ORDER BY p.creationDate DESC")) {
+        if(!$stmt = $conn->prepare("SELECT p.*, s.name as Sname, s.badge as Sbadge, u.username, pm.idRole AS Role FROM projects AS p INNER JOIN pstatus AS s ON p.idStatus=s.id INNER JOIN projectmembers AS pm ON p.id = pm.idProject INNER JOIN user AS u ON p.idCreator = u.id WHERE pm.idUser =$UserData[id] AND p.name LIKE ? ORDER BY p.creationDate DESC LIMIT 25")) {
             sendError("MPP-PT-P");
         }
         if(!$stmt->bind_param("s", $nameFilter)) {
@@ -178,14 +178,21 @@
                                                 </a>
                                                 <a href='#' class='btn btn-light' style='margin: 5px'>
                                                     <i class='fas fa-comments'></i>
-                                                </a>
-                                                <a href='/projectmanager/project/edit?id=$Project[id]' class='btn btn-primary' style='margin: 5px'>
-                                                    <i class='fas fa-cog'></i>
-                                                </a>
+                                                </a>";
+                                    if ($Project["Role"] < 3){
+                                        echo "
+                                            <a href='/projectmanager/project/edit?id=$Project[id]' class='btn btn-primary' style='margin: 5px'>
+                                                <i class='fas fa-cog'></i>
+                                            </a>";
+                                    }            
+                                    echo "
                                             </div>
                                         </div>
                                     </div>
                                     ";
+                                    if (isset($code)){
+                                        unset($code);
+                                    }
                                 }
                             } elseif (isset($filterHasProjects) && $filterHasProjects) {
                                 echo "<div class='col-12'><h4>No projects found for $vname.</h4></div>";
