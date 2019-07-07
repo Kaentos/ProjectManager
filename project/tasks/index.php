@@ -214,7 +214,11 @@
 
     <body>
         <div class="page-wrapper chiller-theme">
-            <?php include "$_SERVER[DOCUMENT_ROOT]/projectmanager/sidebar/bar.php"; ?>
+            <?php
+                if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/sidebar/bar.php"){
+                    sendError("MPB-PTI");
+                }
+            ?>
 
 
             <main class="page-content">
