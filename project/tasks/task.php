@@ -7,6 +7,7 @@
         include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/checkFunctions.php";
         include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/editFunctions.php";
         include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/addFunctions.php";
+        include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/removeFunctions.php";
         include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/otherFunctions.php";
         include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/sessionCheckTime.php";
         include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/databaseConnections.php";
@@ -116,8 +117,13 @@
         removeUserFromProject($conn, $UserData["id"], $projectID);
     }
 
-    $AllTaskComments = getTaskComments($conn, $taskID);
+    // Remove task
+    if (isset($_POST["REMtask"])){
+        removeTask($conn, $projectID, $taskID);
+    }
 
+
+    $AllTaskComments = getTaskComments($conn, $taskID);
     $AllTasksStatus = getTasksStatus($conn);
 ?>
 
@@ -179,17 +185,21 @@
                             <div class='col-sm-12 col-md-10 col-lg-10 col-xl-6 task-DIV'>
                                 <div class='btn-toolbar row' style='margin-top:15px'>
                                     <div class='col-lg-12' style='margin-top:5px;'>
-                                        <span class='Only-task-DIV-title task-DIV-text'>
+                                        <form method='POST' action='' class='Only-task-DIV-title task-DIV-text'>
                                             Task name: $taskData[name]";
                                             if ($UserRole < 3){
                                                 echo "
                                                     <a href='#editTaskModal' data-toggle='modal' class='edit-pen'>
                                                         <i class='fas fa-pen'></i>
                                                     </a>
+                                                    
+                                                    <button type='submit' name='REMtask' class='btn btn-danger'>
+                                                        <i class='far fa-times-circle'></i>
+                                                    </button>
                                                 ";
                                             }
                             echo "
-                                        </span>
+                                        </form>
                                     </div>
                                 </div>
                                 <hr class='hr-task'>

@@ -25,7 +25,7 @@
         }
         $result->close();
     } else {
-        die();
+        die("Project data die");
     }
 
     $TasksData = array();
@@ -42,7 +42,7 @@
         }
         $result->close();
     } else {
-        die();
+        die("Task data die");
     }
 
     $IssuesData = array();
@@ -60,7 +60,7 @@
         $result->close();
     } else {
         printf("Error in select user query");
-        die();
+        die("Issue data die");
     }
 ?>
 

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 04-Jul-2019 às 00:52
+-- Generation Time: 07-Jul-2019 às 16:14
 -- Versão do servidor: 10.1.39-MariaDB
 -- versão do PHP: 7.3.5
 
@@ -294,6 +294,82 @@ INSERT INTO `countries` (`id`, `name`, `TwoChar`, `ThreeChar`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Estrutura da tabela `issuecomments`
+--
+
+CREATE TABLE `issuecomments` (
+  `id` int(11) NOT NULL,
+  `idIssue` int(11) NOT NULL,
+  `idUser` int(11) NOT NULL,
+  `comment` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `creationDate` datetime NOT NULL,
+  `lastUpdateDate` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `issuefollow`
+--
+
+CREATE TABLE `issuefollow` (
+  `idIssue` int(11) NOT NULL,
+  `idUser` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `issues`
+--
+
+CREATE TABLE `issues` (
+  `id` int(11) NOT NULL,
+  `idProject` int(11) NOT NULL,
+  `name` varchar(60) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `Des` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `idStatus` int(11) NOT NULL,
+  `idCreator` int(11) NOT NULL,
+  `idUpdateUser` int(11) NOT NULL,
+  `creationDate` datetime NOT NULL,
+  `lastupdatedDate` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Extraindo dados da tabela `issues`
+--
+
+INSERT INTO `issues` (`id`, `idProject`, `name`, `Des`, `idStatus`, `idCreator`, `idUpdateUser`, `creationDate`, `lastupdatedDate`) VALUES
+(4, 14, 'Problema com inputs', 'Alguns inputs do registo nÃ£o funcionam corretamente!', 1, 8, 8, '2019-07-05 22:39:32', '2019-07-05 22:39:32'),
+(5, 3, 'Problema #1', 'DescriÃ§Ã£o do problema #1', 3, 8, 8, '2019-07-05 22:41:22', '2019-07-05 22:43:25'),
+(6, 3, 'Problema #2', 'DescriÃ§Ã£o do problema #2\r\n', 1, 8, 8, '2019-07-05 22:41:35', '2019-07-05 22:43:07'),
+(7, 3, 'Problema #3', 'DescriÃ§Ã£o do problema #3', 2, 8, 8, '2019-07-05 22:43:42', '2019-07-05 22:43:42'),
+(8, 14, 'Criador pode alterar seu role', 'Proibir criador alterar o seu role', 3, 8, 8, '2019-07-05 23:53:12', '2019-07-05 23:53:12');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `istatus`
+--
+
+CREATE TABLE `istatus` (
+  `id` int(11) NOT NULL,
+  `name` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `badge` text COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Extraindo dados da tabela `istatus`
+--
+
+INSERT INTO `istatus` (`id`, `name`, `badge`) VALUES
+(1, 'Solved', 'success'),
+(2, 'Trying to fix', 'primary'),
+(3, 'Paused', 'warning');
+
+-- --------------------------------------------------------
+
+--
 -- Estrutura da tabela `projectmembers`
 --
 
@@ -309,12 +385,9 @@ CREATE TABLE `projectmembers` (
 
 INSERT INTO `projectmembers` (`idProject`, `idUser`, `idRole`) VALUES
 (3, 8, 1),
-(12, 8, 1),
-(13, 8, 1),
 (14, 8, 1),
-(3, 9, 3),
-(4, 8, 3),
-(3, 11, 4);
+(3, 11, 3),
+(3, 15, 4);
 
 -- --------------------------------------------------------
 
@@ -339,11 +412,8 @@ CREATE TABLE `projects` (
 --
 
 INSERT INTO `projects` (`id`, `name`, `des`, `code`, `idStatus`, `idCreator`, `creationDate`, `idUpdateUser`, `lastupdatedDate`) VALUES
-(3, 'Problem', 'BLA BLALBLALBALB ABL AL BLLA BL BA BALLBA', 'eftzvzijl7e6', 4, 8, '2019-06-26 01:00:00', 8, '2019-07-03 15:14:10'),
-(4, 'Laranjas', 'yup', 'c398wgcfhbno', 1, 9, '2019-06-26 09:00:00', 9, '2019-06-26 09:00:00'),
-(12, 'Not teste', 'teste', 'drrytauujooj', 5, 8, '2019-06-28 07:17:33', 8, '2019-06-30 21:57:06'),
-(13, 'Ya boi', 'teste2', 's2w4hnhljjit', 2, 8, '2019-06-28 07:19:19', 8, '2019-06-30 21:57:13'),
-(14, 'Project Manager', 'Projeto PAP do aluno Miguel', 'o58ry09smun6', 2, 8, '2019-07-04 12:33:13', 0, '2019-07-04 12:33:13');
+(3, 'Um titulo', 'asdsaddsa', 'eftzvzijl7e6', 3, 8, '2019-06-26 01:00:00', 13, '2019-07-05 21:54:34'),
+(14, 'Project Manager', 'Projeto PAP do aluno Miguel', 'o58ry09smun6', 2, 8, '2019-07-04 12:33:13', 8, '2019-07-04 12:33:13');
 
 -- --------------------------------------------------------
 
@@ -353,18 +423,19 @@ INSERT INTO `projects` (`id`, `name`, `des`, `code`, `idStatus`, `idCreator`, `c
 
 CREATE TABLE `proles` (
   `id` int(11) NOT NULL,
-  `name` text COLLATE utf8mb4_unicode_ci NOT NULL
+  `name` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `badge` text COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Extraindo dados da tabela `proles`
 --
 
-INSERT INTO `proles` (`id`, `name`) VALUES
-(1, 'Owner'),
-(2, 'Managers'),
-(3, 'Developers'),
-(4, 'Members');
+INSERT INTO `proles` (`id`, `name`, `badge`) VALUES
+(1, 'Owner', 'dark'),
+(2, 'Managers', 'danger'),
+(3, 'Developers', 'warning'),
+(4, 'Members', 'primary');
 
 -- --------------------------------------------------------
 
@@ -420,6 +491,17 @@ INSERT INTO `taskcomments` (`id`, `idTask`, `idUser`, `comment`, `creationDate`,
 -- --------------------------------------------------------
 
 --
+-- Estrutura da tabela `taskfollow`
+--
+
+CREATE TABLE `taskfollow` (
+  `idTask` int(11) NOT NULL,
+  `idUser` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Estrutura da tabela `tasks`
 --
 
@@ -440,16 +522,16 @@ CREATE TABLE `tasks` (
 --
 
 INSERT INTO `tasks` (`id`, `idProject`, `name`, `Des`, `idStatus`, `idCreator`, `idUpdateUser`, `creationDate`, `lastupdatedDate`) VALUES
-(1, 3, 'Create table', 'Google', 1, 8, 8, '2019-06-30 01:00:00', '2019-06-30 01:00:00'),
-(2, 3, 'Danger', 'gadasd', 2, 8, 8, '2019-06-30 01:00:00', '2019-06-30 01:00:00'),
-(3, 3, 'Blyat', 'sdfahjdsasdajdsadsahhdkjkdsahjkdsakjhkjhdaskjdjshjkdjskahkjdhaskjdsahjkjdhsajhkd', 4, 8, 8, '2019-06-30 02:00:00', '2019-06-30 02:00:00'),
+(1, 3, 'Create table', 'CriaÃ§Ã£o de uma tabela\r\n', 1, 8, 8, '2019-06-30 01:00:00', '2019-07-05 22:49:04'),
+(2, 3, 'Danger', 'Danger teste', 2, 8, 8, '2019-06-30 01:00:00', '2019-07-05 22:49:13'),
+(3, 3, 'TarifÃ¡rio', 'DescriÃ§Ã£o', 4, 8, 8, '2019-06-30 02:00:00', '2019-07-05 22:48:40'),
 (4, 3, 'miguel', 'miguel', 5, 8, 8, '2019-06-30 02:00:00', '2019-06-30 02:00:00'),
-(5, 3, 'gogogo', 'ghghgh', 3, 8, 8, '2019-06-30 03:00:00', '2019-06-30 03:00:00'),
-(6, 3, 'extra', 'sdadsadsa', 2, 8, 8, '2019-06-30 02:00:00', '2019-06-30 02:00:00'),
-(7, 3, 'Teste', 'Input new task test', 1, 8, 8, '2019-07-02 22:32:05', '2019-07-02 22:32:05'),
-(8, 3, 'Teste 2', 'Tou a fazer um teste de uma nova task para o projeto problem', 2, 8, 8, '2019-07-02 22:35:37', '2019-07-02 22:35:37'),
-(9, 3, 'CriaÃ§Ã£o teste', 'NÃ£o sei o que escrever aqui portanto nÃ£o vou escrever nada de Ãºtil pois se escrever algo de Ãºtil Ã© um pouco useless', 1, 8, 8, '2019-07-03 14:03:42', '2019-07-04 00:05:06'),
-(10, 3, 'Uma task normal', 'Esta task nÃ£o Ã© normal LUL', 1, 8, 8, '2019-07-04 00:28:25', '2019-07-04 00:28:25'),
+(5, 3, 'Tarefa #10', 'DescriÃ§Ã£o da tarefa #10', 3, 8, 8, '2019-06-30 03:00:00', '2019-07-05 22:48:09'),
+(6, 3, 'extra', 'extra', 2, 8, 8, '2019-06-30 02:00:00', '2019-07-05 22:48:18'),
+(7, 3, 'Tarefa #2', 'DescriÃ§Ã£o da tarefa #2', 1, 8, 8, '2019-07-02 22:32:05', '2019-07-05 22:47:50'),
+(8, 3, 'Tarefa #3', 'DescriÃ§Ã£o da tarefa #', 2, 8, 8, '2019-07-02 22:35:37', '2019-07-05 22:47:43'),
+(9, 3, 'Tarefa #5', 'DescriÃ§Ã£o da tarefa #5', 1, 8, 8, '2019-07-03 14:03:42', '2019-07-05 22:46:52'),
+(10, 3, 'Tarefa #4', 'DescriÃ§Ã£o da tarefa #4', 1, 8, 8, '2019-07-04 00:28:25', '2019-07-05 22:47:56'),
 (11, 14, 'Criar a parte das issues', 'Praticamente Ã© o mesmo que as tasks, basta copiar e criar novas tabelas com nome issue', 4, 8, 8, '2019-07-04 00:36:16', '2019-07-04 00:36:16'),
 (12, 14, 'Adicionar task links', 'Adicionar \"div\" como por exemplo a tasks e issues onde apresenta sites para o github e outras cenas mais usadas.', 4, 8, 8, '2019-07-04 00:37:44', '2019-07-04 00:37:44'),
 (13, 14, 'Task priority', 'Criar sistema de prioridade para as tasks', 4, 8, 8, '2019-07-04 00:38:26', '2019-07-04 00:38:26'),
@@ -465,7 +547,10 @@ INSERT INTO `tasks` (`id`, `idProject`, `name`, `Des`, `idStatus`, `idCreator`, 
 (23, 14, 'Criar lista de erros', 'Conjuntamente com a task de criar zona de bug e error report, criar uma lista de erros para o admin', 4, 8, 8, '2019-07-04 00:47:33', '2019-07-04 00:47:33'),
 (24, 14, 'Admin dashboard', 'PÃ¡ginas que permite o admin ver todos os dados do website', 2, 8, 8, '2019-07-04 00:48:05', '2019-07-04 00:48:05'),
 (25, 14, 'Input obrigatorio', 'Referir nos inputs que Ã© obrigatÃ³rio', 4, 8, 8, '2019-07-04 00:48:37', '2019-07-04 00:48:37'),
-(26, 14, 'Total etc', 'Criar uma funÃ§Ã£o que diz o total de tasks, issues etc de um certo projeto', 4, 8, 8, '2019-07-04 00:50:06', '2019-07-04 00:50:06');
+(26, 14, 'Total etc', 'Criar uma funÃ§Ã£o que diz o total de tasks, issues etc de um certo projeto', 4, 8, 8, '2019-07-04 00:50:06', '2019-07-04 00:50:06'),
+(28, 14, 'User can follow task', 'User can follow task so it appears who is assigned to that task', 3, 8, 8, '2019-07-04 17:09:47', '2019-07-04 17:36:45'),
+(29, 14, 'Editar task atravÃ©s de modal', 'Fazer o mesmo que tenho para o editar user role', 4, 8, 8, '2019-07-04 17:24:58', '2019-07-04 20:52:48'),
+(30, 14, 'Medidas de seguranÃ§a', 'fazer mesmo que nos membros, quando um utilizador nÃ£o autorizado tenta fazer o que nÃ£o tem acesso.', 4, 8, 8, '2019-07-04 20:53:40', '2019-07-04 20:53:40');
 
 -- --------------------------------------------------------
 
@@ -514,7 +599,10 @@ INSERT INTO `user` (`id`, `email`, `username`, `creationDate`, `lastUpdateDate`,
 (8, 'miguel@mail.com', 'Miguel', '2019-06-20 07:33:33', '2019-06-20 07:33:33', 177, '20'),
 (9, 'Example@mail.com', 'Example', '2019-06-22 07:03:26', '2019-06-22 07:03:26', 206, '0'),
 (10, 'empty@mail.com', 'Empty123', '2019-06-26 11:12:10', '2019-06-26 11:12:10', 2, '0'),
-(11, 'sdabudsasba@gmail.com', 'Miguel2', '2019-06-28 08:13:24', '2019-06-28 08:13:24', NULL, '0');
+(11, 'sdabudsasba@gmail.com', 'Miguel2', '2019-06-28 08:13:24', '2019-06-28 08:13:24', NULL, '0'),
+(12, 'teste123@gmail.com', 'teste123', '2019-07-05 08:59:54', '2019-07-05 08:59:54', NULL, '0'),
+(13, 'userdelete@deleted.deleted', 'DELETED', '2019-07-05 09:48:21', '2019-07-05 09:48:21', 177, '0'),
+(15, 'membroonly@mail.com', 'Membro15', '2019-07-05 11:48:47', '2019-07-05 11:48:47', NULL, '0');
 
 -- --------------------------------------------------------
 
@@ -534,10 +622,13 @@ CREATE TABLE `usersecurity` (
 --
 
 INSERT INTO `usersecurity` (`idUser`, `password`, `question`, `answer`) VALUES
-(8, '$2y$12$.2TsOc8jw2BgE3/ibJscn.nJ2DNiX.gAog4eQQp5lW3oIsRCshh96', 'Miguel2323', '$2y$12$otBYl4M8hDegmGqpNhwf/OP5auo493lRIEK0dwMCd7zVOOR0fChZm'),
+(8, '$2y$12$TZIkFUQEnw5//x9gGdKrFu45lI4D.8Rdfgrg0PG8um9DTwmxrsVZK', 'Miguel2323', '$2y$12$otBYl4M8hDegmGqpNhwf/OP5auo493lRIEK0dwMCd7zVOOR0fChZm'),
 (9, '$2y$12$n4IpQ5rhDyFCgrL0W3oscOSspEj4cp6wUmPgnqS9QGbip7XBQNV.m', 'Example1.', '$2y$12$GzPs3UJM9FETmDPEGt0z1OmlaahMgSJOUCZ.OoMfnFxtvcpq2Cwuy'),
 (10, '$2y$12$lbbhFepMqGCIRqdTFLPxKuVg/bFNubUS2lGEMgy9.86oMQYsu0o/C', 'Empty123', '$2y$12$UfE4Yqo1VaG2USBpzpBWnOZNpsH5e0Z0ydmYk9u98yQstXsoGwIxq'),
-(11, '$2y$12$zU7lfkTFPMVEH/yWt8P5OOmhiRXiZ9B3PgG7J7AJP9RCPr85/ZJc2', 'Miguel123', '$2y$12$VsiYdHRpvKpws1ZjW.e16egyoCa1s8k72VQO8kEOODs/9F/Pr/3nS');
+(11, '$2y$12$zU7lfkTFPMVEH/yWt8P5OOmhiRXiZ9B3PgG7J7AJP9RCPr85/ZJc2', 'Miguel123', '$2y$12$VsiYdHRpvKpws1ZjW.e16egyoCa1s8k72VQO8kEOODs/9F/Pr/3nS'),
+(12, '$2y$12$jAmuhdbvqM/D/MC/0v2io.DOF14wT5YudFhpbXsltGQq0Q3oPmt7y', 'Testesad', '$2y$12$ZTCTDMZs1256DnWTsjKvh.u0QLkfrJZ884WGOhTh31gwj0Vd8/C7W'),
+(13, '$2y$12$SUHdiI.G7Cftdrq7tpqGnuCFtFSt6MSiMfH1y6TkX089Hpsle6oNm', 'DELETED', '$2y$12$xHOZ212tAfC81Qj4YJNYw./UE.BYnz6FYxRCm.m8ON.eI/C5MlH/C'),
+(15, '$2y$12$wIX9PlsQ6PKwkUPMmBcws.rvhkCS8pNNYVwZzrtCO0e4IRSKnDDum', 'Miguel1', '$2y$12$En4QK6BEtK4rRdWB.nbP1.4EKR/ZG4fRXNtZE5VpD5oFeLtEtAEk6');
 
 --
 -- Indexes for dumped tables
@@ -547,6 +638,37 @@ INSERT INTO `usersecurity` (`idUser`, `password`, `question`, `answer`) VALUES
 -- Indexes for table `countries`
 --
 ALTER TABLE `countries`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `issuecomments`
+--
+ALTER TABLE `issuecomments`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idIssue` (`idIssue`),
+  ADD KEY `idUser` (`idUser`);
+
+--
+-- Indexes for table `issuefollow`
+--
+ALTER TABLE `issuefollow`
+  ADD UNIQUE KEY `idIssue` (`idIssue`,`idUser`),
+  ADD KEY `idUser` (`idUser`);
+
+--
+-- Indexes for table `issues`
+--
+ALTER TABLE `issues`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idProject` (`idProject`),
+  ADD KEY `idStatus` (`idStatus`),
+  ADD KEY `idCreator` (`idCreator`),
+  ADD KEY `idUpdateUser` (`idUpdateUser`);
+
+--
+-- Indexes for table `istatus`
+--
+ALTER TABLE `istatus`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -584,6 +706,13 @@ ALTER TABLE `pstatus`
 ALTER TABLE `taskcomments`
   ADD PRIMARY KEY (`id`),
   ADD KEY `idTask` (`idTask`),
+  ADD KEY `idUser` (`idUser`);
+
+--
+-- Indexes for table `taskfollow`
+--
+ALTER TABLE `taskfollow`
+  ADD UNIQUE KEY `idTask` (`idTask`,`idUser`),
   ADD KEY `idUser` (`idUser`);
 
 --
@@ -626,6 +755,24 @@ ALTER TABLE `countries`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=251;
 
 --
+-- AUTO_INCREMENT for table `issuecomments`
+--
+ALTER TABLE `issuecomments`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `issues`
+--
+ALTER TABLE `issues`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT for table `istatus`
+--
+ALTER TABLE `istatus`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT for table `projects`
 --
 ALTER TABLE `projects`
@@ -653,7 +800,7 @@ ALTER TABLE `taskcomments`
 -- AUTO_INCREMENT for table `tasks`
 --
 ALTER TABLE `tasks`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT for table `tstatus`
@@ -665,11 +812,34 @@ ALTER TABLE `tstatus`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Limitadores para a tabela `issuecomments`
+--
+ALTER TABLE `issuecomments`
+  ADD CONSTRAINT `issuecomments_ibfk_1` FOREIGN KEY (`idUser`) REFERENCES `user` (`id`),
+  ADD CONSTRAINT `issuecomments_ibfk_2` FOREIGN KEY (`idIssue`) REFERENCES `issues` (`id`);
+
+--
+-- Limitadores para a tabela `issuefollow`
+--
+ALTER TABLE `issuefollow`
+  ADD CONSTRAINT `issuefollow_ibfk_1` FOREIGN KEY (`idUser`) REFERENCES `user` (`id`),
+  ADD CONSTRAINT `issuefollow_ibfk_2` FOREIGN KEY (`idIssue`) REFERENCES `issues` (`id`);
+
+--
+-- Limitadores para a tabela `issues`
+--
+ALTER TABLE `issues`
+  ADD CONSTRAINT `issues_ibfk_1` FOREIGN KEY (`idStatus`) REFERENCES `istatus` (`id`),
+  ADD CONSTRAINT `issues_ibfk_2` FOREIGN KEY (`idProject`) REFERENCES `projects` (`id`),
+  ADD CONSTRAINT `issues_ibfk_3` FOREIGN KEY (`idCreator`) REFERENCES `user` (`id`),
+  ADD CONSTRAINT `issues_ibfk_4` FOREIGN KEY (`idUpdateUser`) REFERENCES `user` (`id`);
 
 --
 -- Limitadores para a tabela `projectmembers`
@@ -692,6 +862,13 @@ ALTER TABLE `projects`
 ALTER TABLE `taskcomments`
   ADD CONSTRAINT `taskcomments_ibfk_1` FOREIGN KEY (`idTask`) REFERENCES `tasks` (`id`),
   ADD CONSTRAINT `taskcomments_ibfk_2` FOREIGN KEY (`idUser`) REFERENCES `user` (`id`);
+
+--
+-- Limitadores para a tabela `taskfollow`
+--
+ALTER TABLE `taskfollow`
+  ADD CONSTRAINT `taskfollow_ibfk_1` FOREIGN KEY (`idTask`) REFERENCES `tasks` (`id`),
+  ADD CONSTRAINT `taskfollow_ibfk_2` FOREIGN KEY (`idUser`) REFERENCES `user` (`id`);
 
 --
 -- Limitadores para a tabela `tasks`

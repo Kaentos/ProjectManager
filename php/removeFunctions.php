@@ -2,11 +2,11 @@
 
 // TASK
     
-    // USER FOLLOW
+    // Remove user follow from data base
     function removeUserTaskFollow($conn, $taskID, $userID){
         $query = "DELETE FROM taskfollow WHERE idTask=$taskID AND idUser=$userID";
         if (!$conn->query($query)) {
-            die();
+            die("Error DUTF");
         } else {
             header("Refresh: 0");
             return;
@@ -14,7 +14,47 @@
         die();
     }
 
+    // Remove task from database
+    function removeTask($conn, $projectID, $taskID){
+        $query = "DELETE FROM tasks WHERE id=$taskID AND idProject=$projectID";
+        if (!$conn->query($query)) {
+            die("Error DT");
+        } else {
+            header("Location: /projectmanager/project/tasks?id=$projectID");
+            return;
+        }
+        die("Error FDT");
+    }
+
 // END OF TASK
+
+// Issue
+
+    // Remove user follow from data base
+    function removeUserIssueFollow($conn, $issueID, $userID){
+        $query = "DELETE FROM issuefollow WHERE idIssue=$issueID AND idUser=$userID";
+        if (!$conn->query($query)) {
+            die("Error DUIF");
+        } else {
+            header("Refresh: 0");
+            return;
+        }
+        die();
+    }
+
+    // Remove issue from database
+    function removeIssue($conn, $projectID, $issueID){
+        $query = "DELETE FROM issues WHERE id=$issueID AND idProject=$projectID";
+        if (!$conn->query($query)) {
+            die("Report with error DT");
+        } else {
+            header("Location: /projectmanager/project/tasks?id=$projectID");
+            return;
+        }
+        die("Repor with error FDT");
+    }
+
+// Issue
 
 // PROJECT
 
