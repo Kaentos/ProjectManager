@@ -21,7 +21,7 @@
 
     $ProjectData = array();
     $hasProjects = false;
-    $query = "SELECT p.*, s.name as Sname, s.badge AS Sbadge, u.username, pm.idRole AS Role FROM projects AS p INNER JOIN pstatus AS s ON p.idStatus=s.id INNER JOIN projectmembers AS pm ON p.id = pm.idProject INNER JOIN user AS u ON p.idCreator = u.id WHERE pm.idUser =$UserData[id] ORDER BY p.creationDate DESC LIMIT 5";
+    $query = "SELECT p.*, s.name as Sname, s.badge AS Sbadge, u.username, pm.idRole AS Role FROM projects AS p INNER JOIN pstatus AS s ON p.idStatus=s.id INNER JOIN projectmembers AS pm ON p.id = pm.idProject INNER JOIN user AS u ON p.idCreator = u.id WHERE pm.idUser =$UserData[id] ORDER BY p.creationDate DESC LIMIT 6";
     if ($result = $conn->query($query)) {
         if ($result->num_rows >= 1){
             $hasProjects = true;
@@ -102,13 +102,13 @@
             <main class="page-content">
                 <div class="container-fluid">
                 <div class="row">
-                    <!-- 5 Projects -->
+                    <!-- Projects -->
                     <div class='col-12 row' style="padding-left:0px; padding-right:0px">
-                        <div class="col-12 col-xl-4">
-                            <span style="font-size:2rem; font-weight: 500;">All projects</span>
+                        <div class="col-9">
+                            <a href="/projectmanager/dashboard/projects" style="font-size:2rem; font-weight: 500; text-decoration: none; color: black">All projects</a>
                         </div>
-                        <div class="col-12 col-xl-8">
-                            <a href="/projectmanager/dashboard/projects" class="btn btn-primary float-right" style="margin-top:8px; color:white;">All Project</a>
+                        <div class="col-3">
+                            <a href="/projectmanager/dashboard/projects" class="btn btn-dark float-right" style="margin-top:8px; color:white;">All Projects</a>
                         </div>    
                     </div>
                     <hr class='w-100'>
@@ -188,6 +188,7 @@
                         }
                     ?>
                 </div>
+
                     <!-- 5 Tasks -->
                     <div>
                         <span style="font-size:2rem; font-weight: 500;">Tasks</span>

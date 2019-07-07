@@ -1,5 +1,16 @@
 <?php
     
+    function activateModal($name){
+        echo "
+            <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js'></script>
+            <script>
+                $(document).ready(function(){
+                    $('#$name').modal('show');
+                });
+            </script>
+        ";
+    }
+
     function sendError($code){
         header("Location: /projectmanager/errors/?id=$code");
     }

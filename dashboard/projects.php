@@ -82,6 +82,16 @@
             return false;
         }
     }
+
+    if (isset($_POST["joinProjectBTN"])){
+        if(isset($_POST["inviteCode"]) && strlen($_POST["inviteCode"]) == 12){
+            $joinCode = $_POST["inviteCode"];
+            unset($codeInvalid);
+        } else {
+            $codeInvalid = "Input a valid code! Must be 12 characters";
+            activateModal("joinProjectModal");
+        }
+    }
 ?>
 
 <html lang="en">
@@ -116,7 +126,7 @@
                                         <button type="submit" name="searchBTN" class="btn  btn-dark">
                                             <i class="fas fa-search"></i>
                                         </button>
-                                        <a href="/projectmanager/invite/" class="btn btn-dark">Join Project</a>
+                                        <a href="#joinProjectModal" data-toggle='modal' class="btn btn-dark">Join Project</a>
                                         <a href="newproject.php" class="btn btn-dark">New Project</a>
                                     </div>
                                 </div>
@@ -201,6 +211,38 @@
                             }
                         ?>
                     </div>
+
+                    <!-- Join project modal -->
+                    <div class="modal fade" id="joinProjectModal" role="dialog">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <!-- Head -->
+                                <div class="modal-header">
+                                    <span class="modal-title"> Join another project </span>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label=""><span>×</span></button>
+                                </div>        
+                                <!-- Body -->
+                                <div class="modal-body">
+                                    <form method="POST" action="">
+                                        <span class="modal-subtitle">Invide code:</span>
+                                        <input type='text' class='form-control edit-DIV-Input <?php if(isset($codeInvalid)) { echo "is-invalid";} ?>' name='inviteCode' autocomplete='off'/>
+                                        <div class='invalid-feedback'>
+                                            <?php
+                                                if (isset($codeInvalid)){
+                                                    echo $codeInvalid;
+                                                }
+                                            ?>
+                                        </div>
+                                        <br>
+                                        <input type="submit" class="btn btn-dark font-weight-bold" name="joinProjectBTN" value="Join!">
+                                    </form>                
+                                </div>
+                                        
+                            </div>
+                        </div>
+                    </div> 
+                    <!-- END task modal -->
+
             </main>
 
         </div>
