@@ -1,5 +1,9 @@
 <?php
     
+    function sendError($code){
+        header("Location: /projectmanager/errors/?id=$code");
+    }
+
     function test_input($data) {
         $data = trim($data);
         $data = stripslashes($data);
