@@ -216,7 +216,36 @@
 
 /* END MODAL */
 
+/* All projects */
 
+    .project-border-top {
+        border-top: 2px solid rgb(255, 255, 255, 0.1);
+    }
+    
+    .project-border-bottom {
+        border-bottom: 2px solid rgb(255, 255, 255, 0.1);
+    }
+
+    .project-title{
+        text-decoration: none;
+        color: white;
+        font-weight: 600;
+        font-size: 1.35rem;
+        background: none;
+    }
+    .project-title:hover{
+        text-decoration: none;
+        color: #bab9b8;
+        font-weight: 600;
+        font-size: 1.35rem;
+        transition: 0.5s
+    }
+
+    .project-text {
+        font-size: 1.15rem;
+    }
+
+/* END All projects */
 
 
 
