@@ -1,15 +1,16 @@
 <?php
     session_start();
     if ( isset( $_SESSION['user'] ) ) {
-        header("location: dashboard/");
+        header("Location: /projectmanager/dashboard/");
     } else  {
         try {
             require "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/otherFunctions.php";
             require "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/databaseConnections.php";
-
-        } catch (ErrorException $tryERR){
+        } catch (ErrorException $e){
             die("There is a problem getting some files!");
         }
+
+        error_reporting(E_ERROR | E_PARSE);
         $conn = ConnectRoot();
     }
 
