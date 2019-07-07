@@ -2,6 +2,8 @@ Erros:
 FIMI-<file> - File Import/Include Index (login and register)
 FIM-<file> - File Import/Include
 
+MPB-<file> - Missing page bar
+
 <file>-PT-<type> - Function/File prepare statment error
 
 C2 - country in database is duplicated
@@ -21,6 +23,7 @@ OF - otherFunctions
 LRF - login&register
 DBF - databaseconnections
 MPI - dashboard index
+MPP - dashboard projects
 
 Types:
 

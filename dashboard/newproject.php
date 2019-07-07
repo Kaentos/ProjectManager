@@ -21,13 +21,6 @@
         $UserData = getSessionUserData($conn, $_SESSION["user"]);
     }
 
-    function test_input($data) {
-        $data = trim($data);
-        $data = stripslashes($data);
-        $data = htmlspecialchars($data);
-        return $data;
-    }
-
     $nameERR = $desERR = -1;
 
     $Invalid = true;
