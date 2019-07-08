@@ -136,7 +136,7 @@
                                     echo "
                                         <!-- Menu Projects -->
                                         <li>
-                                            <a href='https://prothyx.icu/projectmanager/dashboard/projects'>
+                                            <a href='/projectmanager/dashboard/projects.php'>
                                                 <!-- <i class='fas fa-folder'></i> -->
                                                 <i class='fas fa-project-diagram'></i>
                                                 <span>Projects</span>
