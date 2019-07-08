@@ -7,7 +7,7 @@
         if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/otherFunctions.php"){
             header("Location: /projectmanager/errors/?id=FIMI-OF");
         }
-        if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/login&register.php"){
+        if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/loginandregister.php"){
             sendError("FIMI-LRF");
         }
         if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/databaseConnections.php"){
