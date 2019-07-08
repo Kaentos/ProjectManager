@@ -102,7 +102,7 @@
         }
         if(!$stmt->execute()) {
             // sendError("LRF-PT-E-1");
-            echo ("LRF-PT-E-3 ".$stmt->error);
+            sendError("LRF-PT-E-1");
         } else {
             $user_id = $conn->insert_id;
         }
