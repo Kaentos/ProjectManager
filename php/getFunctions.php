@@ -331,7 +331,7 @@
             }
             $result->close();
         } else {
-            printf("Error in select user query");
+            printf("Can't get user session data");
             die();
         }
         die();
