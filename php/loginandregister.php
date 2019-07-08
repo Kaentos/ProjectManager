@@ -122,7 +122,7 @@
             if(!$stmt->execute()){
                 sendError("LRF-PT-E-2");
             }
-            sendError("LRF-PT-E-3 ".$stmt->error);
+            echo ("LRF-PT-E-3 ".$stmt->error);
         }
 
         echo $NewUser;
