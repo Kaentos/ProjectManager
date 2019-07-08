@@ -9,8 +9,8 @@
         } else {
             $username = test_input($_POST["LUserEmail"]);
             $password = test_input($_POST["LPassword"]);
-            if (strlen($username) > 16 || strlen($password) > 16){
-                $GLOBALS["LoginUserErr"] = "Max input is 16 characters.";
+            if (strlen($username) > 32 || strlen($password) > 16){
+                $GLOBALS["LoginUserErr"] = "Max input is 32 characters.";
                 return false;
             }
         }
