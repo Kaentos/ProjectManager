@@ -125,14 +125,16 @@
             sendError("LRF-PT-E");
         }
 
-        $Session_data = array();
-        $Session_data += ["id" => $user_id];
-        $Session_data += ["username" => $NewUser["username"]];
-        $Session_data += ["role" => $NewUser["role"]];
-        $Session_data += ["lastActivity" => time()];
-        $_SESSION['user'] = $Session_data;
-        unset($NewUser);
-        header("Location: dashboard/");
+        echo $NewUser;
+        echo "-".$stmt->insert_id;
+        // $Session_data = array();
+        // $Session_data += ["id" => $user_id];
+        // $Session_data += ["username" => $NewUser["username"]];
+        // $Session_data += ["role" => $NewUser["role"]];
+        // $Session_data += ["lastActivity" => time()];
+        // $_SESSION['user'] = $Session_data;
+        // unset($NewUser);
+        // header("Location: dashboard/");
     }
 
     function validateInput($conn){
