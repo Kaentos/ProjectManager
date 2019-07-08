@@ -95,45 +95,53 @@
         }
 
         if(!($stmt = $conn->prepare("INSERT INTO user (email, username, creationDate, lastUpdateDate, idCountry, role) VALUES (?, ?, ?, ?, ?, ?);"))) {
-            die("LRF-PT-P");
+            sendError("LRF-PT-P");
+            return;
         }
         if(!$stmt->bind_param("ssssis", $NewUser["email"], $NewUser["username"], $NewUser["creationDate"], $NewUser["lastUpdatedDate"], $NewUser["countryID"], $NewUser["role"])) {
-            die("LRF-PT-B");
+            sendError("LRF-PT-B");
+            return;
         }
         if(!$stmt->execute()) {
-            // sendError("LRF-PT-E-1");
             sendError("LRF-PT-E-1");
+            return;
         } else {
             $user_id = $conn->insert_id;
         }
 
         if(!($stmt = $conn->prepare("INSERT INTO usersecurity (idUser, password, question, answer) VALUES (?, ?, ?, ?);"))) {
-            die("LRF-PT-P");
+            sendError("LRF-PT-P");
+            return;
         }
         if(!$stmt->bind_param("isss", $user_id, $NewUser["password"], $NewUser["question"], $NewUser["answer"])) {
-            die("LRF-PT-B");
+            sendError("LRF-PT-B");
+            return;
         }
         if(!$stmt->execute()) {
             if(!($stmt = $conn->prepare("DELETE FROM user where id=?;"))) {
-                die("LRF-PT-P");
+                sendError("LRF-PT-P");
+                return;
             }
             if(!$stmt->bind_param("i", $user_id)) {
-                die("LRF-PT-B");
+                sendError("LRF-PT-B");
+                return;
             }
             if(!$stmt->execute()){
-                die("LRF-PT-E-2");
+                sendError("LRF-PT-E-2");
+                return;
             }
-            die("LRF-PT-E-3");
+            sendError("LRF-PT-E-3");
+            return;
         }
 
-        // $Session_data = array();
-        // $Session_data += ["id" => $user_id];
-        // $Session_data += ["username" => $NewUser["username"]];
-        // $Session_data += ["role" => $NewUser["role"]];
-        // $Session_data += ["lastActivity" => time()];
-        // $_SESSION['user'] = $Session_data;
-        // unset($NewUser);
-        // header("Location: dashboard/");
+        $Session_data = array();
+        $Session_data += ["id" => $user_id];
+        $Session_data += ["username" => $NewUser["username"]];
+        $Session_data += ["role" => $NewUser["role"]];
+        $Session_data += ["lastActivity" => time()];
+        $_SESSION['user'] = $Session_data;
+        unset($NewUser);
+        header("Location: dashboard/");
     }
 
     function validateInput($conn){
@@ -324,7 +332,7 @@
             sendError("LRF-PT-GR");
         }
 
-        $date = date('Y-m-d h:i:s a', time());
+        $date = date('Y/m/d h:i:s a', time());
         $Temp += ["creationDate" => $date];
         $Temp += ["lastUpdatedDate" => $date];
         $Temp += ["role" => 0];
