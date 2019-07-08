@@ -15,6 +15,8 @@
             }
         }
 
+        $GLOBALS["LUsername"] = $username;
+
         if(!($stmt = $conn->prepare("SELECT * FROM  user WHERE ( username= ? OR email = ?)"))) {
             sendError("LRF-PT-P");
         }
@@ -162,6 +164,10 @@
         } else {
             $country = null;
         }
+
+        $GLOBALS["REmail"] = $email;
+        $GLOBALS["RUsername"] = $username;
+        $GLOBALS["RQuestion"] = $Squestion;
 
         // Email validation
         if (filter_var($email, FILTER_VALIDATE_EMAIL)) {

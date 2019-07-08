@@ -20,6 +20,8 @@
     // Vars that contain errors info to show
     $LoginUserErr = $REmailErr = $RUsernameErr = $RPasswordErr = $RCPasswordErr = $RQuestionErr = $RAnswerErr = "";
     $RError = false;
+
+    $LUsername = $REmail = $RUsername = $RQuestion = false;
     
     // Login Button
     if(isset($_POST['LoginBtn'])) {
@@ -115,7 +117,7 @@
                                         <div class="col-md-6">
                                             Username or email address *
                                             <div class="form-group">
-                                                <input type="text" class="form-control <?php if(!$RError && !empty($LoginUserErr)) echo "is-invalid" ?>" name="LUserEmail" autofocus value="" autocomplete="off" />
+                                                <input type="text" class="form-control <?php if(!$RError && !empty($LoginUserErr)) echo "is-invalid" ?>" name="LUserEmail" autofocus value="<?php if($LUsername != false) { echo $LUsername; } ?>" autocomplete="off" />
                                                 <div class='invalid-feedback'>
                                                     <?php if ($LoginUserErr!="") echo $LoginUserErr; ?>
                                                 </div>
@@ -140,14 +142,14 @@
                                         <div class="col-md-6">
                                             Email *
                                             <div class="form-group">
-                                                <input type="email" class="form-control <?php if($RError && !empty($REmailErr)) echo "is-invalid" ?>" name="REmail" placeholder="example@mail.com" value="" autocomplete="off" />
+                                                <input type="email" class="form-control <?php if($RError && !empty($REmailErr)) echo "is-invalid" ?>" name="REmail" placeholder="example@mail.com" value="<?php if($REmail != false) { echo $REmail; } ?>" autocomplete="off" />
                                                 <div class='invalid-feedback'>
                                                     <?php if ($REmailErr!="") echo $REmailErr; ?>
                                                 </div>
                                             </div>
                                             Username *
                                             <div class="form-group">   
-                                                <input type="text" class="form-control <?php if($RError && !empty($RUsernameErr)) echo "is-invalid" ?>" name="RUsername" value="" autocomplete="off" />
+                                                <input type="text" class="form-control <?php if($RError && !empty($RUsernameErr)) echo "is-invalid" ?>" name="RUsername" value="<?php if($RUsername != false) { echo $RUsername; } ?>" autocomplete="off" />
                                                 <div class='invalid-feedback'>
                                                     <?php if ($RUsernameErr!="") echo $RUsernameErr; ?>
                                                 </div>
@@ -170,7 +172,7 @@
                                         <div class="col-md-6">
                                             Security Question *
                                             <div class="form-group">
-                                                <input type="text" class="form-control <?php if($RError && !empty($RQuestionErr)) echo "is-invalid" ?>" name="RQuestion" value="" autocomplete="off" />
+                                                <input type="text" class="form-control <?php if($RError && !empty($RQuestionErr)) echo "is-invalid" ?>" name="RQuestion" value="<?php if($RQuestion != false) { echo $RQuestion; } ?>" autocomplete="off" />
                                                 <div class='invalid-feedback'>
                                                     <?php if ($RQuestionErr!="") echo $RQuestionErr; ?>
                                                 </div>
