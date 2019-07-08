@@ -95,10 +95,10 @@
         }
 
         if(!($stmt = $conn->prepare("INSERT INTO user (email, username, creationDate, lastUpdateDate, idCountry, role) VALUES (?, ?, ?, ?, ?, ?);"))) {
-            sendError("LRF-PT-P");
+            die("LRF-PT-P");
         }
         if(!$stmt->bind_param("ssssis", $NewUser["email"], $NewUser["username"], $NewUser["creationDate"], $NewUser["lastUpdatedDate"], $NewUser["countryID"], $NewUser["role"])) {
-            sendError("LRF-PT-B");
+            die("LRF-PT-B");
         }
         if(!$stmt->execute()) {
             // sendError("LRF-PT-E-1");
@@ -108,26 +108,24 @@
         }
 
         if(!($stmt = $conn->prepare("INSERT INTO usersecurity (idUser, password, question, answer) VALUES (?, ?, ?, ?);"))) {
-            sendError("LRF-PT-P");
+            die("LRF-PT-P");
         }
         if(!$stmt->bind_param("isss", $user_id, $NewUser["password"], $NewUser["question"], $NewUser["answer"])) {
-            sendError("LRF-PT-B");
+            die("LRF-PT-B");
         }
         if(!$stmt->execute()) {
             if(!($stmt = $conn->prepare("DELETE FROM user where id=?;"))) {
-                sendError("LRF-PT-P");
+                die("LRF-PT-P");
             }
             if(!$stmt->bind_param("i", $user_id)) {
-                sendError("LRF-PT-B");
+                die("LRF-PT-B");
             }
             if(!$stmt->execute()){
-                sendError("LRF-PT-E-2");
+                die("LRF-PT-E-2");
             }
-            echo ("LRF-PT-E-3 ".$stmt->error);
+            die("LRF-PT-E-3");
         }
 
-        echo $NewUser;
-        echo "-".$stmt->insert_id;
         // $Session_data = array();
         // $Session_data += ["id" => $user_id];
         // $Session_data += ["username" => $NewUser["username"]];
@@ -326,7 +324,7 @@
             sendError("LRF-PT-GR");
         }
 
-        $date = date('Y-m-d h:i:s', time());
+        $date = date('Y-m-d h:i:s a', time());
         $Temp += ["creationDate" => $date];
         $Temp += ["lastUpdatedDate" => $date];
         $Temp += ["role" => 0];
