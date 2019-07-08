@@ -102,7 +102,7 @@
 
 <html lang="en">
     <head>
-    <title><?php echo $projectData["name"] ?></title>
+        <title><?php echo $projectData["name"] ?></title>
         <?php
             include "$_SERVER[DOCUMENT_ROOT]/projectmanager/html/Headcontent.html";
             include "$_SERVER[DOCUMENT_ROOT]/projectmanager/html/CSSimport.html";

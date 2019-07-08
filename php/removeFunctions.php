@@ -71,6 +71,16 @@
         header("Refresh: 0");
     }
 
+    // Remove user from project
+    function removeProject($conn, $projectID){
+        $query = "DELETE FROM projectmembers WHERE idProject=$projectID";
+        if (!$conn->query($query)) {
+            die();
+        }
+        
+        header("Refresh: 0");
+    }
+
 // END PROJECT
 
 // Remove user from database ALL DATA IS ERASED

@@ -179,6 +179,11 @@
     font-size: 1.1rem !important;
     font-weight: 400 !important;
 }
+
+.edit-DIV-Static-Input{
+    font-size: 1.1rem !important;
+    font-weight: 600 !important;
+}
 /* END Edit */
 
 
@@ -244,6 +249,10 @@
     .project-text {
         font-size: 1.15rem;
     }
+
+    .project-details{
+        font-weight: 600;
+    };
 
 /* END All projects */
 
