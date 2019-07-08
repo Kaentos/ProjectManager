@@ -332,7 +332,7 @@
             sendError("LRF-PT-GR");
         }
 
-        $date = date('Y/m/d h:i:s a', time());
+        $date = date('Y-m-d h:i:s', time());
         $Temp += ["creationDate" => $date];
         $Temp += ["lastUpdatedDate" => $date];
         $Temp += ["role" => 0];
