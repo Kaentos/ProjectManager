@@ -290,7 +290,15 @@
 
     .task-details{
         font-weight: 600;
-    };
+    }
+
+    .custom-badge-border{
+        border: 0.5px solid white;
+    }
+
+    .task-badge-text{
+        font-size: 1rem !important;
+    }
 
 /* End tasks */
 

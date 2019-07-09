@@ -129,7 +129,13 @@
                                                 $Project[des]
                                             </div>
                                             <div class='col-md-12 col-xl-6' style='margin-top: 10px'>
-                                                Status: <span class='badge badge-$Project[Sbadge]'>$Project[Sname]</span>
+                                                Status: ";
+                                if ($Project["Sbadge"] == "dark"){
+                                    echo "<span class='badge badge-$Project[Sbadge] custom-badge-border'>$Project[Sname]</span>";
+                                } else {
+                                    echo "<span class='badge badge-$Project[Sbadge]'>$Project[Sname]</span>";
+                                }
+                                echo "
                                                 <br>
                                                 Updated: <span class='badge badge-light'>$Project[lastupdatedDate]</span>
                                             </div>
@@ -180,7 +186,7 @@
                         }
                     ?>
                 </div>
-
+                <br>
                 <div class="row">
                     <div class='col-12 row' style="padding-left:0px; padding-right:0px">
                         <div class="col-9">
@@ -198,14 +204,19 @@
                                 if(isset($TasksData) && $hasTasks){
                                     foreach($TasksData as $task){
                                         echo "
-                                            <div class='col-md-12 col-xl-4'>
-                                                <div class='col-12 text-white bg-success' style='border-radius:5px;'>
+                                            <div class='col-md-12 col-xl-4' style='margin-bottom: 10px'>
+                                                <div class='col-12 text-white bg-success' style='border-radius:5px; min-height: 150px'>
                                                     <div class='row task-border-bottom'>
                                                         <div class='col-12' style='margin-top: 10px; margin-bottom: 10px'>
                                                             <a href='/projectmanager/project/tasks/task?id=$task[projectID]&task=$task[id]' class='task-title'>
                                                                 $task[name]
-                                                            </a>
-                                                            <span class='badge badge-danger task-$task[badge]'>$task[status]</span>
+                                                            </a>";
+                                        if($task["badge"] == "success"){
+                                            echo "<span class='badge badge-$task[badge] custom-badge-border task-badge-text'>$task[status]</span>";
+                                        } else {
+                                            echo "<span class='badge badge-$task[badge] task-badge-text'>$task[status]</span>";
+                                        }
+                                        echo "         
                                                         </div>
                                                     </div>
 
