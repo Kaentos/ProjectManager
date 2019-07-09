@@ -19,6 +19,7 @@
 
     $query = "SELECT c.name FROM user as u JOIN countries as c ON u.idCountry = c.id  WHERE u.id=$id";
     if ($result = $conn->query($query)) {
+        $teste = $result;
         if ($result->num_rows == 1){
             if ($row = $result->fetch_array(MYSQLI_ASSOC)){
                 $UserData["idCountry"] = $row["name"];
@@ -27,11 +28,10 @@
                 die();
             }
         } else {
-            die();
+            $UserData["idCountry"] = "None selected";
         }
         $result->close();
     } else {
-        printf("Error in select user query");
         die();
     }
 
@@ -42,10 +42,10 @@
                 $UserData += ["CurrentQ" => $row["question"]];
             } else {
                 printf("MAJOR ERROR CAN'T CONVERT USER ROW TO ARRAY");
-                die();
+                die("asdsads");
             }
         } else {
-            die();
+            die("sad");
         }
         $result->close();
     } else {
@@ -227,7 +227,7 @@
                 die("Error:". mysqli_error($conn));
             } else {
                 if(!$row = mysqli_fetch_assoc($result)){
-                    die();
+                    die("asd");
                 } else {
                     if (!password_verify($oldA, $row["answer"])){
                         $GLOBALS["NQuestionErr"] = "Wrong current answer.";
