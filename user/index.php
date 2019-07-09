@@ -17,41 +17,11 @@
 
     $id = $UserData["id"];
 
-    $query = "SELECT c.name FROM user as u JOIN countries as c ON u.idCountry = c.id  WHERE u.id=$id";
-    if ($result = $conn->query($query)) {
-        $teste = $result;
-        if ($result->num_rows == 1){
-            if ($row = $result->fetch_array(MYSQLI_ASSOC)){
-                $UserData["idCountry"] = $row["name"];
-            } else {
-                printf("MAJOR ERROR CAN'T CONVERT USER ROW TO ARRAY");
-                die();
-            }
-        } else {
-            $UserData["idCountry"] = "None selected";
-        }
-        $result->close();
-    } else {
-        die();
-    }
+    $UserData["idCountry"] = getUserCountryName($conn, $UserData);
 
-    $query = "SELECT s.question FROM user as u JOIN usersecurity as s ON u.id = s.idUser  WHERE u.id=$id";
-    if ($result = $conn->query($query)) {
-        if ($result->num_rows == 1){
-            if ($row = $result->fetch_array(MYSQLI_ASSOC)){
-                $UserData += ["CurrentQ" => $row["question"]];
-            } else {
-                printf("MAJOR ERROR CAN'T CONVERT USER ROW TO ARRAY");
-                die("asdsads");
-            }
-        } else {
-            die("sad");
-        }
-        $result->close();
-    } else {
-        printf("Error in select user query");
-        die();
-    }
+    $temp = getUserSQuestion($conn, $UserData);
+    $UserData += ["CurrentQ" => $temp];
+    unset($temp);
 
     // Update username
     if (isset($_POST["updateUN"])){
@@ -340,12 +310,20 @@
         }
     }
 
-    // Deletes account
+    // Deletes account and all associated info
     if (isset($_POST["DELETEACC"])){
-        if (ConfirmPassword($_POST["DELPassword"], $id, $conn) ){
-            REMOVEALLuserInfoFromDataBase($conn, $UserData["id"]);
+        if (isset($_POST["DELPassword"]) && strlen($_POST["DELPassword"]) > 6){
+            if (isset($_POST["confirmDEL"]) && $_POST["confirmDEL"] == "yes"){
+                if (ConfirmPassword($_POST["DELPassword"], $id, $conn) ){
+                    REMOVEALLuserInfoFromDataBase($conn, $UserData["id"]);
+                } else {
+                    $DELETEERR = "Invalid password.";
+                }
+            } else {
+                $confirmDelete = false;
+            }
         } else {
-            $GLOBALS["DELETEERR"] = "Invalid password.";
+            $DELETEERR = "Empty password.";
         }
     }
 
@@ -478,13 +456,24 @@
                         <div class="col-md-12" style="padding-top:5%">
                             <form method="post" action="">
                                 <h3 style="color:red">Delete Account</h3>
-                                <h5 style="color:red">We cannot recover your account if you delete it. Be careful.</h5>
-                                <?php if ($DELETEERR!="") echo "<div class='alert alert-danger' role='alert'> $DELETEERR </div>" ?>
+                                <h5 style="color:red">When deleting your account we will delete all the content related to you and this action can not be undone. Please be certain.</h5>
                                 Password:
                                 <div class="form-group">
-                                    <input type="password" class="form-control" name="DELPassword" autocomplete="off" />
-                                </div>  
-                                <input type="submit" class="btn btn-danger" name="DELETEACC" value="Delete"/>
+                                    <input type="password" class="form-control <?php if($DELETEERR && !empty($DELETEERR)) echo "is-invalid" ?>" name="DELPassword" value="" autocomplete="off" />
+                                    <div class='invalid-feedback'>
+                                        <?php if ($DELETEERR!="") echo $DELETEERR; ?>
+                                    </div>
+                                </div>
+                                <div class="form-check" style="font-size: 1.1rem">
+                                    <input class="form-check-input <?php if(isset($confirmDelete)){ echo "is-invalid"; } ?>" type="checkbox" name="confirmDEL" value='yes' style="height:18px;width:18px" required>
+                                    <label class="form-check-label" for="invalidCheck3">
+                                        I agree this action cannot be undone
+                                    </label>
+                                    <div class="invalid-feedback">
+                                        You must agree if you really want to delete.
+                                    </div>
+                                </div>
+                                <input type='submit' class='btn btn-danger' name='DELETEACC' value='Delete' style="margin-top:10px"/>
                             </form>
                         </div>
                     </div>

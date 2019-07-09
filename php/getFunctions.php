@@ -291,7 +291,7 @@
 
 
 
-    // USER FUNCTIONS
+// USER FUNCTIONS
 
     // Get username
     function getUsername($conn, $userID){
@@ -337,6 +337,46 @@
         die();
     }
 
-    // END USER FUNCTIONS
+    function getUserCountryName($conn, $UserData){
+        $query = "SELECT c.name FROM user as u JOIN countries as c ON u.idCountry = c.id  WHERE u.id=$UserData[id]";
+        if ($result = $conn->query($query)) {
+            $teste = $result;
+            if ($result->num_rows == 1){
+                if ($row = $result->fetch_array(MYSQLI_ASSOC)){
+                    return $row["name"];
+                } else {
+                    die();
+                }
+            } else {
+                return "None selected";
+            }
+            $result->close();
+        } else {
+            die();
+        }
+        die();
+    }
+
+    function getUserSQuestion($conn, $UserData){
+        $query = "SELECT s.question FROM user as u JOIN usersecurity as s ON u.id = s.idUser  WHERE u.id=$UserData[id]";
+        if ($result = $conn->query($query)) {
+            if ($result->num_rows == 1){
+                if ($row = $result->fetch_array(MYSQLI_ASSOC)){
+                    return $row["question"];
+                } else {
+                    die();
+                }
+            } else {
+                die();
+            }
+            $result->close();
+        } else {
+            die();
+        }
+        die();
+    }
+
+
+// END USER FUNCTIONS
 
 ?>
