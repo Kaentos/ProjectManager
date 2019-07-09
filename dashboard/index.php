@@ -117,7 +117,7 @@
                                 <div class='col-12 col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-4 text-light'>
                                     <div class='col-12 bg-dark' style='border-radius: 5px;'>
                                         <div class='row project-border-bottom'>
-                                            <div class='col-12' style='padding: 20px'>
+                                            <div class='col-12' style='margin-top: 10px; margin-bottom: 10px'>
                                                 <a href='/projectmanager/project/?id=$Project[id]' class='project-title'>
                                                    $Project[name]
                                                 </a>
@@ -181,38 +181,51 @@
                     ?>
                 </div>
 
-                    <!-- 5 Tasks -->
-                    <div>
-                        <span style="font-size:2rem; font-weight: 500;">Tasks</span>
-                        <a href="/projectmanager/dashboard/tasks" class="btn btn-success float-right" style="margin-top:8px; color:white;">All Tasks</a>
+                <div class="row">
+                    <div class='col-12 row' style="padding-left:0px; padding-right:0px">
+                        <div class="col-9">
+                            <a href="/projectmanager/dashboard/tasks" style="font-size:2rem; font-weight: 500; text-decoration: none; color: black">Followed tasks</a>
+                        </div>
+                        <div class="col-3">
+                            <a href="/projectmanager/dashboard/tasks" class="btn btn-success float-right" style="margin-top:8px; color:white;">All followed tasks</a>
+                        </div>    
                     </div>
-                    <hr>
-                    <div class="task-DIV">
-                        <div style="word-break: break-word;">
+                    <hr class='w-100'>
+
+                    <div class="col-12">
+                        <div class="row">
                             <?php
-                            if(isset($TasksData) && $hasTasks){
-                                foreach($TasksData as $task){
-                                    echo "
-                                        <div class='col-md-12'>
-                                        <span class='task-DIV-list'>
-                                            <a href='/projectmanager/project/tasks/task?id=$task[projectID]&task=$task[id]'>
-                                                $task[name]
-                                            </a>
-                                            <span class='badge badge-$task[badge]'>$task[status]</span>
-                                        </span>
-                                        <p style='font-size:1.1rem'>
-                                            $task[Des]
-                                        </p>
-                                        </div>
-                                    ";
+                                if(isset($TasksData) && $hasTasks){
+                                    foreach($TasksData as $task){
+                                        echo "
+                                            <div class='col-md-12 col-xl-4'>
+                                                <div class='col-12 text-white bg-success' style='border-radius:5px;'>
+                                                    <div class='row task-border-bottom'>
+                                                        <div class='col-12' style='margin-top: 10px; margin-bottom: 10px'>
+                                                            <a href='/projectmanager/project/tasks/task?id=$task[projectID]&task=$task[id]' class='task-title'>
+                                                                $task[name]
+                                                            </a>
+                                                            <span class='badge badge-danger task-$task[badge]'>$task[status]</span>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class='row'>
+                                                        <div class='col-12 project-text'>
+                                                            $task[Des]
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ";
+                                    }
+                                } elseif (!$hasTasks) {
+                                    echo "<p class='task-DIV-list col-12' style='margin-top: 5px'> No tasks assigned, go to projects and follow some tasks! </p>";
                                 }
-                            } elseif (!$hasTasks) {
-                                echo "<p class='task-DIV-list col-12' style='margin-top: 5px'> No tasks assigned, go to projects and follow some tasks! </p>";
-                            }
                             ?>
                         </div>
                     </div>
-                    <!-- End Tasks -->
+                </div>
+                <!-- End Tasks -->
 
                     <!-- 5 Issues -->
                     <div>

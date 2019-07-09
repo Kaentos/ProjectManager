@@ -256,47 +256,43 @@
 
 /* END All projects */
 
+/* All tasks */
 
+    .task-border-top {
+        border-top: 2px solid rgb(255, 255, 255, 0.5);
+    }
 
+    .task-border-bottom {
+        border-bottom: 2px solid rgb(255, 255, 255, 0.5);
+    }
 
-.bg_white{background-color: white;}
-.movies_title{font-size: 2.3rem; color: white; transition: 0.3s;}
-.movies_title:hover {font-size: 2.3rem; color: green;}
-.movie_caption{font-size: 14px; color: white; transition: 0.5s; text-align: center; width: 240px; text-decoration: none;}
-.movie_caption:hover {border-bottom: solid 1px red; border-radius: 3px; text-decoration: none; color: white;}
+    .task-title{
+        text-decoration: none;
+        color: white;
+        font-weight: 600;
+        font-size: 1.35rem;
+        background: none;
+    }
+    .task-title:hover{
+        text-decoration: none;
+        color: #212121;
+        font-weight: 600;
+        font-size: 1.35rem;
+        transition: 1s;
+    }
 
-.title_border-bottom{border-bottom: solid 3px white; border-radius: 3px;}
+    .task-text {
+        font-size: 1.15rem;
+    }
+    .task-badge {
+        font-size: 1.15rem !important;
+    }
 
-.mov_title{font-size: 25px; color: #383d41; font-weight: bold; margin-top: 10px;}
-.mov_subtitle{font-size: 20px; color: #4c5359; font-weight: bold;}
-.mov_dataTitle{font-size: 18px; color: #383d41; font-weight: bold;}
-.mov_data{font-size: 17px; color: #383d41;};
-.SEP_data{
-    font-size: 17px;
-    color: #383d41;
-    font-weight: bold;
-    text-decoration:none!important
-}
-.CateTxt{
-    text-decoration: none;
-    color: #495057;
-    transition: 0.5s;
-}
-.CateTxt:hover{
-    text-decoration: none;
-    color: #008971;
-}
-.CateTxt:active{
-    text-decoration: none;
-    color: black;
-}
-.settings_title{font-size:25px; color: #383d41; font-weight: bold;}
-.settings_data{font-size: 20px; color: #383d41;}
-.settings_sm_data{font-size: 15px; color:black;}
+    .task-details{
+        font-weight: 600;
+    };
 
-.navbarCustom{
-    background: -webkit-linear-gradient(left, #0f1335, #033045);
-}
+/* End tasks */
 
 /* LOGIN E REGISTER */
 .background_color{

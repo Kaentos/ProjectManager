@@ -458,44 +458,41 @@
                         <!-- Delete account -->
                         <div class="col-12 d-flex justify-content-center">
                             <div class="col-12 col-lg-12 col-xl-8 issue-DIV" style="border-radius: 5px">
-                                    <div class="row" style="border-bottom: 2px solid rgb(0, 0, 0, 0.2);">
-                                        <div class="col-12 " style="margin-top: 10px; margin-bottom: 10px">
-                                            <span style="font-weight: 600; font-size: 1.35rem;">Delete Account</span>
-                                        </div>
+                                <div class="row" style="border-bottom: 2px solid rgb(0, 0, 0, 0.2);">
+                                    <div class="col-12 " style="margin-top: 10px; margin-bottom: 10px">
+                                        <span style="font-weight: 600; font-size: 1.35rem;">Delete Account</span>
                                     </div>
-                                    
-                                    <div class="row">
-                                        <div class="col-12 project-text" style="margin-top:10px">
-                                            When deleting your account we will delete all the content related to you and this action can not be undone. Please be certain.
-                                            <form method="post" action="">
-                                            <b>Password:</b>
-                                            <div class="form-group">
-                                                <input type="password" class="form-control <?php if($DELETEERR && !empty($DELETEERR)) echo "is-invalid" ?>" name="DELPassword" value="" autocomplete="off" />
-                                                <div class='invalid-feedback'>
-                                                    <?php if ($DELETEERR!="") echo $DELETEERR; ?>
-                                                </div>
-                                            </div>
-                                            <div class="form-check" style="font-size: 1.1rem">
-                                                <input class="form-check-input <?php if(isset($confirmDelete)){ echo "is-invalid"; } ?>" type="checkbox" name="confirmDEL" value='yes' style="height:18px;width:18px" required>
-                                                <label class="form-check-label" for="invalidCheck3">
-                                                    I agree this action cannot be undone
-                                                </label>
-                                                <div class="invalid-feedback">
-                                                    You must agree if you really want to delete.
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="row" style="border-top: 2px solid rgb(0, 0, 0, 0.2);">
-                                        <div class="col-12">
-                                            <input type='submit' class='btn btn-danger' style="font-size:1.10rem; margin-top:10px; margin-bottom:10px; font-weight:600" name='DELETEACC' value='Delete account'/>
-                                        </div>
-                                        </form>
-                                    </div>                 
-                                    
-                                    
+                                </div>
                                 
+                                <div class="row">
+                                    <div class="col-12 project-text" style="margin-top:10px">
+                                        When deleting your account we will delete all the content related to you and this action can not be undone. Please be certain.
+                                        <form method="post" action="">
+                                        <b>Password:</b>
+                                        <div class="form-group">
+                                            <input type="password" class="form-control <?php if($DELETEERR && !empty($DELETEERR)) echo "is-invalid" ?>" name="DELPassword" value="" autocomplete="off" />
+                                            <div class='invalid-feedback'>
+                                                <?php if ($DELETEERR!="") echo $DELETEERR; ?>
+                                            </div>
+                                        </div>
+                                        <div class="form-check" style="font-size: 1.1rem">
+                                            <input class="form-check-input <?php if(isset($confirmDelete)){ echo "is-invalid"; } ?>" type="checkbox" name="confirmDEL" value='yes' style="height:18px;width:18px" required>
+                                            <label class="form-check-label" for="invalidCheck3">
+                                                I agree this action cannot be undone
+                                            </label>
+                                            <div class="invalid-feedback">
+                                                You must agree if you really want to delete.
+                                            </div>
+                                            </div>
+                                    </div>
+                                </div>
+                                    
+                                <div class="row" style="border-top: 2px solid rgb(0, 0, 0, 0.2);">
+                                    <div class="col-12">
+                                        <input type='submit' class='btn btn-danger' style="font-size:1.10rem; margin-top:10px; margin-bottom:10px; font-weight:600" name='DELETEACC' value='Delete account'/>
+                                    </div>
+                                    </form>
+                                </div>
                             </div>
                         </div>
 
