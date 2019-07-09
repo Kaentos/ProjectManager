@@ -165,24 +165,30 @@
                                     $Project["creationDate"] = date('d-m-Y', $dateTimeStamp);
                                     $dateTimeStamp = strtotime($Project["lastupdatedDate"]);
                                     $Project["lastupdatedDate"] = date('d-m-Y', $dateTimeStamp);
-
+    
                                     echo "
                                     <div class='col-12 col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-4 text-light'>
                                         <div class='col-12 bg-dark' style='border-radius: 5px;'>
                                             <div class='row project-border-bottom'>
-                                                <div class='col-12' style='padding: 20px'>
+                                                <div class='col-12' style='margin-top: 10px; margin-bottom: 10px'>
                                                     <a href='/projectmanager/project/?id=$Project[id]' class='project-title'>
                                                        $Project[name]
                                                     </a>
                                                 </div>
                                             </div>
-
+    
                                             <div class='row project-text' style='margin-top: 10px;'>
                                                 <div class='col-12' style='margin-bottom: 10px; word-break: break-all;'>
                                                     $Project[des]
                                                 </div>
                                                 <div class='col-md-12 col-xl-6' style='margin-top: 10px'>
-                                                    Status: <span class='badge badge-$Project[Sbadge]'>$Project[Sname]</span>
+                                                    Status: ";
+                                    if ($Project["Sbadge"] == "dark"){
+                                        echo "<span class='badge badge-$Project[Sbadge] custom-badge-border'>$Project[Sname]</span>";
+                                    } else {
+                                        echo "<span class='badge badge-$Project[Sbadge]'>$Project[Sname]</span>";
+                                    }
+                                    echo "
                                                     <br>
                                                     Updated: <span class='badge badge-light'>$Project[lastupdatedDate]</span>
                                                 </div>
