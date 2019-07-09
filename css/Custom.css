@@ -302,6 +302,52 @@
 
 /* End tasks */
 
+/* All issues */
+
+.issues-border-top {
+    border-top: 2px solid rgb(255, 255, 255, 0.5);
+}
+
+.issues-border-bottom {
+    border-bottom: 2px solid rgb(255, 255, 255, 0.5);
+}
+
+.issues-title{
+    text-decoration: none;
+    color: white;
+    font-weight: 600;
+    font-size: 1.35rem;
+    background: none;
+}
+.issues-title:hover{
+    text-decoration: none;
+    color: #212121;
+    font-weight: 600;
+    font-size: 1.35rem;
+    transition: 1s;
+}
+
+.issues-text {
+    font-size: 1.15rem;
+}
+.issues-badge {
+    font-size: 1.15rem !important;
+}
+
+.issues-details{
+    font-weight: 600;
+}
+
+.custom-badge-border{
+    border: 0.5px solid white;
+}
+
+.issues-badge-text{
+    font-size: 1rem !important;
+}
+
+/* End issues */
+
 /* LOGIN E REGISTER */
 .background_color{
     /* background: -webkit-linear-gradient(left, #3931af, #00c6ff); */

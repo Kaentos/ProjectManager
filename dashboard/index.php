@@ -38,7 +38,7 @@
 
     $TasksData = array();
     $hasTasks = false;
-    $query = "SELECT t.*, s.name AS status, s.badge, p.id AS projectID FROM tasks AS t INNER JOIN projects AS p ON t.idProject=p.id INNER JOIN tstatus AS s ON t.idStatus=s.id INNER JOIN taskfollow AS tf ON t.id=tf.idTask WHERE tf.idUser=$UserData[id] LIMIT 5";
+    $query = "SELECT t.*, s.name AS status, s.badge, p.id AS projectID FROM tasks AS t INNER JOIN projects AS p ON t.idProject=p.id INNER JOIN tstatus AS s ON t.idStatus=s.id INNER JOIN taskfollow AS tf ON t.id=tf.idTask WHERE tf.idUser=$UserData[id] LIMIT 6";
     if ($result = $conn->query($query)) {
         if ($result->num_rows >= 1){
             $hasTasks = true;
@@ -186,7 +186,10 @@
                         }
                     ?>
                 </div>
+
                 <br>
+
+                <!-- Tasks -->
                 <div class="row">
                     <div class='col-12 row' style="padding-left:0px; padding-right:0px">
                         <div class="col-9">
@@ -238,42 +241,60 @@
                 </div>
                 <!-- End Tasks -->
 
-                    <!-- 5 Issues -->
-                    <div>
-                        <span style="font-size:2rem; font-weight: 500;">Issues</span>
-                        <a href="/projectmanager/dashboard/issues" class="btn btn-danger float-right" style="margin-top:8px; color:white;">All Issues</a>
+                <br>
+
+                <!-- Issues -->
+                <div class="row">
+                    <div class='col-12 row' style="padding-left:0px; padding-right:0px">
+                        <div class="col-9">
+                            <a href="/projectmanager/dashboard/issues" style="font-size:2rem; font-weight: 500; text-decoration: none; color: black">Followed issues</a>
+                        </div>
+                        <div class="col-3">
+                            <a href="/projectmanager/dashboard/issues" class="btn btn-danger float-right" style="margin-top:8px; color:white;">All followed issues</a>
+                        </div>    
                     </div>
-                    <hr>
-                    <div class="issue-DIV">
-                        <div style="word-break: break-word;">
+                    <hr class='w-100'>
+
+                    <div class="col-12">
+                        <div class="row">
                             <?php
-                            if(isset($IssuesData) && $hasIssues){
-                                foreach($IssuesData as $issue){
-                                    echo "
-                                        <div class='col-md-12'>
-                                        <span class='issue-DIV-list'>
-                                            <a href='/projectmanager/project/issues/issue?id=$issue[projectID]&issue=$issue[id]'>
-                                                $issue[name]
-                                            </a>
-                                            <span class='badge badge-$issue[badge]'>$issue[status]</span>
-                                        </span>
-                                        <p style='font-size:1.1rem'>
-                                            $issue[Des]
-                                        </p>
-                                        </div>
-                                    ";
+                                if(isset($IssuesData) && $hasIssues){
+                                    foreach($IssuesData as $issue){
+                                        echo "
+                                            <div class='col-md-12 col-xl-4' style='margin-bottom: 10px'>
+                                                <div class='col-12 text-white bg-danger' style='border-radius:5px; min-height: 150px'>
+                                                    <div class='row issues-border-bottom'>
+                                                        <div class='col-12' style='margin-top: 10px; margin-bottom: 10px'>
+                                                            <a href='/projectmanager/project/issues/issue?id=$issue[projectID]&issue=$issue[id]' class='issues-title'>
+                                                                $issue[name]
+                                                            </a>";
+                                        if($issue["badge"] == "danger"){
+                                            echo "<span class='badge badge-$issue[badge] custom-badge-border issues-badge-text'>$issue[status]</span>";
+                                        } else {
+                                            echo "<span class='badge badge-$issue[badge] issues-badge-text'>$issue[status]</span>";
+                                        }
+                                        echo "         
+                                                        </div>
+                                                    </div>
+
+                                                    <div class='row'>
+                                                        <div class='col-12 project-text'>
+                                                            $issue[Des]
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ";
+                                    }
+                                } elseif (!$hasIssues) {
+                                    echo "<p class='issue-DIV-list col-12' style='margin-top: 5px'> No issues assigned, go to projects and follow some issues! </p>";
                                 }
-                            } elseif (!$hasIssues) {
-                                echo "<p class='issue-DIV-list col-12' style='margin-top: 5px'> No issues assigned, go to projects and follow some issues! </p>";
-                            }
                             ?>
                         </div>
                     </div>
-                    <!-- End Issues -->
-
-
-
-
+                </div>
+                <!-- End Issues -->
+                
                 </div>
             </main>
 
