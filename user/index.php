@@ -350,12 +350,15 @@
 
             <main class="page-content">
                 <div class="container-fluid">
-                <div class="row bg_white" style="border-radius: 5px;">
-                    <div class="row col-md-12">
-                        <div class="col-md-12" style="text-align:center; padding-top: 15px">  
-                            <h1>User settings</h1>
-                            <hr>
+                    <div class="row">
+                        <div class='col-12 row' style="padding-left:0px; padding-right:0px">
+                            <div class="col-12">
+                                <span style="font-size:2rem; font-weight: 500;">User settings</span>
+                            </div>   
                         </div>
+                        <hr class='w-100'>
+
+
                         <div class="col-md-6">
                             <p><h3>Geral</h3></p>
                             <form method="post" action="">
@@ -451,34 +454,54 @@
                             </form>
                         </div>
 
-
+                        <hr class="w-100">
                         <!-- Delete account -->
-                        <div class="col-md-12" style="padding-top:5%">
-                            <form method="post" action="">
-                                <h3 style="color:red">Delete Account</h3>
-                                <h5 style="color:red">When deleting your account we will delete all the content related to you and this action can not be undone. Please be certain.</h5>
-                                Password:
-                                <div class="form-group">
-                                    <input type="password" class="form-control <?php if($DELETEERR && !empty($DELETEERR)) echo "is-invalid" ?>" name="DELPassword" value="" autocomplete="off" />
-                                    <div class='invalid-feedback'>
-                                        <?php if ($DELETEERR!="") echo $DELETEERR; ?>
+                        <div class="col-12 d-flex justify-content-center">
+                            <div class="col-12 col-lg-12 col-xl-8 issue-DIV" style="border-radius: 5px">
+                                    <div class="row" style="border-bottom: 2px solid rgb(0, 0, 0, 0.2);">
+                                        <div class="col-12 " style="margin-top: 10px; margin-bottom: 10px">
+                                            <span style="font-weight: 600; font-size: 1.35rem;">Delete Account</span>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-check" style="font-size: 1.1rem">
-                                    <input class="form-check-input <?php if(isset($confirmDelete)){ echo "is-invalid"; } ?>" type="checkbox" name="confirmDEL" value='yes' style="height:18px;width:18px" required>
-                                    <label class="form-check-label" for="invalidCheck3">
-                                        I agree this action cannot be undone
-                                    </label>
-                                    <div class="invalid-feedback">
-                                        You must agree if you really want to delete.
+                                    
+                                    <div class="row">
+                                        <div class="col-12 project-text" style="margin-top:10px">
+                                            When deleting your account we will delete all the content related to you and this action can not be undone. Please be certain.
+                                            <form method="post" action="">
+                                            <b>Password:</b>
+                                            <div class="form-group">
+                                                <input type="password" class="form-control <?php if($DELETEERR && !empty($DELETEERR)) echo "is-invalid" ?>" name="DELPassword" value="" autocomplete="off" />
+                                                <div class='invalid-feedback'>
+                                                    <?php if ($DELETEERR!="") echo $DELETEERR; ?>
+                                                </div>
+                                            </div>
+                                            <div class="form-check" style="font-size: 1.1rem">
+                                                <input class="form-check-input <?php if(isset($confirmDelete)){ echo "is-invalid"; } ?>" type="checkbox" name="confirmDEL" value='yes' style="height:18px;width:18px" required>
+                                                <label class="form-check-label" for="invalidCheck3">
+                                                    I agree this action cannot be undone
+                                                </label>
+                                                <div class="invalid-feedback">
+                                                    You must agree if you really want to delete.
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                                <input type='submit' class='btn btn-danger' name='DELETEACC' value='Delete' style="margin-top:10px"/>
-                            </form>
+
+                                    <div class="row" style="border-top: 2px solid rgb(0, 0, 0, 0.2);">
+                                        <div class="col-12">
+                                            <input type='submit' class='btn btn-danger' style="font-size:1.10rem; margin-top:10px; margin-bottom:10px; font-weight:600" name='DELETEACC' value='Delete account'/>
+                                        </div>
+                                        </form>
+                                    </div>                 
+                                    
+                                    
+                                
+                            </div>
                         </div>
+
+                        
                     </div>
                 </div>
-            </div>
             </main>
 
         </div>
