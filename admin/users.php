@@ -19,26 +19,28 @@
         header("Location: /projectmanager/");
     }
 
-    $reportsData = array();
-    $hasReports = false;
-    $query = "SELECT r.*, u.username FROM reports AS r INNER JOIN user AS u ON r.idUser=u.id ORDER BY r.creationDate";
+    $usersData = array();
+    $hasUsers = false;
+    $query = "SELECT * FROM user ORDER BY id DESC";
     if ($result = $conn->query($query)) {
         if ($result->num_rows >= 1){
-            $hasReports = true;
+            $hasUsers = true;
             while($row = $result->fetch_array(MYSQLI_ASSOC)){
-                array_push($reportsData, $row);
+                array_push($usersData, $row);
             }
         } else {
-            $hasReports = false;
+            $hasUsers = false;
         }
         $result->close();
     } else {
-        die("Can't get reports");
+        die("Can't get users");
     }
 
-    if(isset($_POST["REMReport"])){
+    if(isset($_POST["REMuser"])){
         if(isset($_POST["REMid"]) && is_numeric($_POST["REMid"])){
-            removeReport($conn, $_POST["REMid"]);
+            if($_POST["REMid"] != 13 && $_POST["REMid"] != $UserData["id"]){
+                REMOVEALLuserInfoFromDataBaseADMIN($conn, $_POST["REMid"]);
+            }
         }
     }
     
@@ -46,7 +48,7 @@
 
 <html lang="en">
     <head>
-    <title>Admin - Reports</title>
+    <title>Admin - Users</title>
         <?php
             include "$_SERVER[DOCUMENT_ROOT]/projectmanager/html/Headcontent.html";
             include "$_SERVER[DOCUMENT_ROOT]/projectmanager/html/CSSimport.html";
@@ -67,7 +69,7 @@
                 <div class="row">
                     <div class='col-12 row' style="padding-left:0px; padding-right:0px">
                         <div class="col-12 page-title">
-                            All submitted reports
+                            All submitted users
                         </div>    
                     </div>
                     <hr class='w-100'>
@@ -76,40 +78,46 @@
                         <div class='row'>
 
                             <?php
-                                if(isset($reportsData) && $hasReports){
-                                    foreach($reportsData as $report){
-                                        echo "
-
-                                        <div class='col-md-12 col-xl-6' style='margin-bottom: 10px'>
-                                            <div class='col-12 bg-dark text-white' style='border-radius:5px;'>
-                                                <div class='row task-border-bottom'>
-                                                    <form method='POST' action='' class='task-margin-tb-10'>
-                                                        <div class='col-12 project-title'>
-                                                            ID: $report[id] & Code: $report[code]
-                                                            <input type='submit' class='btn btn-danger' name='REMReport' value='Remove'>
-                                                            <input type='hidden' name='REMid' value='$report[id]'>
-                                                        </div>
-                                                    </form>
-                                                </div>
-
-                                                <div class='row' style='border-radius:5px;'>
-                                                    <div class='col-12 task-margin-tb-10 project-text'>
-                                                        $report[description]
+                                if(isset($usersData) && $hasUsers){
+                                    foreach($usersData as $user){
+                                        if(!($user["id"] == 13 || $user["id"] == $UserData["id"])){
+                                            echo "
+                                            <div class='col-md-12 col-xl-6' style='margin-bottom: 10px'>
+                                                <div class='col-12 bg-dark text-white' style='border-radius:5px;'>
+                                                    <div class='row task-border-bottom'>
+                                                        <form method='POST' action='' class='task-margin-tb-10'>
+                                                            <div class='col-12 project-title'>
+                                                                ID: $user[id] & Role: $user[role]
+                                                                <input type='submit' class='btn btn-danger' name='REMuser' value='Remove'>
+                                                                <input type='hidden' name='REMid' value='$user[id]'>
+                                                            </div>
+                                                        </form>
                                                     </div>
-                                                </div>
 
-                                                <div class='row task-border-top' style='border-radius:5px;'>
-                                                    <div class='col-12 task-margin-tb-10 project-text'>
-                                                        By: $report[username]
+                                                    <div class='row' style='border-radius:5px;'>
+                                                        <div class='col-12 task-margin-tb-10 project-text'>
+                                                            <div class='row'>
+                                                                <div class='col-lg-12 col-xl-6'>
+                                                                    <b>Username</b>: $user[username]
+                                                                    <br>
+                                                                    <b>Email</b>: $user[email]
+                                                                </div>
+                                                                <div class='col-lg-12 col-xl-6'>
+                                                                    <b>Last updated</b>: $user[lastUpdateDate]
+                                                                    <br>
+                                                                    <b>Created at</b>: $user[creationDate]
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
 
-                                        ";
+                                            ";
+                                        }
                                     }
                                 } else {
-                                    echo "<p class='issue-DIV-list col-12' style='margin-top: 5px'> There is no reports. </p>";
+                                    echo "<p class='issue-DIV-list col-12' style='margin-top: 5px'> There is no users. </p>";
                                 }
 
                             ?>

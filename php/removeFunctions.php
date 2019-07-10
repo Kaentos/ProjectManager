@@ -106,6 +106,26 @@
         header("Refresh:0");
     }
 
+    function REMOVEALLuserInfoFromDataBaseADMIN($conn, $userID){
+        $sql = "UPDATE issues SET idUpdateUser=13 WHERE idUpdateUser=$userID;";
+        if (!mysqli_query($conn, $sql)) {
+            die("Error updating issues!");   
+        }
+        $sql = "UPDATE tasks SET idUpdateUser=13 WHERE idUpdateUser=$userID;";
+        if (!mysqli_query($conn, $sql)) {
+            die("Error updating tasks!");   
+        }
+        $sql = "UPDATE projects SET idUpdateUser=13 WHERE idUpdateUser=$userID;";
+        if (!mysqli_query($conn, $sql)) {
+            die("Error updating projects!");   
+        }
+        $sql = "DELETE FROM user WHERE id=$userID";
+        if (!mysqli_query($conn, $sql)) {
+            die("Error on delete user!");   
+        }
+        header("Refresh:0");
+    }
+
 // End Remove user from database
 
 

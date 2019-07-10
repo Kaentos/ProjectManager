@@ -233,7 +233,7 @@
                                         <div class='sidebar-submenu'>
                                             <ul>
                                                 <li>
-                                                    <a href='/projectmanager/admin/allusers'>All users</a>
+                                                    <a href='/projectmanager/admin/users'>All users</a>
                                                 </li>
                                                 <li>
                                                     <a href='/projectmanager/admin/reports'>Reports</a>
