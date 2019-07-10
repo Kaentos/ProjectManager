@@ -44,13 +44,14 @@
         $pdes = $_POST["pdes"];
         if (strlen($pname) > 20 || strlen($pname) < 6){
             $nameERR = 0;
-            $desERR = 1;
-        } 
-        if (strlen($pdes) > 60 || strlen($pdes) < 6){
-            $nameERR = 1;
-            $desERR = 0;
+        } else {
+            if (strlen($pdes) > 60 || strlen($pdes) < 6){
+                $nameERR = 1;
+                $desERR = 0;
+            } else {
+                addProject($conn, $pname, $pdes, $UserData, $InviteCode);
+            }
         }
-        addProject($conn, $pname, $pdes, $UserData, $InviteCode);
     }
 
     function addProject($conn, $pname, $pdes, $UserData, $InviteCode){
@@ -117,77 +118,89 @@
                 <div class="container-fluid">
                 <div class="row">
                     <div class='col-12 row' style="padding-left:0px; padding-right:0px">
-                        <div class="col-9 page-title">
-                            All projects
-                        </div>
+                        <div class="col-12 page-title">
+                            Create / Join new project
+                        </div> 
                     </div>
+                    <hr class='w-100'>
                 </div>
-                
-                    <div>
-                        <span style="font-size:2rem; font-weight: 500;">New project</span>
-                    </div>
-                    <hr>
-                    <form method="post" class="row" action="">
-                        <div class="col-md-12">
-                            Project name:
-                            <div class="form-group">
-                                <?php
-                                    if ($nameERR == 0){
-                                        echo "
-                                        <input type='text' class='form-control is-invalid' name='pname' autocomplete='off' value='$pname' />
-                                        <div class='invalid-feedback'>
-                                            Must be have 1 to 60 characters.
-                                        </div>
-                                        ";
-                                    } elseif ($nameERR == 1){
-                                        echo "
-                                        <input type='text' class='form-control is-valid' name='pname' autocomplete='off' value='$pname' />
-                                        <div class='valid-feedback'>
-                                            Good to go!
-                                        </div>
-                                        ";
-                                    } else {
-                                        echo "<input type='text' class='form-control' name='pname' autocomplete='off' />";
-                                    }
-                                ?>
-                            </div>
-                            Small description:
-                            <div class="form-group">
-                                <?php
-                                    if ($desERR == 0){
-                                        echo "
-                                        <input type='text' class='form-control is-invalid' name='pdes' autocomplete='off' value='$pdes' />
-                                        <div class='invalid-feedback'>
-                                            Must be have 1 to 60 characters.
-                                        </div>
-                                        ";
-                                    } elseif ($desERR == 1){
-                                        echo "
-                                        <input type='text' class='form-control is-valid' name='pdes' autocomplete='off' value='$pdes' />
-                                        <div class='valid-feedback'>
-                                            Good to go!
-                                        </div>
-                                        ";
-                                    } else {
-                                        echo "<input type='text' class='form-control' name='pdes' autocomplete='off' />";
-                                    }
-                                ?>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            Link to invite users to project:
-                            <div class="form-group">
-                                <span class="form-control is-valid" readonly>http://localhost/projectmanager/invite/?code=<?php echo $InviteCode ?></span>
-                                <div class='valid-feedback'>
-                                    Link is valid after project creation!
+
+                <div class="row">
+                    <div class='col-lg-12 col-xl-6 text-light'>
+                        <div class='col-12 bg-dark' style='border-radius: 5px;'>
+                            <div class='row project-border-bottom'>
+                                <div class="col-12 project-title task-margin-tb-10">
+                                    Create new project
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="col-md-12">
-                            <input type="submit" class="btn btn-success" name="projectC" value="Create"/>
+                            <form method="post" action="">
+                                <div class="row">
+                                    <div class="col-md-12 task-margin-tb-10 project-text" style="word-break: break-all;">
+                                        <span style="font-weight: 600">Project name (6-20): *</span>
+                                        <div class="form-group">
+                                            <?php
+                                                if ($nameERR == 0){
+                                                    echo "
+                                                    <input type='text' class='form-control is-invalid' name='pname' autocomplete='off' value='$pname' />
+                                                    <div class='invalid-feedback'>
+                                                        Must be have 1 to 60 characters.
+                                                    </div>
+                                                    ";
+                                                } elseif ($nameERR == 1){
+                                                    echo "
+                                                    <input type='text' class='form-control is-valid' name='pname' autocomplete='off' value='$pname' />
+                                                    <div class='valid-feedback'>
+                                                        Good to go!
+                                                    </div>
+                                                    ";
+                                                } else {
+                                                    echo "<input type='text' class='form-control' name='pname' autocomplete='off' />";
+                                                }
+                                            ?>
+                                        </div>
+                                        <span style="font-weight: 600">Small description (6-60 characters): *</span>
+                                        <div class="form-group">
+                                            <?php
+                                                if ($desERR == 0){
+                                                    echo "
+                                                    <input type='text' class='form-control is-invalid' name='pdes' autocomplete='off' value='$pdes' />
+                                                    <div class='invalid-feedback'>
+                                                        Must be have 1 to 60 characters.
+                                                    </div>
+                                                    ";
+                                                } elseif ($desERR == 1){
+                                                    echo "
+                                                    <input type='text' class='form-control is-valid' name='pdes' autocomplete='off' value='$pdes' />
+                                                    <div class='valid-feedback'>
+                                                        Good to go!
+                                                    </div>
+                                                    ";
+                                                } else {
+                                                    echo "<input type='text' class='form-control' name='pdes' autocomplete='off' />";
+                                                }
+                                            ?>
+                                        </div>
+                                        <span style="font-weight: 600">Link to invite users to project:</span>
+                                        <div class="alert alert-light">
+                                            http://localhost/projectmanager/invite/?code=<?php echo $InviteCode ?>
+                                        </div>
+                                    </div>
+                                </div>
+                                            
+                                <div class="row project-border-top">
+                                    <div class="col-md-12 task-margin-tb-10">
+                                        <input type="submit" class="btn btn-light edit-DIV-InputTitle" name="projectC" value="Create new project"/>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
-                    </form>
+                    </div>
+                    
+
+                    
+                </div>
+                    
                 </div>
             </main>
 
