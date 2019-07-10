@@ -55,7 +55,7 @@
 
     $IssuesData = array();
     $hasIssues = false;
-    $query = "SELECT i.*, s.name AS status, s.badge, p.id AS projectID FROM issues AS i INNER JOIN projects AS p ON i.idProject=p.id INNER JOIN istatus AS s ON i.idStatus=s.id INNER JOIN issuefollow AS iff ON i.id=iff.idIssue WHERE iff.idUser=$UserData[id] LIMIT 5";
+    $query = "SELECT i.*, s.name AS status, s.badge, p.id AS projectID, p.name AS projectName FROM issues AS i INNER JOIN projects AS p ON i.idProject=p.id INNER JOIN istatus AS s ON i.idStatus=s.id INNER JOIN issuefollow AS iff ON i.id=iff.idIssue WHERE iff.idUser=$UserData[id] LIMIT 5";
     if ($result = $conn->query($query)) {
         if ($result->num_rows >= 1){
             $hasIssues = true;
@@ -267,13 +267,13 @@
                                 if(isset($IssuesData) && $hasIssues){
                                     foreach($IssuesData as $issue){
                                         echo "
-                                            <div class='col-md-12 col-xl-4' style='margin-bottom: 10px'>
-                                                <div class='col-12 text-white bg-danger' style='border-radius:5px; min-height: 150px'>
-                                                    <div class='row issues-border-bottom'>
-                                                        <div class='col-12' style='margin-top: 10px; margin-bottom: 10px'>
-                                                            <a href='/projectmanager/project/issues/issue?id=$issue[projectID]&issue=$issue[id]' class='issues-title'>
-                                                                $issue[name]
-                                                            </a>";
+                                        <div class='col-md-12 col-xl-4' style='margin-bottom: 10px'>
+                                            <div class='col-12 text-white bg-danger' style='border-radius:5px;'>
+                                                <div class='row issues-border-bottom'>
+                                                    <div class='col-12 task-margin-tb-10'>
+                                                        <a href='/projectmanager/project/issues/issue?id=$issue[projectID]&issue=$issue[id]' class='issues-title'>
+                                                            $issue[name]
+                                                        </a>";
                                         if($issue["badge"] == "danger"){
                                             echo "<span class='badge badge-$issue[badge] custom-badge-border issues-badge-text'>$issue[status]</span>";
                                         } else {
@@ -283,9 +283,18 @@
                                                         </div>
                                                     </div>
 
-                                                    <div class='row'>
+                                                    <div class='row task-margin-tb-10'>
                                                         <div class='col-12 project-text'>
                                                             $issue[Des]
+                                                        </div>
+                                                    </div>
+
+                                                    <div class='row issues-border-top'>
+                                                        <div class='col-12 project-text task-margin-tb-10'>
+                                                            From:
+                                                            <a href='/projectmanager/project/?id=$issue[projectID]' style='color:white; text-decoration:none'>
+                                                                <b>$issue[projectName]</b>
+                                                            </a>
                                                         </div>
                                                     </div>
                                                 </div>
