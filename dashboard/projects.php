@@ -235,7 +235,12 @@
                                     }
                                 }
                             } elseif (isset($filterHasProjects) && $filterHasProjects) {
-                                echo "<div class='col-12'><h4>No projects found for $vname.</h4></div>";
+                                echo "
+                                    <div class='col-12'>
+                                        <div class='text-center'>
+                                            <h4>No projects found for $vname</h4>
+                                        </div>
+                                    </div>";
                             } else {
                                 echo "<div class='col-12'><h4>No projects found, what about creating or joining a new one?</h4></div>";
                             }
