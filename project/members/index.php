@@ -374,7 +374,7 @@
                                             <span class='modal-subtitle'>Code:</span>
                                             <div class='alert alert-secondary edit-DIV-Input'>$projectData[code]</div>
                                             <span class='modal-subtitle'>Link:</span>
-                                            <div class='alert alert-secondary edit-DIV-Input'>http://localhost/projectmanager/invite/?code=$projectData[code]</div>
+                                            <div class='alert alert-secondary edit-DIV-Input'>https://prothyx.icu/projectmanager/invite/?code=$projectData[code]</div>
                                         ";
                                     }
                                 ?>
