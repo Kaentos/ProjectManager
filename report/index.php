@@ -4,22 +4,16 @@
         header("Location: /projectmanager/");
     } else {
         if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/otherFunctions.php"){
-            header("Location: /projectmanager/errors/?id=FIM-OF");
+            die(header("Location: /projectmanager/errors/?id=FIM-OF"));
         }
         if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/getFunctions.php"){
-            sendError("FIM-GF");
-        }
-        if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/checkFunctions.php"){
-            sendError("FIM-SC");
-        }
-        if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/addFunctions.php"){
-            sendError("FIM-ADD");
+            die(header("Location: /projectmanager/errors/?id=FIM-GF"));
         }
         if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/sessionCheckTime.php"){
-            sendError("FIM-SCF");
+            die(header("Location: /projectmanager/errors/?id=FIM-SCF"));
         }
         if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/databaseConnections.php"){
-            sendError("FIM-DBF");
+            die(header("Location: /projectmanager/errors/?id=FIM-DBF"));
         }
         
         $conn = ConnectRoot();
