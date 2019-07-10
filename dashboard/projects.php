@@ -149,7 +149,7 @@
                                             <i class="fas fa-search"></i>
                                         </button>
                                         <a href="#joinProjectModal" data-toggle='modal' class="btn btn-dark">Join Project</a>
-                                        <a href="newproject.php" class="btn btn-dark">New Project</a>
+                                        <a href="/projectmanager/dashboard/newproject" class="btn btn-dark">New Project</a>
                                     </div>
                                 </div>
                             </form>    

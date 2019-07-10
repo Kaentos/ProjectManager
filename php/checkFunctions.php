@@ -40,7 +40,6 @@
     }
 
     function checkProjectStatusID($conn, $id){
-        // Get project data
         $query = "SELECT * FROM pstatus WHERE id=$id;";
         if ($result = $conn->query($query)) {
             if ($result->num_rows == 1){
@@ -56,7 +55,6 @@
     }
 
     function checkProjectUserRoleID($conn, $id){
-        // Get project data
         $query = "SELECT * FROM proles WHERE id=$id;";
         if ($result = $conn->query($query)) {
             if ($result->num_rows == 1){
