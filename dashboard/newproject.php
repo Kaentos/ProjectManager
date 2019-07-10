@@ -214,7 +214,7 @@
                                         </div>
                                         <span style="font-weight: 600">Link to invite users to project:</span>
                                         <div class="alert alert-light">
-                                            http://localhost/projectmanager/invite/?code=<?php echo $InviteCode ?>
+                                            https://prothyx.icu/projectmanager/invite/?code=<?php echo $InviteCode ?>
                                         </div>
                                     </div>
                                 </div>

@@ -197,21 +197,11 @@
                                 <span>Extra</span>
                             </li>
                             
-                            <li class="sidebar-dropdown">
-                                <a class="pointer-mouse">
-                                    <i class="fas fa-project-diagram"></i>
-                                    <span>Project</span>
+                            <li>
+                                <a href="/projectmanager/dashboard/newproject">
+                                    <i class="fa fa-project-diagram"></i>
+                                    <span>Create/Join Project</span>
                                 </a>
-                                <div class="sidebar-submenu">
-                                    <ul>
-                                        <li>
-                                            <a href="/projectmanager/dashboard/newproject">Create new project</a>
-                                        </li>
-                                        <li>
-                                        <a href="/projectmanager/invite">Join project</a>
-                                        </li>
-                                    </ul>
-                                </div>
                             </li>
                             
                             <!-- Example -->
