@@ -108,4 +108,14 @@
 
 // End Remove user from database
 
+
+// Remove report
+function removeReport($conn, $ID){
+    $query = "DELETE FROM reports WHERE id=$ID";
+    if (!$conn->query($query)) {
+        die("Can't remove report $ID");
+    }
+    header("Refresh: 0");
+}
+
 ?>
