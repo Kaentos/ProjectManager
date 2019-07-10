@@ -26,33 +26,33 @@
         $UserData = getSessionUserData($conn, $_SESSION["user"]);
     }
 
-    $TasksData = array();
-    $hasTasks = false;
-    $query = "SELECT t.*, s.name AS status, s.badge, p.id AS projectID, p.name AS projectName FROM tasks AS t INNER JOIN projects AS p ON t.idProject=p.id INNER JOIN tstatus AS s ON t.idStatus=s.id INNER JOIN taskfollow AS tf ON t.id=tf.idTask WHERE tf.idUser=$UserData[id] LIMIT 25";
+    $IssuesData = array();
+    $hasIssues = false;
+    $query = "SELECT i.*, s.name AS status, s.badge, p.id AS projectID, p.name AS projectName FROM issues AS i INNER JOIN projects AS p ON i.idProject=p.id INNER JOIN istatus AS s ON i.idStatus=s.id INNER JOIN issuefollow AS iff ON i.id=iff.idIssue WHERE iff.idUser=$UserData[id] LIMIT 5";
     if ($result = $conn->query($query)) {
         if ($result->num_rows >= 1){
-            $hasTasks = true;
+            $hasIssues = true;
             while($row = $result->fetch_array(MYSQLI_ASSOC)){
-                array_push($TasksData, $row);
+                array_push($IssuesData, $row);
             }
         } else {
-            $hasTasks = false;
+            $hasIssues = false;
         }
         $result->close();
     } else {
-        sendError("GTD-MPT");
+        sendError("GID-MPI");
     }
 
     $orderDic = [
-        "name" => "ORDER BY t.name",
-        "cd" => "ORDER BY t.creationDate ASC",
-        "lud" => "ORDER BY t.lastupdatedDate DESC"
+        "name" => "ORDER BY i.name",
+        "cd" => "ORDER BY i.creationDate ASC",
+        "lud" => "ORDER BY i.lastupdatedDate DESC"
     ];
     $filer1Selected = $filer2Selected = false;
 
-    if(isset($_POST["searchBTN"]) && $hasTasks){
-        if(isset($_POST["searchTask"])){
-            $nameFilter = $_POST["searchTask"];
+    if(isset($_POST["searchBTN"]) && $hasIssues){
+        if(isset($_POST["searchIssue"])){
+            $nameFilter = $_POST["searchIssue"];
             $vname = $nameFilter;
             $nameFilter = "%".$nameFilter."%";
         } else {
@@ -65,26 +65,26 @@
                 $filterORDER = $orderDic["$_POST[filter]"];
                 $filer1Selected = $_POST["filter"];
             } else {
-                $info =  "Invalid order filter value! If you didn\'t change anything report with TFV!";
+                $info =  "Invalid order filter value! If you didn\'t change anything report with IFV!";
                 showAlert($info);
                 $filer1Selected = "lud";
-                $filterORDER = "ORDER BY t.lastupdatedDate";
+                $filterORDER = "ORDER BY i.lastupdatedDate";
             }
         } else {
             $filer1Selected = "lud";
-            $filterORDER = "ORDER BY t.lastupdatedDate";
+            $filterORDER = "ORDER BY i.lastupdatedDate";
         }
 
         // Filter group / status
         if(isset($_POST["filterStatus"])){
-            if(is_numeric($_POST["filterStatus"]) && checkTaskStatusID($conn, $_POST["filterStatus"])){
-                $filterStatusID = "AND t.idStatus=". $_POST["filterStatus"];
+            if(is_numeric($_POST["filterStatus"]) && checkIssueStatusID($conn, $_POST["filterStatus"])){
+                $filterStatusID = "AND i.idStatus=". $_POST["filterStatus"];
                 $filer2Selected = $_POST["filterStatus"];
             } elseif ($_POST["filterStatus"] == -1) {
                 $filterStatusID = "";
                 $filer2Selected = false;
             } else {
-                $info = "Invalid status filter value! If you didn\'t change anything report with TFS!";
+                $info = "Invalid status filter value! If you didn\'t change anything report with IFS!";
                 showAlert($info);
                 $filer2Selected = false;
                 $filterStatusID = "";
@@ -94,16 +94,17 @@
             $filterStatusID = "";
         }
 
-        if ($temp = searchTask($conn, $nameFilter, $filterORDER, $filterStatusID, $UserData)){
-            $TasksData = $temp;
+        if ($temp = searchIssue($conn, $nameFilter, $filterORDER, $filterStatusID, $UserData)){
+            $IssuesData = $temp;
         } else {
-            $filterHasTasks = true;
+            $filterHasIssues = true;
         }
     }
 
-    function searchTask($conn, $nameFilter, $ORDER, $GROUP, $UserData){
-        if(!$stmt = $conn->prepare("SELECT t.*, s.name AS status, s.badge, p.id AS projectID, p.name AS projectName FROM tasks AS t INNER JOIN projects AS p ON t.idProject=p.id INNER JOIN tstatus AS s ON t.idStatus=s.id INNER JOIN taskfollow AS tf ON t.id=tf.idTask WHERE tf.idUser=$UserData[id] AND t.name LIKE ? $GROUP $ORDER LIMIT 25")) {
-            sendError("MPT-PT-P");
+    function searchIssue($conn, $nameFilter, $ORDER, $GROUP, $UserData){
+        if(!$stmt = $conn->prepare("SELECT i.*, s.name AS status, s.badge, p.id AS projectID, p.name AS projectName FROM issues AS i INNER JOIN projects AS p ON i.idProject=p.id INNER JOIN istatus AS s ON i.idStatus=s.id INNER JOIN issuefollow AS iff ON i.id=iff.idIssue WHERE iff.idUser=$UserData[id] AND i.name LIKE ? $GROUP $ORDER LIMIT 25")) {
+            // sendError("MPT-PT-P");
+            echo "SELECT i.*, s.name AS status, s.badge, p.id AS projectID, p.name AS projectName FROM issues AS i INNER JOIN projects AS p ON i.idProject=p.id INNER JOIN istatus AS s ON i.idStatus=s.id INNER JOIN issuefollow AS iff ON i.id=iff.idIssue WHERE iff.idUser=$UserData[id] AND i.name LIKE ? $GROUP $ORDER LIMIT 25";
         }
         if(!$stmt->bind_param("s", $nameFilter)) {
             sendError("MPT-PT-B");
@@ -131,12 +132,12 @@
         }
     }
 
-    $AllTasksStatus = getTasksStatus($conn);
+    $AllIssuesStatus = getIssuesStatus($conn);
 ?>
 
 <html lang="en">
     <head>
-        <title>Tasks</title>
+        <title>Issues</title>
         <?php
             include "$_SERVER[DOCUMENT_ROOT]/projectmanager/html/Headcontent.html";
             include "$_SERVER[DOCUMENT_ROOT]/projectmanager/html/CSSimport.html";
@@ -157,11 +158,11 @@
                     <div class="row">
                         <div class='col-12 row' style="padding-left:0px; padding-right:0px">
                             <div class="col-12 col-lg-4 col-xl-6 page-title">
-                                Followed tasks
+                                Followed issues
                             </div>
                             <form method="POST" action="" class="col-12 col-lg-8 col-xl-6" style="text-align:right">
                                 <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="Search by task name" name="searchTask">
+                                    <input type="text" class="form-control" placeholder="Search by issue name" name="searchIssue">
                                     <div class="input-group-append">
                                         <button type="submit" name="searchBTN" class="btn btn-dark">
                                             <i class="fas fa-search"></i>
@@ -178,11 +179,11 @@
                                         <select name="filterStatus" class="form-control bg-dark text-white">
                                             <option value="-1" <?php if(!$filer2Selected){ echo "selected"; } ?>> All status </option>
                                             <?php
-                                                foreach($AllTasksStatus as $task){
-                                                    if ($filer2Selected == $task["id"]) {
-                                                        echo "<option value='$task[id]' selected>$task[name]</option>";
+                                                foreach($AllIssuesStatus as $issue){
+                                                    if ($filer2Selected == $issue["id"]) {
+                                                        echo "<option value='$issue[id]' selected>$issue[name]</option>";
                                                     } else {
-                                                        echo "<option value='$task[id]'>$task[name]</option>";
+                                                        echo "<option value='$issue[id]'>$issue[name]</option>";
                                                     }
                                                     
                                                 }
@@ -194,20 +195,20 @@
                         </div>
                         <hr class='w-100'>
                         <?php
-                            if($hasTasks && (!isset($filterHasTasks) || !$filterHasTasks)){
-                                foreach($TasksData as $task){
+                            if($hasIssues && (!isset($filterHasIssues) || !$filterHasIssues)){
+                                foreach($IssuesData as $issue){
                                     echo "
                                         <div class='col-md-12 col-xl-4' style='margin-bottom: 10px'>
-                                            <div class='col-12 text-white bg-success' style='border-radius:5px;'>
-                                                <div class='row task-border-bottom'>
+                                            <div class='col-12 text-white bg-danger' style='border-radius:5px;'>
+                                                <div class='row issues-border-bottom'>
                                                     <div class='col-12 task-margin-tb-10'>
-                                                        <a href='/projectmanager/project/tasks/task?id=$task[projectID]&task=$task[id]' class='task-title'>
-                                                            $task[name]
+                                                        <a href='/projectmanager/project/issues/issue?id=$issue[projectID]&issue=$issue[id]' class='issues-title'>
+                                                            $issue[name]
                                                         </a>";
-                                    if($task["badge"] == "success"){
-                                        echo "<span class='badge badge-$task[badge] custom-badge-border task-badge-text'>$task[status]</span>";
+                                    if($issue["badge"] == "success"){
+                                        echo "<span class='badge badge-$issue[badge] custom-badge-border issues-badge-text'>$issue[status]</span>";
                                     } else {
-                                        echo "<span class='badge badge-$task[badge] task-badge-text'>$task[status]</span>";
+                                        echo "<span class='badge badge-$issue[badge] issues-badge-text'>$issue[status]</span>";
                                     }
                                     echo "         
                                                     </div>
@@ -215,15 +216,15 @@
 
                                                 <div class='row task-margin-tb-10'>
                                                     <div class='col-12 project-text'>
-                                                        $task[Des]
+                                                        $issue[Des]
                                                     </div>
                                                 </div>
 
-                                                <div class='row task-border-top'>
+                                                <div class='row issues-border-top'>
                                                     <div class='col-12 project-text task-margin-tb-10'>
                                                         From:
-                                                        <a href='/projectmanager/project/?id=$task[projectID]' style='color:white; text-decoration:none'>
-                                                            <b>$task[projectName]</b>
+                                                        <a href='/projectmanager/project/?id=$issue[projectID]' style='color:white; text-decoration:none'>
+                                                            <b>$issue[projectName]</b>
                                                         </a>
                                                     </div>
                                                 </div>
@@ -231,15 +232,15 @@
                                         </div>
                                     ";
                                 }
-                            } elseif (isset($filterHasTasks) && $filterHasTasks) {
+                            } elseif (isset($filterHasIssues) && $filterHasIssues) {
                                 echo "
                                     <div class='col-12'>
                                         <div class='text-center'>
-                                            <h4>No tasks found for your search $vname</h4>
+                                            <h4>No issues found for your search $vname</h4>
                                         </div>
                                     </div>";
                             } else {
-                                echo "<div class='col-12'><h4>You don't follow any task, what about following some?</h4></div>";
+                                echo "<div class='col-12'><h4>You don't follow any issue, what about following some?</h4></div>";
                             }
                         ?>
                     </div>
