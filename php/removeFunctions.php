@@ -73,7 +73,7 @@
 
     // Remove user from project
     function removeProject($conn, $projectID){
-        $query = "DELETE FROM projectmembers WHERE idProject=$projectID";
+        $query = "DELETE FROM projects WHERE id=$projectID";
         if (!$conn->query($query)) {
             die();
         }

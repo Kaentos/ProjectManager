@@ -239,7 +239,7 @@
                                                     <a href='/projectmanager/admin/reports'>Reports</a>
                                                 </li>
                                                 <li>
-                                                    <a href='/projectmanager/admin/allprojects'>All projects</a>
+                                                    <a href='/projectmanager/admin/projects'>All projects</a>
                                                 </li>
                                             </ul>
                                         </div>
