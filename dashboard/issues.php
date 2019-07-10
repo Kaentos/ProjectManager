@@ -205,7 +205,7 @@
                                                         <a href='/projectmanager/project/issues/issue?id=$issue[projectID]&issue=$issue[id]' class='issues-title'>
                                                             $issue[name]
                                                         </a>";
-                                    if($issue["badge"] == "success"){
+                                    if($issue["badge"] == "danger"){
                                         echo "<span class='badge badge-$issue[badge] custom-badge-border issues-badge-text'>$issue[status]</span>";
                                     } else {
                                         echo "<span class='badge badge-$issue[badge] issues-badge-text'>$issue[status]</span>";
