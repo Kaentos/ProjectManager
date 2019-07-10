@@ -316,7 +316,7 @@
                                         echo "
                                         <div class='col-12 col-md-6'>
                                             <span style='font-size:1.3rem; font-weight: bold;'>
-                                                <img class='img-thumbnail' style='height: 100px; width: auto;' src='/projectmanager/img/UIMG/9.png'>
+                                                <img class='img-thumbnail' style='height: 100px; width: auto;' src='/projectmanager/img/UIMG/";if ($UserData["role"] == 20){ echo "8";}else{echo "9";}echo".png'>
                                                 $member[username]
                                                 <span class='badge badge-$member[badge]'>$member[name]</span>    
                                             </span>
