@@ -203,6 +203,13 @@
                                     <span>Create/Join Project</span>
                                 </a>
                             </li>
+
+                            <li>
+                                <a href="/projectmanager/report">
+                                    <i class="fas fa-exclamation"></i>
+                                    <span>Report bug/problem</span>
+                                </a>
+                            </li>
                             
                             <!-- Example -->
                             <!-- <li>

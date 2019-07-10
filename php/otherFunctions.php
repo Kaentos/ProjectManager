@@ -45,5 +45,4 @@
         } while($Invalid);
         return $InviteCode;
     }
-
 ?>
