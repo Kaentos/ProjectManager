@@ -57,7 +57,7 @@
         $currentDate = getCurrentDate();
 
         if(!($stmt = $conn->prepare("INSERT INTO reports (code, description, idUser, creationDate) VALUES (?,?,?,?)"))) {
-            die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
+            die(header("Location: /projectmanager/errors/?id=R-PT-P"));
         }
         if(!$stmt->bind_param("ssis", $code, $des, $userID, $currentDate)) {
             die("Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error);
@@ -73,7 +73,7 @@
 
 <html lang="en">
     <head>
-        <title>Report problem</title>
+        <title>Report</title>
         <?php
             include "$_SERVER[DOCUMENT_ROOT]/projectmanager/html/Headcontent.html";
             include "$_SERVER[DOCUMENT_ROOT]/projectmanager/html/CSSimport.html";
@@ -110,7 +110,7 @@
                                     <div class="col-12 task-margin-tb-10">
                                         <span style="font-weight: 600">Error code (only if you have one):</span>
                                         <div class="form-group">
-                                            <input type='text' class='form-control' name='reportCode' value='<?php if(isset($tempCode) && $tempCode != null){ echo $tempCode; } ?>' autocomplete='off'/>
+                                            <input type='text' class='form-control' name='reportCode' value='<?php if((isset($tempCode) && !empty($desERR)) && $tempCode != null){ echo $tempCode; } ?>' autocomplete='off'/>
                                         </div>
                                         <span style="font-weight: 600">Description (tell us what happened): *</span>
                                         <div class="form-group">

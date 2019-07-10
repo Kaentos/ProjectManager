@@ -42,16 +42,11 @@
 
 <html>
     <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=320, height=device-height, target-densitydpi=medium-dpi" />
-        <title>Welcome to Project Manager</title>
-        <meta name="description" content="Digital Couch">
-        <meta name="author" content="Kaentos">
-        <link rel="icon" href="img/icon.png">
-        
-        <!-- CSS -->
-        <link rel="stylesheet" href="/projectmanager/css/Custom.css" type="text/css">
-        <link rel="stylesheet" href="/projectmanager/css/bootstrap.min.css">
+        <title>Welcome to PM!</title>
+        <?php
+            include "$_SERVER[DOCUMENT_ROOT]/projectmanager/html/Headcontent.html";
+            include "$_SERVER[DOCUMENT_ROOT]/projectmanager/html/CSSimport.html";
+        ?>
 
         <style>
             .customPaddingLeft{
