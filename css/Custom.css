@@ -353,6 +353,17 @@
 
 /* End issues */
 
+.page-title{
+    font-size:2rem;
+    font-weight: 500;
+    text-decoration: none;
+    color: black;
+}
+.page-title:hover{
+    text-decoration: none;
+    color: black;
+}
+
 /* LOGIN E REGISTER */
 .background_color{
     /* background: -webkit-linear-gradient(left, #3931af, #00c6ff); */

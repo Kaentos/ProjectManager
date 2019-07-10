@@ -95,7 +95,7 @@
                     <!-- Projects -->
                     <div class='col-12 row' style="padding-left:0px; padding-right:0px">
                         <div class="col-9">
-                            <a href="/projectmanager/dashboard/projects" style="font-size:2rem; font-weight: 500; text-decoration: none; color: black">All projects</a>
+                            <a href="/projectmanager/dashboard/projects" class="page-title">All projects</a>
                         </div>
                         <div class="col-3">
                             <a href="/projectmanager/dashboard/projects" class="btn btn-dark float-right" style="margin-top:8px; color:white;">All Projects</a>
@@ -190,7 +190,7 @@
                 <div class="row">
                     <div class='col-12 row' style="padding-left:0px; padding-right:0px">
                         <div class="col-9">
-                            <a href="/projectmanager/dashboard/tasks" style="font-size:2rem; font-weight: 500; text-decoration: none; color: black">Followed tasks</a>
+                            <a href="/projectmanager/dashboard/tasks" class="page-title">Followed tasks</a>
                         </div>
                         <div class="col-3">
                             <a href="/projectmanager/dashboard/tasks" class="btn btn-success float-right" style="margin-top:8px; color:white;">All followed tasks</a>
@@ -253,7 +253,7 @@
                 <div class="row">
                     <div class='col-12 row' style="padding-left:0px; padding-right:0px">
                         <div class="col-9">
-                            <a href="/projectmanager/dashboard/issues" style="font-size:2rem; font-weight: 500; text-decoration: none; color: black">Followed issues</a>
+                            <a href="/projectmanager/dashboard/issues" class="page-title">Followed issues</a>
                         </div>
                         <div class="col-3">
                             <a href="/projectmanager/dashboard/issues" class="btn btn-danger float-right" style="margin-top:8px; color:white;">All followed issues</a>

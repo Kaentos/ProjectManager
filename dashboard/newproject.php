@@ -115,6 +115,14 @@
 
             <main class="page-content">
                 <div class="container-fluid">
+                <div class="row">
+                    <div class='col-12 row' style="padding-left:0px; padding-right:0px">
+                        <div class="col-9 page-title">
+                            All projects
+                        </div>
+                    </div>
+                </div>
+                
                     <div>
                         <span style="font-size:2rem; font-weight: 500;">New project</span>
                     </div>

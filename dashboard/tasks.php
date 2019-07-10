@@ -182,8 +182,8 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class='col-12 row' style="padding-left:0px; padding-right:0px">
-                            <div class="col-12 col-lg-4 col-xl-6">
-                                <span style="font-size:2rem; font-weight: 500;">Followed tasks</span>
+                            <div class="col-12 col-lg-4 col-xl-6 page-title">
+                                Followed tasks
                             </div>
                             <form method="POST" action="" class="col-12 col-lg-8 col-xl-6" style="text-align:right">
                                 <div class="input-group">
