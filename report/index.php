@@ -60,10 +60,10 @@
             die(header("Location: /projectmanager/errors/?id=R-PT-P"));
         }
         if(!$stmt->bind_param("ssis", $code, $des, $userID, $currentDate)) {
-            die("Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error);
+            die(header("Location: /projectmanager/errors/?id=R-PT-B"));
         }
         if(!$stmt->execute()) {
-            die("Execute failed: (" . $stmt->errno . ") " . $stmt->error);
+            die(header("Location: /projectmanager/errors/?id=R-PT-E"));
         } else{
             $stmt->close();
         }
