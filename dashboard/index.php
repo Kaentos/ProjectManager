@@ -38,7 +38,7 @@
 
     $TasksData = array();
     $hasTasks = false;
-    $query = "SELECT t.*, s.name AS status, s.badge, p.id AS projectID FROM tasks AS t INNER JOIN projects AS p ON t.idProject=p.id INNER JOIN tstatus AS s ON t.idStatus=s.id INNER JOIN taskfollow AS tf ON t.id=tf.idTask WHERE tf.idUser=$UserData[id] LIMIT 6";
+    $query = "SELECT t.*, s.name AS status, s.badge, p.id AS projectID, p.name AS projectName FROM tasks AS t INNER JOIN projects AS p ON t.idProject=p.id INNER JOIN tstatus AS s ON t.idStatus=s.id INNER JOIN taskfollow AS tf ON t.id=tf.idTask WHERE tf.idUser=$UserData[id] LIMIT 6";
     if ($result = $conn->query($query)) {
         if ($result->num_rows >= 1){
             $hasTasks = true;
@@ -161,9 +161,6 @@
                                                 </a>
                                                 <a href='#' class='btn btn-light' style='margin: 5px'>
                                                     <i class='fas fa-flag'></i>
-                                                </a>
-                                                <a href='#' class='btn btn-light' style='margin: 5px'>
-                                                    <i class='fas fa-comments'></i>
                                                 </a>";
                                 if ($Project["Role"] < 3){
                                     echo "
@@ -207,13 +204,13 @@
                                 if(isset($TasksData) && $hasTasks){
                                     foreach($TasksData as $task){
                                         echo "
-                                            <div class='col-md-12 col-xl-4' style='margin-bottom: 10px'>
-                                                <div class='col-12 text-white bg-success' style='border-radius:5px; min-height: 150px'>
-                                                    <div class='row task-border-bottom'>
-                                                        <div class='col-12' style='margin-top: 10px; margin-bottom: 10px'>
-                                                            <a href='/projectmanager/project/tasks/task?id=$task[projectID]&task=$task[id]' class='task-title'>
-                                                                $task[name]
-                                                            </a>";
+                                        <div class='col-md-12 col-xl-4' style='margin-bottom: 10px'>
+                                            <div class='col-12 text-white bg-success' style='border-radius:5px;'>
+                                                <div class='row task-border-bottom'>
+                                                    <div class='col-12 task-margin-tb-10'>
+                                                        <a href='/projectmanager/project/tasks/task?id=$task[projectID]&task=$task[id]' class='task-title'>
+                                                            $task[name]
+                                                        </a>";
                                         if($task["badge"] == "success"){
                                             echo "<span class='badge badge-$task[badge] custom-badge-border task-badge-text'>$task[status]</span>";
                                         } else {
@@ -223,9 +220,18 @@
                                                         </div>
                                                     </div>
 
-                                                    <div class='row'>
+                                                    <div class='row task-margin-tb-10'>
                                                         <div class='col-12 project-text'>
                                                             $task[Des]
+                                                        </div>
+                                                    </div>
+
+                                                    <div class='row task-border-top'>
+                                                        <div class='col-12 project-text task-margin-tb-10'>
+                                                            From:
+                                                            <a href='/projectmanager/project/?id=$task[projectID]' style='color:white; text-decoration:none'>
+                                                                <b>$task[projectName]</b>
+                                                            </a>
                                                         </div>
                                                     </div>
                                                 </div>

@@ -214,9 +214,6 @@
                                                     </a>
                                                     <a href='#' class='btn btn-light' style='margin: 5px'>
                                                         <i class='fas fa-flag'></i>
-                                                    </a>
-                                                    <a href='#' class='btn btn-light' style='margin: 5px'>
-                                                        <i class='fas fa-comments'></i>
                                                     </a>";
                                     if ($Project["Role"] < 3){
                                         echo "
