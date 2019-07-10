@@ -110,7 +110,7 @@
     </head>
 
     <body>
-        <div class="page-wrapper chiller-theme">
+        <div class="page-wrapper chiller-theme toggled">
             <?php
                 if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/sidebar/bar.php"){
                     sendError("MPB-PI");

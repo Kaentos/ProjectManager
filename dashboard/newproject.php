@@ -29,23 +29,12 @@
 
     $nameERR = $desERR = -1;
 
-    $Invalid = true;
-    do {
-        $InviteCode = substr(str_shuffle(str_repeat("0123456789abcdefghijklmnopqrstuvwxyz", 5)), 0, 12);
-        $query = "SELECT code FROM projects WHERE code='$InviteCode'";
-        if ($result = $conn->query($query)) {
-            if ($result->num_rows == 0){
-                $Invalid = false;
-            } elseif($result->num_rows > 1) {
-                die("Report with error I2");
-            }
-            $result->close();
-        } else {
-            die();
-        }
-    } while($Invalid);
-
     if (isset($_POST["projectC"])) {
+        if(isset($_POST["newInviteCode"]) && strlen($_POST["newInviteCode"]) == 12){
+            if(!is_numeric(checkCode($conn, $_POST["newInviteCode"]))){
+                $finalCode = $_POST["newInviteCode"];
+            }
+        }
         $pname = $_POST["pname"];
         $pdes = $_POST["pdes"];
         if (strlen($pname) > 20 || strlen($pname) < 6){
@@ -54,8 +43,8 @@
             if (strlen($pdes) > 60 || strlen($pdes) < 6){
                 $nameERR = 1;
                 $desERR = 0;
-            } else {
-                addProject($conn, $pname, $pdes, $UserData, $InviteCode);
+            } elseif(isset($finalCode)) {
+                addProject($conn, $pname, $pdes, $UserData, $finalCode);
             }
         }
     }
@@ -117,8 +106,21 @@
         }
     }
 
-    
-
+    $Invalid = true;
+    do {
+        $InviteCode = substr(str_shuffle(str_repeat("0123456789abcdefghijklmnopqrstuvwxyz", 5)), 0, 12);
+        $query = "SELECT code FROM projects WHERE code='$InviteCode'";
+        if ($result = $conn->query($query)) {
+            if ($result->num_rows == 0){
+                $Invalid = false;
+            } elseif($result->num_rows > 1) {
+                die("Report with error I2");
+            }
+            $result->close();
+        } else {
+            die();
+        }
+    } while($Invalid);
 ?>
 
 <html lang="en">
@@ -216,6 +218,7 @@
                                         <div class="alert alert-light">
                                             https://prothyx.icu/projectmanager/invite/?code=<?php echo $InviteCode ?>
                                         </div>
+                                        <input type="hidden" name="newInviteCode" value="<?php echo $InviteCode ?>">
                                     </div>
                                 </div>
                                             

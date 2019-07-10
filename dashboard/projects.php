@@ -140,7 +140,7 @@
                                     $Project["lastupdatedDate"] = date('d-m-Y', $dateTimeStamp);
     
                                     echo "
-                                    <div class='col-12 col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-4 text-light'>
+                                    <div class='col-12 col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-4 text-light' style='margin-bottom: 10px'>
                                         <div class='col-12 bg-dark' style='border-radius: 5px;'>
                                             <div class='row project-border-bottom'>
                                                 <div class='col-12' style='margin-top: 10px; margin-bottom: 10px'>
