@@ -62,7 +62,7 @@
         } else{
             $stmt->close();
         }
-        echo "<script>alert('Report sended, thank you!');</script>";
+        echo "<script>alert('Report sent, thank you!');</script>";
     }
 ?>
 
