@@ -385,7 +385,7 @@
                                                 <span class='badge badge-$mile[badge]'>$mile[status]</span>
                                             </span>
                                             <p style='font-size:1.1rem'>
-                                                $mile[targetDate]";
+                                                Target date: $mile[targetDate]";
                                         if($daysBet > 0 ){
                                             echo "
                                                 <br>
