@@ -3,23 +3,24 @@
     if (!isset($_SESSION["user"])){
         header("Location: /projectmanager/");
     } else {
+        error_reporting(E_ERROR | E_PARSE);
         if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/otherFunctions.php"){
-            header("Location: /projectmanager/errors/?id=FIM-OF");
+            die(header("Location: /projectmanager/errors/?id=CI-OF-I"));
         }
         if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/getFunctions.php"){
-            sendError("FIM-GF");
-        }
-        if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/checkFunctions.php"){
-            sendError("FIM-SC");
+            die(header("Location: /projectmanager/errors/?id=CI-GF-I"));
         }
         if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/addFunctions.php"){
-            sendError("FIM-ADD");
+            die(header("Location: /projectmanager/errors/?id=CI-AF-I"));
+        }
+        if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/checkFunctions.php"){
+            die(header("Location: /projectmanager/errors/?id=CI-CF-I"));
         }
         if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/sessionCheckTime.php"){
-            sendError("FIM-SCF");
+            die(header("Location: /projectmanager/errors/?id=CI-SC-I"));
         }
         if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/databaseConnections.php"){
-            sendError("FIM-DBF");
+            die(header("Location: /projectmanager/errors/?id=CI-DF-I"));
         }
         
         $conn = ConnectRoot();

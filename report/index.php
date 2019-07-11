@@ -3,17 +3,18 @@
     if (!isset($_SESSION["user"])){
         header("Location: /projectmanager/");
     } else {
+        error_reporting(E_ERROR | E_PARSE);
         if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/otherFunctions.php"){
-            die(header("Location: /projectmanager/errors/?id=FIM-OF"));
+            die(header("Location: /projectmanager/errors/?id=CI-OF-R"));
         }
         if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/getFunctions.php"){
-            die(header("Location: /projectmanager/errors/?id=FIM-GF"));
+            die(header("Location: /projectmanager/errors/?id=CI-GF-R"));
         }
         if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/sessionCheckTime.php"){
-            die(header("Location: /projectmanager/errors/?id=FIM-SCF"));
+            die(header("Location: /projectmanager/errors/?id=CI-SC-R"));
         }
         if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/databaseConnections.php"){
-            die(header("Location: /projectmanager/errors/?id=FIM-DBF"));
+            die(header("Location: /projectmanager/errors/?id=CI-DF-R"));
         }
         
         $conn = ConnectRoot();

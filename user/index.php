@@ -3,11 +3,22 @@
     if (!isset($_SESSION["user"])){
         header("Location: /projectmanager/");
     } else {
-        include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/getFunctions.php";
-        include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/otherFunctions.php";
-        include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/removeFunctions.php";
-        include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/sessionCheckTime.php";
-        include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/databaseConnections.php";
+        error_reporting(E_ERROR | E_PARSE);
+        if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/otherFunctions.php"){
+            die(header("Location: /projectmanager/errors/?id=CI-OF-US"));
+        }
+        if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/getFunctions.php"){
+            die(header("Location: /projectmanager/errors/?id=CI-GF-US"));
+        }
+        if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/removeFunctions.php"){
+            die(header("Location: /projectmanager/errors/?id=CI-RF-US"));
+        }
+        if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/sessionCheckTime.php"){
+            die(header("Location: /projectmanager/errors/?id=CI-SC-US"));
+        }
+        if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/databaseConnections.php"){
+            die(header("Location: /projectmanager/errors/?id=CI-DF-US"));
+        }
         $conn = ConnectRoot();
 
         $UserData = getSessionUserData($conn, $_SESSION["user"]);

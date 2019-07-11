@@ -5,13 +5,13 @@
     } else  {
         error_reporting(E_ERROR | E_PARSE); // Removes php errors and warnings (avoid showing erros to user)
         if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/otherFunctions.php"){
-            header("Location: /projectmanager/errors/?id=FIMI-OF");
+            die(header("Location: /projectmanager/errors/?id=CI-OF-ADMINP"));
         }
         if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/loginandregister.php"){
-            sendError("FIMI-LRF");
+            die(header("Location: /projectmanager/errors/?id=CI-RF-ADMINP"));
         }
         if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/databaseConnections.php"){
-            sendError("FIMI-DBF");
+            die(header("Location: /projectmanager/errors/?id=CI-DF-ADMINP"));
         }
         
         $conn = ConnectRoot();

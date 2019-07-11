@@ -1,4 +1,5 @@
 <?php
+    error_reporting(E_ERROR | E_PARSE);
     if (isset($_GET["id"])){
         $errorCode = $_GET["id"];
     } else {
@@ -11,8 +12,12 @@
     <head>
         <title><?php echo $errorCode; ?></title>
         <?php
-            include "$_SERVER[DOCUMENT_ROOT]/projectmanager/html/Headcontent.html";
-            include "$_SERVER[DOCUMENT_ROOT]/projectmanager/html/CSSimport.html";
+            if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/html/Headcontent.html"){
+                die(header("Location: /projectmanager/errors/?id=CI-HEAD-ERROR"));
+            }
+            if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/html/CSSimport.html"){
+                die(header("Location: /projectmanager/errors/?id=CI-CSS-ERROR"));
+            }
         ?>
         <style>
             .page-wrap {

@@ -3,23 +3,24 @@
     if (!isset($_SESSION["user"])){
         header("Location: /projectmanager/");
     } else {
+        error_reporting(E_ERROR | E_PARSE);
         if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/otherFunctions.php"){
-            header("Location: /projectmanager/errors/?id=FIM-OF");
+            die(header("Location: /projectmanager/errors/?id=CI-OF-MPI"));
         }
         if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/getFunctions.php"){
-            sendError("FIM-GF");
+            die(header("Location: /projectmanager/errors/?id=CI-GF-MPI"));
         }
         if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/addFunctions.php"){
-            sendError("FIM-ADDF");
+            die(header("Location: /projectmanager/errors/?id=CI-AF-MPI"));
         }
         if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/checkFunctions.php"){
-            sendError("FIM-CF");
+            die(header("Location: /projectmanager/errors/?id=CI-CF-MPI"));
         }
         if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/sessionCheckTime.php"){
-            sendError("FIM-SCF");
+            die(header("Location: /projectmanager/errors/?id=CI-SC-MPI"));
         }
         if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/databaseConnections.php"){
-            sendError("FIM-DBF");
+            die(header("Location: /projectmanager/errors/?id=CI-DF-MPI"));
         }
 
         $conn = ConnectRoot();

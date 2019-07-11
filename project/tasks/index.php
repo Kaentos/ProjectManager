@@ -3,14 +3,32 @@
     if (!isset($_SESSION["user"])){
         header("Location: /projectmanager/");
     } else {
-        include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/getFunctions.php";
-        include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/checkFunctions.php";
-        include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/addFunctions.php";
-        include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/editFunctions.php";
-        include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/removeFunctions.php";
-        include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/otherFunctions.php";
-        include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/sessionCheckTime.php";
-        include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/databaseConnections.php";
+        error_reporting(E_ERROR | E_PARSE);
+        if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/otherFunctions.php"){
+            die(header("Location: /projectmanager/errors/?id=CI-OF-PT"));
+        }
+        if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/getFunctions.php"){
+            die(header("Location: /projectmanager/errors/?id=CI-GF-PT"));
+        }
+        if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/editFunctions.php"){
+            die(header("Location: /projectmanager/errors/?id=CI-EF-PT"));
+        }
+        if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/addFunctions.php"){
+            die(header("Location: /projectmanager/errors/?id=CI-AF-PT"));
+        }
+        if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/checkFunctions.php"){
+            die(header("Location: /projectmanager/errors/?id=CI-CF-PT"));
+        }
+        if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/removeFunctions.php"){
+            die(header("Location: /projectmanager/errors/?id=CI-RF-PT"));
+        }
+        if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/sessionCheckTime.php"){
+            die(header("Location: /projectmanager/errors/?id=CI-SC-PT"));
+        }
+        if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/php/databaseConnections.php"){
+            die(header("Location: /projectmanager/errors/?id=CI-DF-PT"));
+        }
+        
         $conn = ConnectRoot();
         $UserData = getSessionUserData($conn, $_SESSION["user"]);
     }
