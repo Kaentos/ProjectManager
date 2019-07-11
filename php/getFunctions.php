@@ -383,7 +383,7 @@
 
     function getMilestone($conn, $projectID, $mileID){
         $milesData = array();
-        $query = "SELECT m.*, s.name AS status, s.badge FROM milestones AS m INNER JOIN projects AS p ON m.idProject=p.id INNER JOIN mstatus AS s ON m.idStatus=s.id WHERE p.id=$projectID AND m.id=$mileIDID";
+        $query = "SELECT m.*, s.name AS status, s.badge FROM milestones AS m INNER JOIN projects AS p ON m.idProject=p.id INNER JOIN mstatus AS s ON m.idStatus=s.id WHERE p.id=$projectID AND m.id=$mileID";
         if ($result = $conn->query($query)) {
             if ($result->num_rows == 1){
                 $milesData = $result->fetch_array(MYSQLI_ASSOC);
@@ -400,7 +400,7 @@
                 die();
             }
         } else {
-            die();
+            die(mysqli_error($conn));
         }
         die();
     }

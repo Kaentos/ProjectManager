@@ -168,7 +168,7 @@
         
     }
 
-    // New issue btn
+    // New milestone btn
     if (isset($_POST["newMileBTN"]) && $UserRole < 4){
         if ( isset($_POST["mileSName"]) && strlen($_POST["mileSName"]) <= 60 && !empty($_POST["mileSName"])) {
             if (isset($_POST["mileSDate"]) && strlen($_POST["mileSDate"]) == 10) {
@@ -198,6 +198,65 @@
             $info = "Milestone name must have 1 to 60 characters.";
             showAlert($info);
         }
+    }
+
+    if(isset($_POST["editMilestone"])){
+        if(isset($_POST["singleMilestoneID"])){
+            $editData = getMilestone($conn, $projectID, $_POST["singleMilestoneID"]);
+        }
+        activateModal("editMilestoneModal");
+    }
+
+    if(isset($_POST["editMileBTN"])){
+        if ( isset($_POST["editMileSName"]) && strlen($_POST["editMileSName"]) <= 60 && !empty($_POST["editMileSName"])) {
+            if (isset($_POST["editMileSDate"]) && strlen($_POST["editMileSDate"]) == 10) {
+                $date = explode("-", $_POST["editMileSDate"]);
+                if (checkdate($date[1], $date[2], $date[0])){
+                    if (isset($_POST["editMileSStatus"]) && is_numeric($_POST["editMileSStatus"]) && checkmileSStatusID($conn, $_POST["editMileSStatus"])) {
+                        $DataEdit = [
+                            "name" => $_POST["editMileSName"],
+                            "targetDate" => $_POST["editMileSDate"],
+                            "status" => $_POST["editMileSStatus"]
+                        ];
+                        if(isset($_POST["editMileID"]) && is_numeric($_POST["editMileID"])){
+                            updateMilestone($conn, $_POST["editMileID"], $UserData["id"], $DataEdit);
+                        } else {
+                            die("Do not change the ID");
+                        } 
+                    } else {
+                        $info = "Can\'t validate status value! If you didn\'t change value report with error MMS!";
+                        showAlert($info);
+                    }
+                } else {
+                    $info = "Edit milestone target date incorrect. (Year-Month-Day)";
+                    showAlert($info);
+                }
+                
+            } else {
+                $info = "Edit milestone target date incorrect.";
+                showAlert($info);
+            }
+        } else {
+            $info = "Edit milestone name must have 1 to 60 characters.";
+            showAlert($info);
+        }
+    }
+
+    function updateMilestone($conn, $mileID, $userID, $milestone){
+        $currentDate = getCurrentDate();
+
+        if(!($stmt = $conn->prepare("UPDATE milestones SET name=?, idStatus=?, targetDate=?, idUpdateUser=?, lastupdateDate=? WHERE id=?"))) {
+            die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
+        }
+        if(!$stmt->bind_param("sisisi", $milestone["name"], $milestone["status"], $milestone["targetDate"], $userID, $currentDate, $mileID)) {
+            die("Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error);
+        }
+        if(!$stmt->execute()) {
+            die("Execute failed: (" . $stmt->errno . ") " . $stmt->error);
+        } else{
+            $stmt->close();
+        }
+        header("Refresh: 0");
     }
 
     // Removes himself from project
@@ -327,6 +386,10 @@
                     <?php
                         if(isset($milesData) && !$NoMilestones){
                             foreach($milesData as $mile){
+                                $now = time(); // or your date as well
+                                $tagetDate = strtotime($mile["targetDate"]);
+                                $datediff = $tagetDate - $now;
+                                $daysBet = round($datediff / (60 * 60 * 24));
                                 echo "
                                 <div class='col-md-12 col-lg-6 col-xl-4 members-DIV'>
                                     <div class='btn-toolbar row' style='margin-top:15px'>
@@ -335,15 +398,31 @@
                                                 <span class='issue-DIV-title2 issue-DIV-text'>
                                                     $mile[name]
                                                     <span class='badge badge-$mile[badge]'>$mile[status]</span>
-                                                    <span class='badge badge-dark'>$mile[lastupdatedDate]</span>
+                                                    <span class='badge badge-dark'>$mile[lastupdateDate]</span>";
+
+                                if ($UserRole < 3){
+                                    echo "
+                                        <button type='submit' name='editMilestone' class='text-white btn btn-dark'>
+                                            <i class='fas fa-pen'></i>
+                                        </button>
+                                    ";
+                                                    }
+                                echo "
                                                     
-                                                    <input type='hidden' name='singleIssueID' value='$mile[id]'>
+                                                    <input type='hidden' name='singleMilestoneID' value='$mile[id]'>
                                                 </span>
                                             </form>
                                         </div>
                                     </div>
                                     <div class='task-DIV-text' style='font-size:1.2rem!important;word-break: break-word; margin-bottom: 15px'>
-                                        Target date: $mile[targetDate]
+                                        Target date: $mile[targetDate]";
+                                if($daysBet > 0 ){
+                                    echo "
+                                        <br>
+                                        Days to target date: $daysBet
+                                    ";
+                                }
+                                echo "
                                     </div>
                                 </div>
                                 ";
@@ -399,7 +478,50 @@
                         </div>
                     </div>
                 </div> 
-                <!-- END issue modal -->
+                <!-- END milestone modal -->
+
+                <!-- New milestone edit modal -->
+                <div class="modal fade" id="editMilestoneModal" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <!-- Head -->
+                            <div class="modal-header">
+                                <span class="modal-title"> Edit milestone </span>
+                                <button type="button" class="close" data-dismiss="modal" aria-label=""><span>×</span></button>
+                            </div>        
+                            <!-- Body -->
+                            <div class="modal-body">
+                                <form method="POST" action="">
+                                    <span class="modal-subtitle">Milestone name:</span>
+                                    <input type='text' class='form-control edit-DIV-Input' name='editMileSName' value='<?php if(isset($editData)){ echo $editData["name"]; } ?>' autocomplete='off'/>
+
+                                    <span class="modal-subtitle">Target Date (year-month-day, ex: 1999-01-02):</span>
+                                    <input type='text' class='form-control edit-DIV-Input' name='editMileSDate' value='<?php if(isset($editData)){ echo $editData["targetDate"]; } ?>' autocomplete='off'/>
+
+                                    <span class="modal-subtitle">Status:</span>
+
+                                    <div class="form-group">
+                                        <select class="form-control edit-DIV-Input" name="editMileSStatus">
+                                            <?php
+                                                foreach($AllMilestonesStatus as $status){
+                                                    if ($status["id"] != $editData["idStatus"]){
+                                                        echo "<option value='$status[id]'>$status[name]</option>";
+                                                    } else {
+                                                        echo "<option value='$status[id]' selected>$status[name]</option>";
+                                                    }
+                                                }
+                                            ?>
+                                        </select>
+                                    </div>
+                                    <input type="hidden" name="editMileID" value="<?php if(isset($editData)){ echo $editData["id"]; } ?>">
+                                    <input type="submit" class="btn btn-primary font-weight-bold" name="editMileBTN" value="Edit milestone">
+                                </form>                
+                            </div>
+                                    
+                        </div>
+                    </div>
+                </div> 
+                <!-- END milestone edit modal -->
 
             </main>
 
