@@ -1,52 +1,32 @@
-Erros:
-FIMI-<file> - File Import/Include Index (login and register)
-FIM-<file> - File Import/Include
-
-MPB-<file> - Missing page bar
-
-<file>-PT-<type> - Function/File prepare statment error
-
-C2 - country in database is duplicated
-U2 - user in database is duplicated
-US2 - user security id is duplicated
-
-GPD-<file> - getting project data
-GTD-<file> - getting task data
-GID-<file> - getting issue data
-
-FGPD-<file> - filter getting project data
+CI -> can't import
+CI-<file>-<page>
 
 Files:
-
-GF - getFunctions
-SCF - sessionCheckFunctions
-OF - otherFunctions
-LRF - login&register
-DBF - databaseconnections
-MPI - dashboard index
-MPP - dashboard projects
-UC - user settings
-CF - checkFunctions
-ADD - addFunctions
-R - report problem
-
-
-PI - project index
-PE - project edit
-
-PII - project issues index
-PIS - project issues issue
-
+ADMINP - admin projects
+ADMINR - admin reports
+ADMINU - admin users
+MP - main page (dashboard)
+MPI - main page issues
+MPNP - main page new project
+MPP - main page projects
+MPT - main page tasks
+R - reports
+US - user settings
+ERROR - erro index
+I - invite
+PI - project issues
+PII - project issues issue
 PM - project members
+PT - project tasks
+PTT - project tasks task
+PE - project edit
+P - project
 
-PTI - project task index
-PTS - project task task
-
-Types:
-
->PT
-    P - preparing
-    B - binding
-    E - executing
-    FA - fetching to array
-    GR - getting result
+CF - check functions
+OF - other functions
+GF - get functions
+AF - add functions
+EF - edit functions
+RF - remove functions
+SC - session check time
+DF - database functions
