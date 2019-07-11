@@ -229,7 +229,7 @@
                                         ";
                                     }
                                 } elseif (isset($createTask) && $createTask) {
-                                    echo "<p class='task-DIV-list'> No tasks yet, create them! </p>";
+                                    echo "<div class='col-12'><p class='task-DIV-list'> No tasks yet, create them! </p></div>";
                                 }
                                 ?>
                             </div>
@@ -294,7 +294,7 @@
                                         ";
                                     }
                                 } elseif (isset($createIssue) && $createIssue) {
-                                    echo "<p class='issue-DIV-list'> No issues yet, create them! </p>";
+                                    echo "<div class='col-12'><p class='issue-DIV-list'> No issues yet, create them! </p></div>";
                                 }
                                 ?>
                             </div>
@@ -346,7 +346,7 @@
                                         ";
                                     }
                                 } elseif (isset($createIssue) && $createIssue) {
-                                    echo "<p class='issue-DIV-list'> No issues yet, create them! </p>";
+                                    echo "<div class='col-12'><p class='issue-DIV-list'> No issues yet, create them! </p></div>";
                                 }
                                 ?>
                             </div>
