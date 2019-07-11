@@ -40,6 +40,7 @@
         if (isset($projectData)){
             $tasksData = get5Tasks($conn, $projectID);
             $issuesData = get5Issues($conn, $projectID);
+            $milestonesData = get5Milestones($conn, $projectID);
             if(!isset($tasksData)){
                 $createTask = true;
             }
@@ -113,6 +114,7 @@
 
     $AllTasksStatus = getTasksStatus($conn);
     $AllIssuesStatus = getIssuesStatus($conn);
+    $AllMilestonesStatus = getMilestoneStatus($conn);
 ?>
 
 <html lang="en">
@@ -208,20 +210,22 @@
                                 </div>
                             </div>
                             <hr class="hr-task">
-                            <div style="word-break: break-word;">
+                            <div class="row" style="word-break: break-word;">
                                 <?php
                                 if(isset($tasksData)){
                                     foreach($tasksData as $task){
                                         echo "
-                                        <span class='task-DIV-list'>
-                                            <a href='/projectmanager/project/tasks/task?id=$projectData[id]&task=$task[id]'>
-                                                $task[name]
-                                            </a>
-                                            <span class='badge badge-$task[badge]'>$task[status]</span>
-                                        </span>
-                                        <p style='font-size:1.1rem'>
-                                            $task[Des]
-                                        </p>
+                                        <div class='col-12'>
+                                            <span class='task-DIV-list'>
+                                                <a href='/projectmanager/project/tasks/task?id=$projectData[id]&task=$task[id]'>
+                                                    $task[name]
+                                                </a>
+                                                <span class='badge badge-$task[badge]'>$task[status]</span>
+                                            </span>
+                                            <p style='font-size:1.1rem'>
+                                                $task[Des]
+                                            </p>
+                                        </div>
                                         ";
                                     }
                                 } elseif (isset($createTask) && $createTask) {
@@ -271,20 +275,22 @@
                                 </div>
                             </div>
                             <hr class="hr-issue">
-                            <div style="word-break: break-word;">
+                            <div class="row" style="word-break: break-word;">
                                 <?php
                                 if(isset($issuesData)){
                                     foreach($issuesData as $issue){
                                         echo "
-                                        <span class='issue-DIV-list'>
-                                            <a href='/projectmanager/project/issues/issue?id=$projectData[id]&issue=$issue[id]'>
+                                        <div class='col-12'>
+                                            <span class='issue-DIV-list'>
+                                                <a href='/projectmanager/project/issues/issue?id=$projectData[id]&issue=$issue[id]'>
                                                 $issue[name]
-                                            </a>
-                                            <span class='badge badge-$issue[badge]'>$issue[status]</span>
-                                        </span>
-                                        <p style='font-size:1.1rem'>
-                                            $issue[Des]
-                                        </p>
+                                                </a>
+                                                <span class='badge badge-$issue[badge]'>$issue[status]</span>
+                                            </span>
+                                            <p style='font-size:1.1rem'>
+                                                $issue[Des]
+                                            </p>
+                                        </div>
                                         ";
                                     }
                                 } elseif (isset($createIssue) && $createIssue) {
@@ -299,9 +305,52 @@
                         <div class="col-lg-12 col-xl-5 members-DIV">
                             <div class="btn-toolbar row" style="margin-top:15px">
                                 <div class="col-lg-12 col-xl-6" style="margin-top:5px;">
-                                    <span class="members-DIV-title">Milestones - Coming soon!</span>
+                                    <span class="members-DIV-title">
+                                        <a href='/projectmanager/project/milestones/?id=<?php echo $projectData["id"] ?>' style="text-decoration: none; color: black">
+                                            Milestones
+                                        </a>
+                                    </span>
+                                </div>
+                                <div class="col-md-12 col-lg-6">
+                                    <div class="btn-group mr-2 DIV-btn-float" style="margin-top:5px">
+                                        <a href="/projectmanager/project/milestones?id=<?php echo $projectID ?>" class="btn btn-primary members-DIV-btn">All milestones</a>
+                                    </div>
                                 </div>
                             </div>
+                            <hr class="hr-members">
+                            <div class="row" style="word-break: break-word;">
+                                <?php
+                                if(isset($milestonesData)){
+                                    foreach($milestonesData as $mile){
+                                        $now = time();
+                                        $tagetDate = strtotime($mile["targetDate"]);
+                                        $datediff = $tagetDate - $now;
+                                        $daysBet = round($datediff / (60 * 60 * 24));
+                                        echo "
+                                            <div class='col-12'>
+                                            <span class='issue-DIV-list'>
+                                                $mile[name]
+                                                <span class='badge badge-$mile[badge]'>$mile[status]</span>
+                                            </span>
+                                            <p style='font-size:1.1rem'>
+                                                $mile[targetDate]";
+                                        if($daysBet > 0 ){
+                                            echo "
+                                                <br>
+                                                Days to target date: $daysBet
+                                            ";
+                                        }
+                                        echo "
+                                            </p>
+                                        </div>
+                                        ";
+                                    }
+                                } elseif (isset($createIssue) && $createIssue) {
+                                    echo "<p class='issue-DIV-list'> No issues yet, create them! </p>";
+                                }
+                                ?>
+                            </div>
+                            <br>
                         </div>
                         <!-- END milestones -->
 
@@ -437,6 +486,48 @@
                     </div>
                 </div> 
                 <!-- END issue modal -->
+
+                <!-- New milestone modal -->
+                <div class="modal fade" id="newMilestoneModal" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <!-- Head -->
+                            <div class="modal-header">
+                                <span class="modal-title"> Create new milestone </span>
+                                <button type="button" class="close" data-dismiss="modal" aria-label=""><span>×</span></button>
+                            </div>        
+                            <!-- Body -->
+                            <div class="modal-body">
+                                <form method="POST" action="">
+                                    <span class="modal-subtitle">Milestone name:</span>
+                                    <input type='text' class='form-control edit-DIV-Input' name='mileSName' autocomplete='off'/>
+
+                                    <span class="modal-subtitle">Target Date (year-month-day, ex: 1999-01-02):</span>
+                                    <input type='text' class='form-control edit-DIV-Input' name='mileSDate' autocomplete='off'/>
+
+                                    <span class="modal-subtitle">Status:</span>
+
+                                    <div class="form-group">
+                                        <select class="form-control edit-DIV-Input" name="mileSStatus">
+                                            <?php
+                                                foreach($AllMilestonesStatus as $status){
+                                                    if ($status["id"] != $projectData["idStatus"]){
+                                                        echo "<option value='$status[id]'>$status[name]</option>";
+                                                    } else {
+                                                        echo "<option value='$status[id]' selected>$status[name]</option>";
+                                                    }
+                                                }
+                                            ?>
+                                        </select>
+                                    </div>
+                                    <input type="submit" class="btn btn-primary font-weight-bold" name="newMileBTN" value="Create milestone">
+                                </form>                
+                            </div>
+                                    
+                        </div>
+                    </div>
+                </div> 
+                <!-- END milestone modal -->
             </main>
 
         </div>

@@ -332,7 +332,7 @@
                             <div class="col-md-12 col-lg-4 filter-DIV-text">
                                 <form method="POST" action="">
                                     <div class="input-group">
-                                        <input type="text" class="form-control" placeholder="Search by issue name" name="searchMile">
+                                        <input type="text" class="form-control" placeholder="Search by milestone name" name="searchMile">
                                         <div class="input-group-append">
                                             <button type="submit" name="searchBTN" class="btn  btn-dark">
                                                 <i class="fas fa-search"></i>
@@ -386,7 +386,7 @@
                     <?php
                         if(isset($milesData) && !$NoMilestones){
                             foreach($milesData as $mile){
-                                $now = time(); // or your date as well
+                                $now = time();
                                 $tagetDate = strtotime($mile["targetDate"]);
                                 $datediff = $tagetDate - $now;
                                 $daysBet = round($datediff / (60 * 60 * 24));

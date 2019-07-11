@@ -405,6 +405,25 @@
         die();
     }
 
+    function get5Milestones($conn, $projectID){
+        $milestonesData = array();
+        $query = "SELECT m.*, s.name AS status, s.badge FROM milestones AS m INNER JOIN projects AS p ON m.idProject=p.id INNER JOIN mstatus AS s ON m.idStatus=s.id WHERE p.id=$projectID ORDER BY m.lastupdateDate LIMIT 5";
+        if ($result = $conn->query($query)) {
+            if ($result->num_rows >= 1){
+                while($row = $result->fetch_array(MYSQLI_ASSOC)){
+                    array_push($milestonesData, $row);
+                }
+            } elseif ($result->num_rows == 0) {
+                return;
+            } else {
+                die();
+            }
+        } else {
+            die();
+        }
+        return $milestonesData;
+    }
+
     function getMilestoneStatus($conn){
         $data = array();
         $query = "SELECT * FROM mstatus ORDER BY name;";
