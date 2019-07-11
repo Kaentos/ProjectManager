@@ -416,7 +416,7 @@
                                             ?>
                                         </select>
                                     </div>
-                                    <input type="submit" class="btn btn-success font-weight-bold" name="newIssueBTN" value="Create issue">
+                                    <input type="submit" class="btn btn-danger font-weight-bold" name="newIssueBTN" value="Create issue">
                                 </form>                
                             </div>
                                     
