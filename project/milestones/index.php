@@ -264,6 +264,13 @@
         removeUserFromProject($conn, $UserData["id"], $projectID);
     }
 
+    // Remove issue
+    if (isset($_POST["REMmilestone"]) && $UserRole < 3){
+        if(isset($_POST["singleMilestoneID"])){
+            removeMilestone($conn, $_POST["singleMilestoneID"]);
+        }
+    }
+
     $AllMilestonesStatus = getMilestoneStatus($conn);
 ?>
 
@@ -405,8 +412,11 @@
                                         <button type='submit' name='editMilestone' class='text-white btn btn-dark'>
                                             <i class='fas fa-pen'></i>
                                         </button>
+                                        <button type='submit' name='REMmilestone' class='btn btn-danger'>
+                                            <i class='far fa-times-circle'></i>
+                                        </button>
                                     ";
-                                                    }
+                                }
                                 echo "
                                                     
                                                     <input type='hidden' name='singleMilestoneID' value='$mile[id]'>

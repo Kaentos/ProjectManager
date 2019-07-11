@@ -107,6 +107,38 @@
         }
     }
 
+    // New milestone btn
+    if (isset($_POST["newMileBTN"]) && $UserRole < 4){
+        if ( isset($_POST["mileSName"]) && strlen($_POST["mileSName"]) <= 60 && !empty($_POST["mileSName"])) {
+            if (isset($_POST["mileSDate"]) && strlen($_POST["mileSDate"]) == 10) {
+                $date = explode("-", $_POST["mileSDate"]);
+                if (checkdate($date[1], $date[2], $date[0])){
+                    if (isset($_POST["mileSStatus"]) && is_numeric($_POST["mileSStatus"]) && checkmileSStatusID($conn, $_POST["mileSStatus"])) {
+                        $Data = [
+                            "name" => $_POST["mileSName"],
+                            "targetDate" => $_POST["mileSDate"],
+                            "status" => $_POST["mileSStatus"]
+                        ];
+                        addNewMilestone($conn, $projectID, $UserData["id"], $Data);
+                    } else {
+                        $info = "Can\'t validate status value! If you didn\'t change value report with error MMS!";
+                        showAlert($info);
+                    }
+                } else {
+                    $info = "Milestone target date incorrect. (Year-Month-Day)";
+                    showAlert($info);
+                }
+                
+            } else {
+                $info = "Milestone target date incorrect.";
+                showAlert($info);
+            }
+        } else {
+            $info = "Milestone name must have 1 to 60 characters.";
+            showAlert($info);
+        }
+    }
+
     if(isset($_POST["QuitProjectBTN"]) && $UserRole > 1){
         removeUserFromProject($conn, $UserData["id"], $projectID);
     }
@@ -304,16 +336,36 @@
                         <!-- Milestones -->
                         <div class="col-lg-12 col-xl-5 members-DIV">
                             <div class="btn-toolbar row" style="margin-top:15px">
-                                <div class="col-lg-12 col-xl-6" style="margin-top:5px;">
+                                <div class="col-lg-12 col-xl-12" style="margin-top:5px;">
                                     <span class="members-DIV-title">
                                         <a href='/projectmanager/project/milestones/?id=<?php echo $projectData["id"] ?>' style="text-decoration: none; color: black">
                                             Milestones
                                         </a>
                                     </span>
                                 </div>
-                                <div class="col-md-12 col-lg-6">
-                                    <div class="btn-group mr-2 DIV-btn-float" style="margin-top:5px">
-                                        <a href="/projectmanager/project/milestones?id=<?php echo $projectID ?>" class="btn btn-primary members-DIV-btn">All milestones</a>
+                                <div class="col-lg-12 col-xl-12">
+                                    <div class="btn-group mr-2" style="margin-top:5px">
+                                        <?php
+
+                                            if(isset($milestonesData)) {
+                                                echo "
+                                                <div class='btn-group mr-2 DIV-btn-float' style='margin-top:5px'>
+                                                    <a href='/projectmanager/project/milestones?id=$projectID' class='btn btn-primary members-DIV-btn'>All milestones</a>
+                                                </div>
+                                                ";
+                                            }
+                                            if ($UserRole < 4){
+                                                echo "
+                                                    <div class='btn-group mr-2 DIV-btn-float' style='margin-top:5px'>
+                                                        <a class='btn btn-primary issue-DIV-btn' data-toggle='modal' href='#newMilestoneModal'>
+                                                            New milestone
+                                                        </a>
+                                                    </div>
+                                                ";
+                                            }
+
+                                        ?>
+                                        
                                     </div>
                                 </div>
                             </div>
