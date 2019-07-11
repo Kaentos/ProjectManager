@@ -158,15 +158,6 @@
                                             </a>
                                         </li>
                                         <!-- End Menu issues -->
-
-                                        <!-- Menu Milestones -->
-                                        <li>
-                                            <a href='/projectmanager/dashboard/milestones'>
-                                                <i class='fa fa-flag'></i>
-                                                <span>Milestones</span>
-                                            </a>
-                                        </li>
-                                        <!-- End Menu Milestones -->
                                     ";
                                 }
                             ?>

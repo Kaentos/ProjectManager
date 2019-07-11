@@ -190,7 +190,7 @@
                                                     <a href='/projectmanager/project/members/?id=$Project[id]' class='btn btn-light' style='margin: 5px'>
                                                         <i class='fas fa-users'></i>
                                                     </a>
-                                                    <a href='#' class='btn btn-light' style='margin: 5px'>
+                                                    <a href='/projectmanager/project/milestones/?id=$Project[id]' class='btn btn-light' style='margin: 5px'>
                                                         <i class='fas fa-flag'></i>
                                                     </a>";
                                     if ($Project["Role"] < 3){

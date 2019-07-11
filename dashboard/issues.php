@@ -245,7 +245,7 @@
                                         </div>
                                     </div>";
                             } else {
-                                echo "<div class='col-12'><h4>You don't follow any issue, what about following some?</h4></div>";
+                                echo "<div class='col-12'><h4>You aren't following any issues, how about following some?</h4></div>";
                             }
                         ?>
                     </div>

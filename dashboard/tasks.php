@@ -244,7 +244,7 @@
                                         </div>
                                     </div>";
                             } else {
-                                echo "<div class='col-12'><h4>You don't follow any task, what about following some?</h4></div>";
+                                echo "<div class='col-12'><h4>You aren't following any tasks, how about following some?</h4></div>";
                             }
                         ?>
                     </div>

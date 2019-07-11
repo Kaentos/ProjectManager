@@ -379,4 +379,69 @@
 
 // END USER FUNCTIONS
 
+// Miletones
+
+    function getMilestone($conn, $projectID, $mileID){
+        $milesData = array();
+        $query = "SELECT m.*, s.name AS status, s.badge FROM milestones AS m INNER JOIN projects AS p ON m.idProject=p.id INNER JOIN mstatus AS s ON m.idStatus=s.id WHERE p.id=$projectID AND m.id=$mileID";
+        if ($result = $conn->query($query)) {
+            if ($result->num_rows == 1){
+                $milesData = $result->fetch_array(MYSQLI_ASSOC);
+                $Temp = getUsername($conn,$milesData["idCreator"]);
+                $milesData["idCreator"] = $Temp;
+                $Temp = getUsername($conn,$milesData["idUpdateUser"]);
+                $milesData["idUpdateUser"] = $Temp;
+                return $milesData;
+            } elseif ($result->num_rows > 1) {
+                die();
+            } elseif ($result->num_rows == 0) {
+                return false;
+            } else {
+                die();
+            }
+        } else {
+            die(mysqli_error($conn));
+        }
+        die();
+    }
+
+    function get5Milestones($conn, $projectID){
+        $milestonesData = array();
+        $query = "SELECT m.*, s.name AS status, s.badge FROM milestones AS m INNER JOIN projects AS p ON m.idProject=p.id INNER JOIN mstatus AS s ON m.idStatus=s.id WHERE p.id=$projectID ORDER BY m.lastupdateDate LIMIT 5";
+        if ($result = $conn->query($query)) {
+            if ($result->num_rows >= 1){
+                while($row = $result->fetch_array(MYSQLI_ASSOC)){
+                    array_push($milestonesData, $row);
+                }
+            } elseif ($result->num_rows == 0) {
+                return;
+            } else {
+                die();
+            }
+        } else {
+            die();
+        }
+        return $milestonesData;
+    }
+
+    function getMilestoneStatus($conn){
+        $data = array();
+        $query = "SELECT * FROM mstatus ORDER BY name;";
+        if ($result = $conn->query($query)) {
+            if ($result->num_rows > 0){
+                while($row = $result->fetch_array(MYSQLI_ASSOC)){
+                    array_push($data, $row);
+                }
+            } else {
+                die("Error MS0");
+            }
+        } else {
+            die();
+        }
+        return $data;
+    }
+
+
+// END milestones
+
 ?>

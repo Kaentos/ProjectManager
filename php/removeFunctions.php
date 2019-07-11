@@ -128,6 +128,15 @@
 
 // End Remove user from database
 
+function removeMilestone($conn, $mileID){
+    $query = "DELETE FROM milestones WHERE id=$mileID";
+    if (!$conn->query($query)) {
+        die();
+    }
+    
+    header("Refresh: 0");
+}
+
 
 // Remove report
 function removeReport($conn, $ID){

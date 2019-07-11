@@ -123,4 +123,23 @@
 
 // END invite
 
+    // New Milestone
+    function addNewMilestone($conn, $projectID, $userID, $milestone){
+        $currentDate = getCurrentDate();
+
+        if(!($stmt = $conn->prepare("INSERT INTO milestones (idProject, name, idStatus, targetDate, idCreator, creationDate, idUpdateUser, lastupdateDate) VALUES (?,?,?,?,?,?,?,?)"))) {
+            die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
+        }
+        if(!$stmt->bind_param("isisisis", $projectID, $milestone["name"], $milestone["status"], $milestone["targetDate"], $userID, $currentDate, $userID, $currentDate)) {
+            die("Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error);
+        }
+        if(!$stmt->execute()) {
+            die("Execute failed: (" . $stmt->errno . ") " . $stmt->error);
+        } else{
+            $last_id = mysqli_insert_id($conn);
+            $stmt->close();
+        }
+        header("Refresh: 0");
+    }
+
 ?>
