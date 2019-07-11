@@ -200,14 +200,14 @@
         }
     }
 
-    if(isset($_POST["editMilestone"])){
+    if(isset($_POST["editMilestone"]) && $UserRole < 3){
         if(isset($_POST["singleMilestoneID"])){
             $editData = getMilestone($conn, $projectID, $_POST["singleMilestoneID"]);
         }
         activateModal("editMilestoneModal");
     }
 
-    if(isset($_POST["editMileBTN"])){
+    if(isset($_POST["editMileBTN"]) && $UserRole < 3){
         if ( isset($_POST["editMileSName"]) && strlen($_POST["editMileSName"]) <= 60 && !empty($_POST["editMileSName"])) {
             if (isset($_POST["editMileSDate"]) && strlen($_POST["editMileSDate"]) == 10) {
                 $date = explode("-", $_POST["editMileSDate"]);
