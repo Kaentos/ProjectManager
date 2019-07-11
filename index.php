@@ -44,8 +44,12 @@
     <head>
         <title>Welcome to PM!</title>
         <?php
-            include "$_SERVER[DOCUMENT_ROOT]/projectmanager/html/Headcontent.html";
-            include "$_SERVER[DOCUMENT_ROOT]/projectmanager/html/CSSimport.html";
+            if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/html/Headcontent.html"){
+                die(header("Location: /projectmanager/errors/?id=CI-HEAD-INDEX"));
+            }
+            if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/html/CSSimport.html"){
+                die(header("Location: /projectmanager/errors/?id=CI-CSS-INDEX"));
+            }
         ?>
 
         <style>

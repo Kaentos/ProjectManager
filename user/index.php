@@ -334,8 +334,12 @@
     <head>
         <title>User settings</title>
         <?php
-            include "$_SERVER[DOCUMENT_ROOT]/projectmanager/html/Headcontent.html";
-            include "$_SERVER[DOCUMENT_ROOT]/projectmanager/html/CSSimport.html";
+            if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/html/Headcontent.html"){
+                die(header("Location: /projectmanager/errors/?id=CI-HEAD-US"));
+            }
+            if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/html/CSSimport.html"){
+                die(header("Location: /projectmanager/errors/?id=CI-CSS-US"));
+            }
         ?>
     </head>
 
@@ -343,7 +347,7 @@
         <div class="page-wrapper chiller-theme toggled">
             <?php
                 if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/sidebar/bar.php"){
-                    sendError("MPB-UC");
+                    die(header("Location: /projectmanager/errors/?id=CI-BAR-US"));
                 }
             ?>
 

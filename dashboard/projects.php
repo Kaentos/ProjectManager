@@ -94,8 +94,12 @@
     <head>
         <title>Projects</title>
         <?php
-            include "$_SERVER[DOCUMENT_ROOT]/projectmanager/html/Headcontent.html";
-            include "$_SERVER[DOCUMENT_ROOT]/projectmanager/html/CSSimport.html";
+            if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/html/Headcontent.html"){
+                die(header("Location: /projectmanager/errors/?id=CI-HEAD-MPP"));
+            }
+            if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/html/CSSimport.html"){
+                die(header("Location: /projectmanager/errors/?id=CI-CSS-MPP"));
+            }
         ?>
     </head>
 
@@ -103,7 +107,7 @@
         <div class="page-wrapper chiller-theme toggled">
             <?php
                 if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/sidebar/bar.php"){
-                    sendError("MPB-MPP");
+                    die(header("Location: /projectmanager/errors/?id=CI-BAR-MPP"));
                 }
             ?>
 

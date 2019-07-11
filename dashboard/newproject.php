@@ -125,26 +125,24 @@
 
 <html lang="en">
     <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=320, height=device-height, target-densitydpi=medium-dpi" />
         <title>New project</title>
-        <meta name="description" content="Project Manager">
-        <meta name="author" content="Miguel Magueijo">
-        <link rel="icon" href="/projectmanager/img/icon.png">
-
-        <!-- CSS -->
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.9.0/css/all.css" integrity="sha384-i1LQnF23gykqWXg6jxC2ZbCbUMxyw5gLZY6UiUS98LYV5unm8GWmfkIS6jqJfb4E" crossorigin="anonymous">
-        <!-- Remove comment to get local fontawesome, comment link above -->
-        <!-- <link rel="stylesheet" href="/projectmanager/fontawesome/css/all.css"> -->
-        <link rel="stylesheet" href="/projectmanager/css/db.css">
-        <link rel="stylesheet" href="/projectmanager/css/Custom.css">
-        <link rel="stylesheet" href="/projectmanager/css/bootstrap.min.css">
+        <?php
+            if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/html/Headcontent.html"){
+                die(header("Location: /projectmanager/errors/?id=CI-HEAD-MPNP"));
+            }
+            if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/html/CSSimport.html"){
+                die(header("Location: /projectmanager/errors/?id=CI-CSS-MPNP"));
+            }
+        ?>
     </head>
 
     <body>
         <div class="page-wrapper chiller-theme toggled">
-            <?php include "$_SERVER[DOCUMENT_ROOT]/projectmanager/sidebar/bar.php"; ?>
+            <?php
+                if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/sidebar/bar.php"){
+                    die(header("Location: /projectmanager/errors/?id=CI-BAR-MPNP"));
+                }
+            ?>
 
 
             <main class="page-content">

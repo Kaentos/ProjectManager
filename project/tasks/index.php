@@ -205,10 +205,14 @@
 
 <html lang="en">
     <head>
-    <title><?php echo "$projectData[name] - Tasks"; ?></title>
+        <title><?php echo "$projectData[name] - Tasks"; ?></title>
         <?php
-            include "$_SERVER[DOCUMENT_ROOT]/projectmanager/html/Headcontent.html";
-            include "$_SERVER[DOCUMENT_ROOT]/projectmanager/html/CSSimport.html";
+            if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/html/Headcontent.html"){
+                die(header("Location: /projectmanager/errors/?id=CI-HEAD-PT"));
+            }
+            if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/html/CSSimport.html"){
+                die(header("Location: /projectmanager/errors/?id=CI-CSS-PT"));
+            }
         ?>
     </head>
 
@@ -216,7 +220,7 @@
         <div class="page-wrapper chiller-theme">
             <?php
                 if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/sidebar/bar.php"){
-                    sendError("MPB-PTI");
+                    die(header("Location: /projectmanager/errors/?id=CI-BAR-PT"));
                 }
             ?>
 

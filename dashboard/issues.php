@@ -137,10 +137,14 @@
 
 <html lang="en">
     <head>
-        <title>Issues</title>
+        <title>Followed issues</title>
         <?php
-            include "$_SERVER[DOCUMENT_ROOT]/projectmanager/html/Headcontent.html";
-            include "$_SERVER[DOCUMENT_ROOT]/projectmanager/html/CSSimport.html";
+            if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/html/Headcontent.html"){
+                die(header("Location: /projectmanager/errors/?id=CI-HEAD-MPI"));
+            }
+            if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/html/CSSimport.html"){
+                die(header("Location: /projectmanager/errors/?id=CI-CSS-MPI"));
+            }
         ?>
     </head>
 
@@ -148,7 +152,7 @@
         <div class="page-wrapper chiller-theme toggled">
             <?php
                 if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/sidebar/bar.php"){
-                    sendError("MPB-MPT");
+                    die(header("Location: /projectmanager/errors/?id=CI-BAR-MPI"));
                 }
             ?>
 

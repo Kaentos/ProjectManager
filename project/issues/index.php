@@ -150,7 +150,7 @@
     }
 
     // New issue btn
-    if (isset($_POST["newIssueBTN"])){
+    if (isset($_POST["newIssueBTN"]) && $UserRole < 4){
         if ( isset($_POST["issueName"]) && strlen($_POST["issueName"]) <= 60 && !empty($_POST["issueName"])) {
             if (isset($_POST["issueDes"]) && strlen($_POST["issueDes"]) <= 150 && !empty($_POST["issueDes"])) {
                 if (isset($_POST["issueStatus"]) && is_numeric($_POST["issueStatus"]) && checkIssueStatusID($conn, $_POST["issueStatus"])) {
@@ -205,10 +205,14 @@
 
 <html lang="en">
     <head>
-    <title><?php echo "$projectData[name] - Issues"; ?></title>
+        <title><?php echo "$projectData[name] - Issues"; ?></title>
         <?php
-            include "$_SERVER[DOCUMENT_ROOT]/projectmanager/html/Headcontent.html";
-            include "$_SERVER[DOCUMENT_ROOT]/projectmanager/html/CSSimport.html";
+            if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/html/Headcontent.html"){
+                die(header("Location: /projectmanager/errors/?id=CI-HEAD-PI"));
+            }
+            if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/html/CSSimport.html"){
+                die(header("Location: /projectmanager/errors/?id=CI-CSS-PI"));
+            }
         ?>
     </head>
 
@@ -216,7 +220,7 @@
         <div class="page-wrapper chiller-theme">
             <?php
                 if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/sidebar/bar.php"){
-                    sendError("MPB-PII");
+                    die(header("Location: /projectmanager/errors/?id=CI-BAR-PI"));
                 }
             ?>
 

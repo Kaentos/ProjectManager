@@ -15,7 +15,7 @@
         $UserData = getSessionUserData($conn, $_SESSION["user"]);
     }
 
-    if(!($UserData["role"] == 20)){
+    if($UserData["role"] != 20){
         header("Location: /projectmanager/");
     }
 
@@ -52,10 +52,14 @@
 
 <html lang="en">
     <head>
-    <title>Admin - Projects</title>
+        <title>Admin - Projects</title>
         <?php
-            include "$_SERVER[DOCUMENT_ROOT]/projectmanager/html/Headcontent.html";
-            include "$_SERVER[DOCUMENT_ROOT]/projectmanager/html/CSSimport.html";
+            if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/html/Headcontent.html"){
+                die(header("Location: /projectmanager/errors/?id=CI-HEAD-ADMINP"));
+            }
+            if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/html/CSSimport.html"){
+                die(header("Location: /projectmanager/errors/?id=CI-CSS-ADMINP"));
+            }
         ?>
     </head>
 
@@ -63,7 +67,7 @@
         <div class="page-wrapper chiller-theme toggled">
             <?php
                 if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/sidebar/bar.php"){
-                    sendError("MPB-PM");
+                    die(header("Location: /projectmanager/errors/?id=CI-BAR-ADMINP"));
                 }
             ?>
 

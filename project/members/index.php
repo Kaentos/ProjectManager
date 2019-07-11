@@ -148,7 +148,7 @@
     }
 
     // Removes user from project by other users
-    if(isset($_POST["REMuserFromProjectBTN"])){
+    if(isset($_POST["REMuserFromProjectBTN"]) && $UserRole < 3){
         if(isset($_POST["memberID"]) && is_numeric($_POST["memberID"])){
             if($Temp = checkUserInProject($conn, $projectID, $_POST["memberID"])){
                 $memberID = $_POST["memberID"];
@@ -165,7 +165,7 @@
     $AllProjectUserRoles = getProjectUserRoles($conn);
 
     // Open edit user role modal
-    if(isset($_POST["EditUserRoleBTN"])){
+    if(isset($_POST["EditUserRoleBTN"]) && $UserRole < 3){
         if(isset($_POST["memberID"]) && is_numeric($_POST["memberID"])){
             if($Temp = checkUserInProject($conn, $projectID, $_POST["memberID"])){
                 $TempRoleID = getUserProjectRole($conn, $projectID, $_POST["memberID"]);
@@ -200,7 +200,7 @@
     } elseif ($UserRole > 3 && isset($_POST["editRoleBTN"])){
         echo "
         <script>
-            alert('You cannot do that. Stop doing something you don\'t have access to.');
+            alert('You cannot do that.');
         </script>
         ";
     }
@@ -210,10 +210,14 @@
 
 <html lang="en">
     <head>
-    <title><?php echo "$projectData[name] - Tasks"; ?></title>
+        <title><?php echo "$projectData[name] - Members"; ?></title>
         <?php
-            include "$_SERVER[DOCUMENT_ROOT]/projectmanager/html/Headcontent.html";
-            include "$_SERVER[DOCUMENT_ROOT]/projectmanager/html/CSSimport.html";
+            if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/html/Headcontent.html"){
+                die(header("Location: /projectmanager/errors/?id=CI-HEAD-PM"));
+            }
+            if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/html/CSSimport.html"){
+                die(header("Location: /projectmanager/errors/?id=CI-CSS-PM"));
+            }
         ?>
     </head>
 
@@ -222,6 +226,7 @@
             <?php
                 if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/sidebar/bar.php"){
                     sendError("MPB-PM");
+                    die(header("Location: /projectmanager/errors/?id=CI-CSS-PM"));
                 }
             ?>
 

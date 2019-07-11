@@ -67,7 +67,7 @@
     }
 
     // Edit issue btn
-    if (isset($_POST["editIssueBTN"])){
+    if (isset($_POST["editIssueBTN"]) && $UserRole < 3){
         if ( isset($_POST["issueName"]) && strlen($_POST["issueName"]) <= 60 && !empty($_POST["issueName"])) {
             if (isset($_POST["issueDes"]) && strlen($_POST["issueDes"]) <= 150 && !empty($_POST["issueDes"])) {
                 if (isset($_POST["issueStatus"]) && is_numeric($_POST["issueStatus"]) && checkIssueStatusID($conn, $_POST["issueStatus"])) {
@@ -128,7 +128,7 @@
     }
 
     // User removes follow from issue
-    if(isset($_POST["REMfollowIssueBTN"])){
+    if(isset($_POST["REMfollowIssueBTN"]) && checkUserIssueFollow($conn, $issueData["id"], $UserData["id"])){
         removeUserIssueFollow($conn, $issueData["id"], $UserData["id"]);
     }
 
@@ -139,10 +139,14 @@
 
 <html lang="en">
     <head>
-    <title><?php echo "$projectData[name] - $issueData[name]"; ?></title>
+        <title><?php echo "$projectData[name] - $issueData[name]"; ?></title>
         <?php
-            include "$_SERVER[DOCUMENT_ROOT]/projectmanager/html/Headcontent.html";
-            include "$_SERVER[DOCUMENT_ROOT]/projectmanager/html/CSSimport.html";
+            if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/html/Headcontent.html"){
+                die(header("Location: /projectmanager/errors/?id=CI-HEAD-PII"));
+            }
+            if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/html/CSSimport.html"){
+                die(header("Location: /projectmanager/errors/?id=CI-CSS-PII"));
+            }
         ?>
     </head>
 
@@ -150,7 +154,7 @@
         <div class="page-wrapper chiller-theme">
             <?php
                 if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/sidebar/bar.php"){
-                    sendError("MPB-PIS");
+                    die(header("Location: /projectmanager/errors/?id=CI-BAR-PII"));
                 }
             ?>
 

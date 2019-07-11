@@ -139,10 +139,14 @@
 
 <html lang="en">
     <head>
-    <title><?php echo "$projectData[name] - $taskData[name]"; ?></title>
+        <title><?php echo "$projectData[name] - $taskData[name]"; ?></title>
         <?php
-            include "$_SERVER[DOCUMENT_ROOT]/projectmanager/html/Headcontent.html";
-            include "$_SERVER[DOCUMENT_ROOT]/projectmanager/html/CSSimport.html";
+            if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/html/Headcontent.html"){
+                die(header("Location: /projectmanager/errors/?id=CI-HEAD-PTT"));
+            }
+            if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/html/CSSimport.html"){
+                die(header("Location: /projectmanager/errors/?id=CI-CSS-PTT"));
+            }
         ?>
     </head>
 
@@ -150,7 +154,7 @@
         <div class="page-wrapper chiller-theme">
             <?php
                 if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/sidebar/bar.php"){
-                    sendError("MPB-PTS");
+                    die(header("Location: /projectmanager/errors/?id=CI-BAR-PTT"));
                 }
             ?>
 

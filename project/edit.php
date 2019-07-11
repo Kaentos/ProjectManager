@@ -85,16 +85,24 @@
 
 <html lang="en">
     <head>
-        <title><?php echo "Editing - $projectData[name]" ?></title>
+        <title><?php echo "Edit - $projectData[name]" ?></title>
         <?php
-            include "$_SERVER[DOCUMENT_ROOT]/projectmanager/html/Headcontent.html";
-            include "$_SERVER[DOCUMENT_ROOT]/projectmanager/html/CSSimport.html";
+            if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/html/Headcontent.html"){
+                die(header("Location: /projectmanager/errors/?id=CI-HEAD-PE"));
+            }
+            if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/html/CSSimport.html"){
+                die(header("Location: /projectmanager/errors/?id=CI-CSS-PE"));
+            }
         ?>
     </head>
 
     <body>
         <div class="page-wrapper chiller-theme">
-            <?php include "$_SERVER[DOCUMENT_ROOT]/projectmanager/sidebar/bar.php"; ?>
+            <?php
+                if(!include "$_SERVER[DOCUMENT_ROOT]/projectmanager/sidebar/bar.php"){
+                    die(header("Location: /projectmanager/errors/?id=CI-BAR-PE"));
+                } 
+            ?>
 
             <main class="page-content">
                 <div class="container-fluid">
