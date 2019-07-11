@@ -398,7 +398,7 @@
                                         ";
                                     }
                                 } elseif (isset($createIssue) && $createIssue) {
-                                    echo "<div class='col-12'><p class='issue-DIV-list'> No issues yet, create them! </p></div>";
+                                    echo "<div class='col-12'><p class='issue-DIV-list'> No milestones yet, create them! </p></div>";
                                 }
                                 ?>
                             </div>
