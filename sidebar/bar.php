@@ -39,8 +39,6 @@
             if(isset($_POST["Sproject"])){
                 if ($_POST["Sproject"] == "new"){
                     header("Location: /projectmanager/dashboard/newproject");
-                } elseif ($_POST["Sproject"] == "join") {
-                    header("Location: /projectmanager/invite");
                 } elseif (is_numeric($_POST["Sproject"])) {
                     header("Location: /projectmanager/project/?id=$_POST[Sproject]");
                 }
@@ -62,8 +60,7 @@
                             $query = "SELECT p.* FROM user AS u JOIN projectmembers as pm ON u.id = pm.idUser JOIN projects as p ON pm.idProject = p.id WHERE u.id=".$_SESSION['user']['id'].";";
                             if ($result = $conn->query($query)) {
                                 if ($result->num_rows == 0) {
-                                    echo "<option value='new'> Create new project </option>";
-                                    echo "<option value='join'> Join project </option>";
+                                    echo "<option value='new'> New project </option>";
                                 } else {
                                     while ($row = $result->fetch_array(MYSQLI_ASSOC)){
                                         if(isset($barProjectID) && $row["id"] == $barProjectID){

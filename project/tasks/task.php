@@ -118,8 +118,18 @@
     }
 
     // Remove task
-    if (isset($_POST["REMtask"])){
+    if (isset($_POST["REMtask"]) && $UserRole < 3){
         removeTask($conn, $projectID, $taskID);
+    }
+
+    // User starts following task
+    if(isset($_POST["followTaskBTN"]) && !checkUserTaskFollow($conn, $taskData["id"], $UserData["id"])){
+        addFollowToTask($conn, $taskData["id"], $UserData["id"]);
+    }
+
+    // User removes follow from task
+    if(isset($_POST["REMfollowTaskBTN"])){
+        removeUserTaskFollow($conn, $taskData["id"], $UserData["id"]);
     }
 
 
@@ -214,12 +224,24 @@
                                     $taskData[Des]</p>
                                     
                                 </div>
-                            </div>
+                            
                             ";
                         } elseif (isset($createTask) && $createTask) {
                             echo "<p class='task-DIV-list'> No tasks yet, create them! </p>";
                         }
                     ?>
+                                <form class="col-12 row" method="POST" action="">
+                                    <?php
+                                        if (checkUserTaskFollow($conn, $taskData["id"])){
+                                            echo "<button type='submit' name='REMfollowTaskBTN' class='btn bg-danger text-white float-right'>Unfollow</button> &nbsp";
+                                        } else {
+                                            echo "<button type='submit' name='followTaskBTN' class='btn bg-dark text-white float-right'>Follow</button> &nbsp";
+                                        }
+                                        echo "<a href='/projectmanager/project/tasks/?id=$projectID' class='btn btn-dark'>Back to all tasks</a>";
+                                    ?>
+                                    
+                                </form>
+                            </div>
                     <!-- END Task -->
                 </div>
 
@@ -232,7 +254,7 @@
                             Comments
                         </div>
                     </div>
-                    <div class="col-sm-12 col-md-10 col-lg-10 col-xl-6" style="background-color:green;" id="#Dis">
+                    <div class="col-sm-12 col-md-10 col-lg-10 col-xl-6 task-DIV" id="#Dis">
                         <form class="col-12" method="POST" action="" style="margin-top: 20px">
                             <div class="row">
                             <div class="col-4 col-lg-4 col-xl-2">

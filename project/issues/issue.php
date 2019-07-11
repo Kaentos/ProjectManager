@@ -117,9 +117,19 @@
         removeUserFromProject($conn, $UserData["id"], $projectID);
     }
 
-    // Remove task
-    if (isset($_POST["REMissue"])){
+    // Remove issue
+    if (isset($_POST["REMissue"]) && $UserRole < 3){
         removeIssue($conn, $projectID, $issueID);
+    }
+
+    // User starts following issue
+    if(isset($_POST["followIssueBTN"]) && !checkUserIssueFollow($conn, $issueData["id"], $UserData["id"])){
+        addFollowToIssue($conn, $issueData["id"], $UserData["id"]);
+    }
+
+    // User removes follow from issue
+    if(isset($_POST["REMfollowIssueBTN"])){
+        removeUserIssueFollow($conn, $issueData["id"], $UserData["id"]);
     }
 
     $AllIssueComments = getIssueComments($conn, $issueID);
@@ -214,12 +224,23 @@
                                     $issueData[Des]</p>
                                     
                                 </div>
-                            </div>
                             ";
                         } elseif (isset($createIssue) && $createIssue) {
                             echo "<p class='issue-DIV-list'> No issues yet, create them! </p>";
                         }
                     ?>
+                            <form class="col-12 row" method="POST" action="">
+                                <?php
+                                    if (checkUserIssueFollow($conn, $issueData["id"])){
+                                        echo "<button type='submit' name='REMfollowIssueBTN' class='btn bg-danger text-white float-right'>Unfollow</button> &nbsp";
+                                    } else {
+                                        echo "<button type='submit' name='followIssueBTN' class='btn bg-dark text-white float-right'>Follow</button> &nbsp";
+                                    }
+                                    echo "<a href='/projectmanager/project/issues/?id=$projectID' class='btn btn-dark'>Back to all issues</a>";
+                                ?>
+                                
+                            </form>
+                        </div>
                     <!-- END Issue -->
                 </div>
 
@@ -232,7 +253,7 @@
                             Comments
                         </div>
                     </div>
-                    <div class="col-sm-12 col-md-10 col-lg-10 col-xl-6" style="background-color:green;" id="#Dis">
+                    <div class="col-sm-12 col-md-10 col-lg-10 col-xl-6 issue-DIV" id="#Dis">
                         <form class="col-12" method="POST" action="" style="margin-top: 20px">
                             <div class="row">
                             <div class="col-4 col-lg-4 col-xl-2">

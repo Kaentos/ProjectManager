@@ -122,7 +122,11 @@
                                     <div style="margin-bottom:1rem">
                                         <span class="edit-DIV-InputTitle">Status:</span>
                                         <?php 
-                                            echo "<span class='badge badge-$projectData[badge] edit-DIV-InputTitle'>$projectData[Sname]</span>";
+                                            if ($projectData["badge"] == "dark"){
+                                                echo "<span class='badge badge-$projectData[badge] custom-badge-border edit-DIV-InputTitle'>$projectData[Sname]</span>";
+                                            } else {
+                                                echo "<span class='badge badge-$projectData[badge] edit-DIV-InputTitle'>$projectData[Sname]</span>";
+                                            }
                                         ?>
                                     </div>
 
