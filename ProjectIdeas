@@ -1,0 +1,11 @@
+Project links - github etc
+Tasks - mostra a todos os membros o que é preciso fazer, dentro das tasks pode ter varios tipos de prioridade
+ e progresso. Também pode mostrar quem está a trabalhar e uma descrição da task. Podem adicionar comentarios
+Issues - mostra todas as known issues que precisam de ser resolvidas, tem o mesmo tipo de funcionalidades que 
+ as tasks
+Calendar - mostra um calendário onde se atribui eventos e milestones.
+Time - pode usar o time para contar o tempo que está a trabalhar ou para anotar o tempo que passou a trabalhar
+Members / teams - mostra todas as pessoas que estão no projeto e o que estão a fazer, permissoes
+Wiki? - mostra a wiki do projeto
+
+Merge create project and join
